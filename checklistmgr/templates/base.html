@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% comment %}
+    The base template
+    the head part should always be the same except the title and the css files
+    it includes the othed "based templates" : navbar - footer - scripts
+{% endcomment %}
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>{% block title %}ChecklistMgr{% if title %} | {{title}} {% endif %} {% endblock title %}</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=roboto" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=lato" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
+        <!-- Third party plugin CSS-->
+
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        {% static "" as baseUrl %}
+    {{ appname }}
+        {% if not appname %}
+            <link href="{{ baseUrl }}app_home/css/style.css" rel="stylesheet" />
+        {% else %}
+            <link href="{{ baseUrl }}{{ appname }}/css/style.css" rel="stylesheet" />
+        {% endif %}
+    </head>
+        <body id="page-top">
+        <!-- Navigation-->
+        {% include 'partials/_nav.html' %}
+        {% block body_block %}
+        {% endblock body_block %}
+        <!-- Footer-->
+        {% include 'partials/_footer.html' %}
+        {% include 'partials/_scripts.html' %}
+    </body>
+</html>

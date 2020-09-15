@@ -1,0 +1,23 @@
+{# Errors template : Same templet for all the errors - Display 50 chars of Django Exception if exists #}
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}ChecklistMgr | {{ title }}{% endblock %}
+{% block body_block %}
+<header class="my_error">
+    <div class="container">
+        <div class=" newline col-lg-12 align-self-end row align-items-center justify-content-center text-center">
+            <h1 class="text-black font-weight-light">OUPS !
+                Something went wrong</h1>
+        </div>
+        <div class="newline col-lg-12 align-self-end row align-items-center justify-content-center text-center">
+            <h2 class="text-black font-weight-light">An error occured : {{ content }}
+                {% if not error is None %} - {{ error|truncatechars:50 }} {% endif %}
+            </h2>
+        </div>
+        <div class="newline col-lg-12 align-self-end row align-items-center justify-content-center text-center">
+            <h2>Click to go back</h2>
+        </div>
+        {% include 'partials/_back.html' %}
+    </div>
+</header>
+{% endblock body_block %}
