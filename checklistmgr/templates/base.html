@@ -5,36 +5,38 @@
     it includes the othed "based templates" : navbar - footer - scripts
 {% endcomment %}
 {% load static %}
+{% load dis_play %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>{% block title %}ChecklistMgr{% if title %} | {{title}} {% endif %} {% endblock title %}</title>
+        <title>{% block title %}ChecklistMgr{% if title %} | {% dis_play title %} {% endif %} {% endblock title %}</title>
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+        <!-- todo -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=roboto" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=lato" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&family=Roboto&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+        <!-- Bootstrap CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <!-- Third party plugin CSS-->
-
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+        <!-- Core theme CSS-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         {% static "" as baseUrl %}
-    {{ appname }}
         {% if not appname %}
             <link href="{{ baseUrl }}app_home/css/style.css" rel="stylesheet" />
         {% else %}
             <link href="{{ baseUrl }}{{ appname }}/css/style.css" rel="stylesheet" />
         {% endif %}
     </head>
-        <body id="page-top">
+        <body id="my-body">
         <!-- Navigation-->
         {% include 'partials/_nav.html' %}
         {% block body_block %}

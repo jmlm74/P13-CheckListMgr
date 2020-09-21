@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'crispy_forms',
     'app_utilities.apps.AppUtilitiesConfig',
     'app_user.apps.AppUserConfig',
     'app_home.apps.AppHomeConfig',
@@ -101,15 +102,19 @@ WSGI_APPLICATION = 'checklistmgr.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'checklistmgr',
+        'USER': 'jmlm',
+        'PASSWORD': 'jmlmpw',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-# AUTH_USER_MODEL = 'user_app.User'
+AUTH_USER_MODEL = 'app_user.User'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -137,7 +142,7 @@ PASSWORD_HASHERS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Paris"
 
 USE_I18N = True
 
@@ -172,3 +177,4 @@ else:
     # STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MAILGUN_KEY = get_env_variable("MAILGUN_KEY", "")
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

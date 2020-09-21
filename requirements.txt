@@ -2,8 +2,11 @@ asgiref==3.2.10
 bcrypt==3.2.0
 cffi==1.14.2
 Django==3.1.1
+django-crispy-forms==1.9.2
 django-debug-toolbar==2.2
 django-extensions==3.0.8
+Pillow==7.2.0
+psycopg2-binary==2.8.6
 pycparser==2.20
 pytz==2020.1
 six==1.15.0

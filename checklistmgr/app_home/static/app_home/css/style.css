@@ -1,0 +1,39 @@
+.toto{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: black;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: black;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: black;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+}
+
+.my-primary{
+    background-color: palegreen;
+}
+
+.mt-5{
+    margin-top: 5%;
+}
+
+.weather,.map{
+    width: 100%;
+	height: 350px;
+    margin: 0px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.weather{
+    background-color: paleturquoise;
+}
+
+.msg-connect{
+    margin-top: 5%;
+}
