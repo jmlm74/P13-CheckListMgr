@@ -10,7 +10,7 @@ used in detail_view
 
 
 @register.simple_tag
-def define(val=None):
+def define_int(val=None):
     return int(val)
 
 
@@ -18,3 +18,6 @@ def define(val=None):
 def plus(var, value):
     return int(var) + int(value)
 
+@register.simple_tag
+def define_str(val=None):
+    return str(val)

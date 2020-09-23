@@ -36,7 +36,7 @@ if (document.getElementById('map')){ // map exists --> on the homepage
     }
 
     function DisplayWeather(resJson) {
-        console.log(resJson);
+        // console.log(resJson);
         let my_div = document.querySelector("#weather");
         let title = document.createElement('h3');
         title.appendChild(document.createTextNode("Météo à " + resJson.name));
@@ -45,7 +45,7 @@ if (document.getElementById('map')){ // map exists --> on the homepage
         ligne.appendChild(document.createTextNode(resJson.main.temp + "°C"));
         my_div.appendChild(ligne)
         let img = document.createElement('img')
-        console.log("https://openweathermap.org/img/wn/" + resJson.weather[0].icon + ".png")
+        // console.log("https://openweathermap.org/img/wn/" + resJson.weather[0].icon + ".png")
         img.src = "https://openweathermap.org/img/wn/" + resJson.weather[0].icon + ".png"
         my_div.appendChild(img)
         ligne = document.createElement("p")
@@ -65,7 +65,7 @@ if (document.getElementById('map')){ // map exists --> on the homepage
     }
 
     function DisplayForecastWeather(resJson) {
-        console.log("Dans displayForecastWeather");
+        // console.log("Dans displayForecastWeather");
 
         let my_div = document.querySelector("#weather");
         let new_div = document.createElement('div');
@@ -78,7 +78,7 @@ if (document.getElementById('map')){ // map exists --> on the homepage
             heure = (resJson.list[i].dt_txt).substr(11, 5)
             desc = resJson.list[i].weather[0].description
             icon = resJson.list[i].weather[0].icon
-            console.log(heure + "-" + desc + "-" + icon)
+            // console.log(heure + "-" + desc + "-" + icon)
             let new_littlediv = document.createElement('div');
             new_littlediv.classList.add("col-2")
             new_littlediv.classList.add("small")
@@ -100,6 +100,27 @@ if (document.getElementById('map')){ // map exists --> on the homepage
 
         }
     }
+}
+
+if (document.querySelector("#lega")){
+// legal page
+    let legal_click_elt = document.getElementById("legal-click");
+    let legal_text = document.getElementById('lega')
+    let contrib_click_elt = document.getElementById("contrib-click");
+    let contrib_text = document.getElementById('contrib')
+    let display_text = document.getElementById("affiche")
+
+    contrib_click_elt.onclick = function () {
+        display_text.innerHTML = contrib_text.innerHTML;
+    }
+
+    legal_click_elt.onclick = function () {
+        display_text.innerHTML = legal_text.innerHTML;
+        let textElt = document.querySelector("textarea.legal")
+        textElt.setSelectionRange(0, 0)
+    }
+
+
 }
 
 

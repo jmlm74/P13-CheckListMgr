@@ -1,5 +1,6 @@
 from django import template
 from app_utilities.models import Translation
+from datetime import datetime
 import re
 
 register = template.Library()
@@ -47,3 +48,25 @@ def get_error_msg(value):
         value = re.search(pattern, value)
     value = re.sub("’", ' ', value)
     return value
+
+
+@register.simple_tag(takes_context=True)
+def dis_play_date(context):
+    """
+        Template tag to display dates in regional format
+        Args :
+            Context --> use to get session data
+            day,mont,year --> key for the translation model
+        Return:
+              date in FR, UK... format --> defaulkt or error is UK format
+    """
+    try:
+        if (language := context.request.session['language']) == "UK":
+            return datetime.today().strftime('%Y/%m/%d')
+        elif language == "FR":
+            return datetime.today().strftime('%d/%m/%Y')
+        else:
+            return datetime.today().strftime('%Y/%m/%d')
+    except KeyError:
+        return datetime.today().strftime('%Y/%m/%d')
+    return datetime.today().strftime('%Y/%m/%d')

@@ -14,7 +14,10 @@ footer {
 #my-body {
   position: relative;
   min-height: 90vh;
-  margin-top: 5%;
+  /* margin-top: 5%;
+
+   */
+  margin-top: 4.5rem;
 }
 
 textarea.legal{
@@ -26,9 +29,21 @@ textarea.legal{
   color: dodgerblue; !important;
 }
 
+.errorlist, .error {
+  color: red;
+}
+
+.help_text {
+  color: grey;
+}
+
 @media screen and (max-width:400px ){
   #my-body{
     margin-top: 20%;
   }
 }
 
+
+.my-primary-bg{
+    background-color: palegreen;
+}

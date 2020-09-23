@@ -2,7 +2,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
-{% load crispy_forms_tags %}
 {% block body_block %}
 <header class="my_body">
     <div class="container">
@@ -16,7 +15,7 @@
 
                 </div>
                 <div class="col-sm-4 toto">
-                    <p class="h3">{% dis_play "Mail" %}   <img src="{% static 'app_home/img/letter-box.png' %}"</p>
+                    <p class="h3">{% dis_play "Mail" %}   <img src="{% static 'app_home/img/letter-box.png' %}"></p>
                     <p>Palais de l’Élysée<br />
                         55 rue du Faubourg-Saint-Honoré<br />
                         75008 Paris, France<br />
@@ -28,6 +27,7 @@
 
                 </div>
             </div>
+        {% include 'partials/_back.html' %}
     </div>
 </header>
 {% endblock body_block %}

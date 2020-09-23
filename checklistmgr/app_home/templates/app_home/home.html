@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
-{% load crispy_forms_tags %}
+
 {% block body_block %}
 <header class="my_body">
     <div class="container">
@@ -18,7 +18,7 @@
                 <div class=" row form-group align-items-center justify-content-center col-12 small mt-5">
                 <form method="post" action="#">
                     {% csrf_token %}
-                    <button type="submit" class="btn my-primary small">{% dis_play "app_user-home-button1" %}</button>
+                    <button type="submit" class="btn btn-primary small">{% dis_play "app_user-home-button1" %}</button>
                 </form>
                 </div>
             {% else %}
@@ -40,7 +40,7 @@
                         {% dis_play "Password" %} :<br>
                         {{ form.password }} {{ form.bot_catcher }}
                     </p>
-                    <button type="submit" class="btn my-primary small">{% dis_play "app_user-home-button2" %}</button>
+                    <button type="submit" class="btn btn-primary small">{% dis_play "app_user-home-button2" %}</button>
                 </form>
                 </div>
             {% endif %}

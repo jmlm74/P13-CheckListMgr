@@ -1,11 +1,10 @@
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
-from app_user.forms import UserCheckListMgrFormLogin
-
-# Create your views here.
 from django.views import View
 from django.views.generic.base import TemplateView
+
+from app_user.forms import UserCheckListMgrFormLogin
 
 
 class Index(View):
@@ -18,13 +17,17 @@ class Index(View):
             request.session['language']
         except KeyError:
             request.session['language'] = 'UK'
-        self.context['form'] = self.form
+        self.context['form'] = self.form(None)
         return render(request, self.template_name, context=self.context)
 
     def post(self, request):
-        if self.form.is_valid():
-            username = request.POST.get('username', False)
-            password = request.POS.get('password', False)
+        form = self.form(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            bot = request.POST['bot_catcher']
+            if len(bot):
+                print("BOT-CATCHER !!!")
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
@@ -32,7 +35,11 @@ class Index(View):
                     print(f"Connection of {username}")  # for the logs
                     return HttpResponseRedirect(reverse('app_home:index'))  # return to the index
                 else:
-                    self.form.add_error(None, "Compte désactivé : Connexion refusée")
+                    form.add_error(None, "User disabled - Connection refused")
+            else:
+                print(f"Someone try to login and failed ! user : {username} - psw : {password}")
+                form.add_error(None, "User/password invalid - Connection refused")
+
         self.context['form'] = self.form
         return render(request, self.template_name, context=self.context)
 

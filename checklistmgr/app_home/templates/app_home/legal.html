@@ -2,7 +2,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
-{% load crispy_forms_tags %}
 {% block body_block %}
 <header class="my_body">
 
@@ -101,6 +100,7 @@
             <p> Other icons made by <a href="https://fontawesome.com/">Font Awsome</a>  </p>
         </div>
         </div>
+    {% include 'partials/_back.html' %}
     </div>
 </header>
 {% endblock body_block %}

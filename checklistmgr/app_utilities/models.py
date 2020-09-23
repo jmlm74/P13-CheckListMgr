@@ -25,6 +25,7 @@ class Translation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = "Translation"
         indexes = [
             models.Index(fields=['Position'], name='I_Position'),
         ]
@@ -41,3 +42,17 @@ class Translation(models.Model):
         except ObjectDoesNotExist:
             text = f"Error -{position}- Not found!!!!"
         return text
+
+
+class Address(models.Model):
+    street_number = models.PositiveSmallIntegerField(default=0, verbose_name="Street Number")
+    street_type = models.CharField(max_length=20, blank=True, default="", verbose_name="Street Type")
+    address1 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 1")
+    address2 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 2")
+    zipcode = models.CharField(max_length=20, blank=True, default="", verbose_name="Zip Code")
+    city = models.CharField(max_length=50, blank=True,default="", verbose_name="City")
+    country = models.CharField(max_length=40, blank=True, default="", verbose_name="Country")
+
+    class Meta:
+        verbose_name = "Address"
+        verbose_name_plural = "Addresses"
