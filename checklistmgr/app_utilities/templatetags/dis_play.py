@@ -70,3 +70,8 @@ def dis_play_date(context):
     except KeyError:
         return datetime.today().strftime('%Y/%m/%d')
     return datetime.today().strftime('%Y/%m/%d')
+
+
+@register.filter
+def to_str(value):
+    return str(value)

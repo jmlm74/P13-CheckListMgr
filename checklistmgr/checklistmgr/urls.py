@@ -17,6 +17,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_views
 
 from app_home import views as ahv
 
@@ -26,7 +28,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('app_home/', include('app_home.urls')),
     path('app_user/', include('app_user.urls')),
+    path('app_utilities/', include('app_utilities.urls')),
     path('', ahv.Index.as_view(), name='index'),
+    path('accounts/login/', RedirectView.as_view(url='/app_home/index/')),
+    path('reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='app_user/registration/reset_password_complete.html'),
+         name='password_reset_complete'),
 ]
 
 handler400 = 'app_home.errors.handler400'

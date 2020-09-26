@@ -1,5 +1,6 @@
 {# the back button #}
+{% load dis_play %}
 <hr />
         <div class="row align-items-center justify-content-center text-center col-12">
-            <input type="button" class="btn btn-primary" value="Back" onClick="window.history.back();return false;" />
+            <input type="button" class="btn btn-primary" value="{% dis_play "Back" %}" onClick="window.history.back();return false;" />
         </div>

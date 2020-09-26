@@ -20,16 +20,11 @@ footer {
   margin-top: 4.5rem;
 }
 
-textarea.legal{
-  width:100%;
-  height: 15em;
+.message,.messageslist{
+  color: darkblue;
 }
 
-.legal-nav{
-  color: dodgerblue; !important;
-}
-
-.errorlist, .error {
+.errorslist, .error, .errorlist {
   color: red;
 }
 
@@ -46,4 +41,23 @@ textarea.legal{
 
 .my-primary-bg{
     background-color: palegreen;
+}
+
+.toto{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: black;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: black;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: black;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+}
+
+.mt-5{
+    margin-top: 5%;
 }

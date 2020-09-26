@@ -25,10 +25,12 @@
                 <div class=" row form-group align-items-center justify-content-center col-12 small mt-5">
                 <form method="post" action="#">
                     {% csrf_token %}
-                    {% if form.non_field_errors %}
+                    {% if form.errors %}
                         <p class="error">
-                            <ul class="errorlist nonfield">
-                                <li>{% dis_play  form.non_field_errors|get_error_msg %}</li>
+                            <ul class="errorslist">
+                                {% for key, value in form.errors.items %}
+                                    <li>{% dis_play  value|get_error_msg %}</li>
+                                {% endfor %}
                             </ul>
                         </p>
                     {% endif %}
@@ -38,8 +40,12 @@
                     </p>
                     <p>
                         {% dis_play "Password" %} :<br>
-                        {{ form.password }} {{ form.bot_catcher }}
+                        {{ form.password }} {{ form.bot_catcher }}<br />
+                        <a href="{% url 'app_user:reset_password' %}" class="small">{% dis_play "Pswforgotten" %}</a>
                     </p>
+
+
+
                     <button type="submit" class="btn btn-primary small">{% dis_play "app_user-home-button2" %}</button>
                 </form>
                 </div>

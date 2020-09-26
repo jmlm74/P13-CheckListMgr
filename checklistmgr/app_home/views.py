@@ -28,19 +28,23 @@ class Index(View):
             bot = request.POST['bot_catcher']
             if len(bot):
                 print("BOT-CATCHER !!!")
+                self.context['form'] = self.form
+                return render(request, 'bot-catcher.html')
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
                     login(request, user)
                     print(f"Connection of {username}")  # for the logs
-                    return HttpResponseRedirect(reverse('app_home:index'))  # return to the index
+                    request.session['language'] = str(user.preferred_language)
+                    return HttpResponseRedirect(reverse('app_home:main'))  # return to the index
                 else:
-                    form.add_error(None, "User disabled - Connection refused")
+                    form.add_error(None, "Userdisabled")
             else:
                 print(f"Someone try to login and failed ! user : {username} - psw : {password}")
-                form.add_error(None, "User/password invalid - Connection refused")
-
-        self.context['form'] = self.form
+                form.add_error(None, "Userpswinvalid")
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('app_home:main'))
+        self.context['form'] = form
         return render(request, self.template_name, context=self.context)
 
 
@@ -61,3 +65,20 @@ class ContactView(TemplateView):
         context['title'] = 'Contact'
         return context
 
+
+class Main(View):
+    context = {}
+    template_name = "app_home/main.html"
+
+    def get(self, request):
+        try:
+            request.session['language']
+        except KeyError:
+            request.session['language'] = 'UK'
+        # self.context['form'] = self.form(None)
+        return render(request, self.template_name, context=self.context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Main'
+        return context
