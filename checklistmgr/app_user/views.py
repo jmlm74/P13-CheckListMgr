@@ -50,9 +50,11 @@ class RegisterView(View):
             if request.POST['password'] == request.POST['confirm_password']:
                 admin = request.POST.get('admin', 'False') == 'on'
                 if 'company' not in request.POST:
-                    company = request.user.user_company
+                    company = None
+                    pro = False
                 else:
                     company = form.cleaned_data['company']
+                    pro = True
                 try:
                     new_user = User.objects.create_user(
                         username=form.cleaned_data['username'],

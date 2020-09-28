@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 import inspect
+import pytest
 
 class TestUrls(TestCase):
     """
@@ -13,8 +14,8 @@ class TestUrls(TestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         path = reverse('index')
-        self.assertEquals(path, '/')
-        self.assertEquals(resolve(path).view_name, 'index')
+        assert path == '/'
+        assert resolve(path).view_name == 'index'
 
     def test_apphome_index_is_ok(self):
         """
@@ -22,8 +23,8 @@ class TestUrls(TestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         path = reverse('app_home:index')
-        self.assertEquals(path, '/app_home/index/')
-        self.assertEquals(resolve(path).view_name, 'app_home:index')
+        assert path == '/app_home/index/'
+        assert resolve(path).view_name == 'app_home:index'
 
     def test_legal_ok(self):
         """
@@ -31,8 +32,8 @@ class TestUrls(TestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         path = reverse('app_home:legal')
-        self.assertEquals(path, '/app_home/legal/')
-        self.assertEquals(resolve(path).view_name, 'app_home:legal')
+        assert path == '/app_home/legal/'
+        assert resolve(path).view_name == 'app_home:legal'
 
     def test_contact_ok(self):
         """
@@ -40,5 +41,5 @@ class TestUrls(TestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         path = reverse('app_home:contact')
-        self.assertEquals(path, '/app_home/contact/')
-        self.assertEquals(resolve(path).view_name, 'app_home:contact')
+        assert path == '/app_home/contact/'
+        assert resolve(path).view_name == 'app_home:contact'

@@ -33,8 +33,9 @@ class Company(models.Model):
 
 
 class User(AbstractUser):
-
+    email = models.EmailField(max_length=255, unique=True, verbose_name='Email')
     admin = models.BooleanField(default=False, verbose_name="is admin")
+    pro = models.BooleanField(default=False, verbose_name="is pro")
     phone = models.CharField(max_length=31, blank=True, null=True, verbose_name="Phone number")
     picture = models.ImageField(upload_to='images/', height_field=None, width_field=None, max_length=100,
                                 blank=True, null=True, verbose_name="Picture")

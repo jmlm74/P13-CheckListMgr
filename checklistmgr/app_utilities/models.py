@@ -45,12 +45,13 @@ class Translation(models.Model):
 
 
 class Address(models.Model):
+    name = models.CharField(max_length=50, verbose_name="Mnemonic address name", null=True, default="")
     street_number = models.PositiveSmallIntegerField(default=0, verbose_name="Street Number")
     street_type = models.CharField(max_length=20, blank=True, default="", verbose_name="Street Type")
     address1 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 1")
     address2 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 2")
     zipcode = models.CharField(max_length=20, blank=True, default="", verbose_name="Zip Code")
-    city = models.CharField(max_length=50, blank=True,default="", verbose_name="City")
+    city = models.CharField(max_length=50, blank=True, default="", verbose_name="City")
     country = models.CharField(max_length=40, blank=True, default="", verbose_name="Country")
 
     class Meta:
