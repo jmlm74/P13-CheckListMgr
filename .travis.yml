@@ -20,6 +20,7 @@ before install:
 
 before_script:
    - pip install -r requirements.txt
+   - cd checklistmgr
 
 env: DJANGO_SETTINGS_MODULE="checklistmgr.travis_settings"
 
