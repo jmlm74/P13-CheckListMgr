@@ -44,8 +44,8 @@
                     {% endif %}
                     {% if user.is_superuser %}
                         <div class="dropdown-divider"></div>
-                                <a class="dropdown-item small" href="#">{% dis_play "Createcompany" %}</a>
-                                <a class="dropdown-item small" href="#">{% dis_play "Listcompany" %}</a>
+                                <a class="dropdown-item small" href="{% url 'app_user:createcompany' %}">{% dis_play "Createcompany" %}</a>
+                                <a class="dropdown-item small" href="{% url 'app_user:listcompanies' %}">{% dis_play "Listcompany" %}</a>
                     {% endif %}
                     {% if user.admin %}
                     </div>

@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'extra_views',
+    'widget_tweaks',
     'django_extensions',
     'crispy_forms',
     'app_utilities.apps.AppUtilitiesConfig',

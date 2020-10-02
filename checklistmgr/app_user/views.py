@@ -10,7 +10,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.db import IntegrityError
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
@@ -20,6 +20,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
+from sortable_listview import SortableListView
 
 from app_user.forms import (UserCheckListMgrRegister,
                             Company)
@@ -27,7 +28,17 @@ from app_user.models import User
 from app_utilities.models import Translation
 
 
+
 class RegisterView(View):
+    """
+    View register user
+    3 types :
+    - Part --> everybody whose register himself from homepage --> no society + flag pro is False
+    - ProAdmin --> created by the Site administrator --> has a society + flags pro & admin True
+    - ProTech --> Created by the his society's adminPRO --> has a society + flag admin False and flag Pro true
+
+    - Users may have an avatar (100X100) max image
+    """
     context = {'title': "Register"}
     template_name = 'app_user/register.html'
     form = UserCheckListMgrRegister
@@ -74,7 +85,7 @@ class RegisterView(View):
                     if new_user:
                         if company is None:  # create society if None (name = userid)
                             company = new_user.id
-                            new_company = Company(name=company)
+                            new_company = Company(company_name=company)
                             new_company.save()
                             new_user.user_company = new_company
                             new_user.save()
@@ -96,25 +107,11 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('app_home:index'))
 
 
-class ListUsersView(ListView):
-    context = {'title': "Userlist"}
-    context_object_name = "users"
-    template_name = 'app_user/list.html'
-    # model = User
-    # queryset = User.objects.all().order_by('user_company')
-    paginate_by = 20
-
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return User.objects.all().order_by('user_company')
-        if self.request.user.user_company is None:
-            return User.objects.all().order_by('user_company').filter(is_active=True).filter(user_company=None)
-        else:
-            return User.objects.filter(user_company=self.request.user.user_company).filter(is_active=True).\
-                order_by('username')
-
-
 class EditUserView(UpdateView):
+    """
+    Update user --> CBV Updateview on the model !
+    All the possibilities are treated in the template
+    """
     context = {'title': "Userupdate"}
     form = UserCheckListMgrRegister
     model = User
@@ -127,14 +124,14 @@ class EditUserView(UpdateView):
         context['title'] = "Userupdate"
         return context
 
-    #def get_queryset(self):
-    #    print(self.request)
-    #    print(self.request.GET)
-    #    return User.objects.get(pk=35)
-
 
 @csrf_exempt
 def delete_user(request):
+    """
+    Delete user --> Ajax request
+    :param request: id of the user to be deleted
+    :return: OK or Erreur (just OK is verified !)
+    """
     if request.method == 'POST':
         request_data = json.loads(request.read().decode('utf-8'))
         print(request_data)
@@ -169,7 +166,7 @@ def reset_psw(request):
             if users.exists():
                 for user in users:
                     # build the mail
-                    subject = Translation.get_translation("Password Reset Requested", language)
+                    subject = Translation.get_translation("Password Reset Requested", language=language)
                     email_template_name = f"app_user/registration/reset_password_email_{language}.txt"
                     if not conf_settings.PRODUCTION:
                         domain = "127.0.0.1:8000"
@@ -197,10 +194,10 @@ def reset_psw(request):
                                                  })
                         print(rc)
                     except:
-                        context['error'] = Translation.get_translation("ErrorSendmail", language)
+                        context['error'] = Translation.get_translation("ErrorSendmail", language=language)
 
                     context['success'] = Translation.get_translation(
-                        'A message with reset password instructions has been sent to your inbox.',language)
+                        'A message with reset password instructions has been sent to your inbox.', language=language)
 
             # else: --> advice from my mentor --> no error msg because of the bots
             #     context['error'] = Translation.get_translation('An invalid email has been entered.', language)
@@ -214,4 +211,46 @@ def reset_psw(request):
     return render(request, 'app_user/registration/reset_password.html', context=context)
 
 
+class UserListView(SortableListView):
+    """
+    Users list --> SortableListView package
+    The pagination has been reviewed.
+    the fields (visible or not) are treated in the template
+    The querysets are different depending the user profile (get_queryset)
+    """
+    context = {'title': "Userlist"}
+    context_object_name = "users"
 
+    allowed_sort_fields = {"username": {'default_direction': '', 'verbose_name': 'user'},
+                               "first_name": {'default_direction': '', 'verbose_name': 'Firstname'},
+                               "last_name": {'default_direction': '', 'verbose_name': 'Lastname'},
+                               "email": {'default_direction': '', 'verbose_name': 'Email'},
+                               "phone": {'default_direction': '', 'verbose_name': 'Phone'},
+                               "preferred_language": {'default_direction': '', 'verbose_name': 'Language'},
+                               "tt": {'default_direction': '', 'verbose_name': ''},
+                               "user_company": {'default_direction': '', 'verbose_name': 'Company'},
+                               "is_active": {'default_direction': '', 'verbose_name': 'Active user'}, }
+
+    default_sort_field = 'username'  # mandatory
+    paginate_by = 5
+    template_name = 'app_user/list.html'
+    model = User
+
+    def get_queryset(self):
+        order = self.request.GET.get('sort', 'user_company')
+
+        if self.request.user.is_superuser:
+            return User.objects.all().order_by('user_company').order_by(order)
+        if self.request.user.user_company is None:
+            return User.objects.all().order_by('user_company').filter(is_active=True).filter(user_company=None)
+        else:
+            return User.objects.filter(user_company=self.request.user.user_company).filter(is_active=True). \
+                order_by('username')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sort'] = self.request.GET.get('sort', 'user_company')
+        return context
+
+
+#
