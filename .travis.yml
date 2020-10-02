@@ -21,8 +21,9 @@ before_script:
    - cd checklistmgr
 
 env:
-   - DJANGO_SETTINGS_MODULE="checklistmgr.travis_settings"
-   - MOZ_HEADLESS=1
+  global:
+    - DJANGO_SETTINGS_MODULE="checklistmgr.travis_settings"
+    - MOZ_HEADLESS=1
 
 
 services:
