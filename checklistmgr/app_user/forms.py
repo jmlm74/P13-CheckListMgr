@@ -2,8 +2,7 @@ from io import StringIO, BytesIO
 from PIL import Image
 from django import forms
 
-from app_user.models import User, UserLanguages, Company
-
+from app_user.models import User, UserLanguages, Company, Address
 
 
 class UserCheckListMgrFormLogin(forms.Form):
@@ -32,7 +31,8 @@ class UserCheckListMgrRegister(forms.Form):
     preferred_language = forms.ModelChoiceField(label="language", queryset=UserLanguages.objects.all(), initial=0)
     phone = forms.CharField(max_length=31, label="Phone")
     picture = forms.ImageField()
-    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all().order_by('name'), initial="-------")
+    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all().order_by('company_name'),
+                                     initial="-------")
     admin = forms.BooleanField(initial=False)
 
     class Meta:
@@ -66,6 +66,47 @@ class UserCheckListMgrRegister(forms.Form):
         else:
             return ''
 
+"""
+the 2 forms CompanyCreate and AddressCreate are used in a single view (Create company)
+"""
+class CompanyCreateForm(forms.ModelForm):
+    address = forms.ModelChoiceField(queryset=Address.objects.exclude(address_name__exact='').order_by('address_name'),
+                                     initial=0)
+    update = forms.BooleanField(widget=forms.HiddenInput(), required=False, initial=False)
 
-class UserCheckListMgrList(forms.Form):
-    pass
+    class Meta:
+        model = Company
+        fields = ['company_name', 'address', 'update', ]
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyCreateForm, self).__init__(*args, **kwargs)
+        self.fields['address'].required = False
+        self.fields['address'].empty_label = "-------"
+
+    def clean_company_name(self):
+        company = self.cleaned_data['company_name']
+        update = self.fields['update']
+        if not update:
+            if Company.objects.filter(company_name__iexact=company):
+                raise forms.ValidationError("Duplcompany")
+        return company
+
+
+class AddressCreateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = '__all__'
+        widgets = {'street_number': forms.TextInput(attrs={'size': '4', 'maxlength': '4', }),
+                   'street_type': forms.TextInput(attrs={'size': '10', 'maxlength': '20', }),
+                   'address1': forms.TextInput(attrs={'size': '75', 'maxlength': '150', }),
+                   'address2': forms.TextInput(attrs={'size': '75', 'maxlength': '150', }),
+                   'name': forms.TextInput(attrs={'id': 'id_name_addr', }),
+                   }
+
+    def __init__(self, *args, **kwargs):
+        super(AddressCreateForm, self).__init__(*args, **kwargs)
+        self.fields['street_number'].required = False
+        self.fields['address2'].required = False
+        self.fields['country'].initial = 'France'
+
+

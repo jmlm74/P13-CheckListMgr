@@ -38,10 +38,12 @@
             </div>
             {% else %}
                 <div class="form-row">
-                    <div class="col-md-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
+                    <div class="col-md-1">
                     {%  if user.picture %}
-                    <div class="col-md-8"><img src="{{ user.picture.url }}" alt="{% dis_play 'Picture' %}" /></div>
+                        <img src="{{ user.picture.url }}" alt="{% dis_play 'Picture' %}" />
                     {% endif %}
+                    </div>
+                <div class="col-md-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
                 </div>
             {% endif %}
             <hr/>

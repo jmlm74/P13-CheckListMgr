@@ -61,3 +61,13 @@ footer {
 .mt-5{
     margin-top: 5%;
 }
+
+.rounded{
+    border: 1px solid black;
+    padding: 0px 5px 5px 5px;
+
+}
+
+.rounded.active{
+    background-color: blueviolet;
+}

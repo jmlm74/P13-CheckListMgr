@@ -1,8 +1,24 @@
 from django.contrib.auth.models import AbstractUser
-from app_utilities.models import Address
 from django.db import models
 
 
+
+class Address(models.Model):
+    address_name = models.CharField(max_length=50, verbose_name="Mnemonic address name")
+    street_number = models.PositiveSmallIntegerField(default=0, verbose_name="Street Number")
+    street_type = models.CharField(max_length=20, blank=True, default="", verbose_name="Street Type")
+    address1 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 1")
+    address2 = models.CharField(max_length=150, blank=True, default="", verbose_name="Address 2")
+    zipcode = models.CharField(max_length=20, blank=True, default="", verbose_name="Zip Code")
+    city = models.CharField(max_length=50, blank=True, default="", verbose_name="City")
+    country = models.CharField(max_length=40, blank=True, default="", verbose_name="Country")
+
+    class Meta:
+        verbose_name = "Address"
+        verbose_name_plural = "Addresses"
+
+    def __str__(self):
+        return self.address_name
 
 
 class UserLanguages(models.Model):
@@ -18,7 +34,9 @@ class UserLanguages(models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Society", unique=True)
+    company_name = models.CharField(max_length=100,
+                                    verbose_name="Society",
+                                    unique=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="society", null=True, blank=True,
                                 verbose_name="Address")
 
@@ -26,10 +44,10 @@ class Company(models.Model):
         verbose_name = "Company"
         verbose_name_plural = "Companies"
         # indexes = [models.Index(fields=(['name']), name='I_company_name')]
-        ordering = ['name']
+        ordering = ['company_name']
 
     def __str__(self):
-        return self.name
+        return self.company_name
 
 
 class User(AbstractUser):
@@ -49,6 +67,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-
+    # todo # used for tables2 maybe to be deleted in the finale version
+    @property
+    def full_name(self):
+        return "{} - {}".format(self.first_name, self.last_name)
 
 

@@ -27,12 +27,15 @@
     pointer-events: none;
 }
 
+/*
 table tr:nth-child(odd){
     background: #88CAE4;
 }
 table tr:nth-child(even){
     background: #dae5f4;
 }
+
+ */
 
 .fas{
     color: blue;

@@ -26,7 +26,7 @@ def dis_play(context, value):
         language = context.request.session['language']
     except KeyError:
         language = "UK"
-    text_to_display = Translation.get_translation(value, language)
+    text_to_display = Translation.get_translation(value, language=language)
     return text_to_display
 
 
