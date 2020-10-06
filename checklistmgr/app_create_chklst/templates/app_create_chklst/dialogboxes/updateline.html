@@ -1,0 +1,59 @@
+{% load dis_play %}
+{% load widget_tweaks %}
+<form method="post" action="">
+  {% csrf_token %}
+    <div class="modal-header">
+        <h3>{% dis_play "Updateline" %}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        {% if form.non_field_errors %}
+            <div class="invalid mb-2">
+            <p class="error">
+                <ul class="errorslist">
+                    {% for error in form.non_field_errors %}<li>{% dis_play  error  %}</li>{% endfor %}
+                </ul>
+            </p>
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            {% dis_play "Key" %}* :<br />
+            {{ form.line_key }}
+            <div class="{% if form.line_key.errors %} invalid{% endif %}">
+                {% for error in form.line_key.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+       <p class="form-group">
+            {% dis_play "Wording" %}* :<br/>
+            {{ form.line_wording }}
+            <div class="{% if form.line_wording.errors %} invalid{% endif %}">
+                {% for error in form.line_wording.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </p>
+        <div class="form-group">
+            {% dis_play "Linetype" %}* :<br/>
+            {{ form.line_type }}
+        </div>
+        {% if user.is_superuser %}
+        <div class="form-group">
+            {% dis_play "Company" %}* : {{ form.line_company }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {% dis_play "Enable" %}* : {{ form.line_enable }}
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="submit-btn btn btn-primary">{% dis_play "Update" %}</button>
+        </div>
+    </div>
+</form>

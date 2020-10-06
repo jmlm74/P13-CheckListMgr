@@ -1,0 +1,59 @@
+{% load dis_play %}
+        <div class="row mt-3">
+            <div class="col-2">
+                <h3>{% dis_play "Category" %}</h3>
+            </div>
+            <div class="col-2 mb-3">
+                <button id="create-cat" class="btn btn-primary" type="button" name="button">
+                    <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
+                </button>
+            </div>
+            <div class="col-8 text-right">
+            {% include 'app_create_chklst/partials/_catpaginator.html' with page_obj=cat_users %}
+            </div>
+            <div class="col-12 mb-3">
+                <table id="cat_table" class="table small">
+                    <thead>
+                    <tr>
+                        <th class="text-center" style="width: 5em;" scope="col">#</th>
+                        <th class="text-center" style="width: 20em;" scope="col">{% dis_play "Key" %}</th>
+                        <th class="text-center" scope="col">{%  dis_play "Wording" %}</th>
+                        <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Enable" %}</th>
+                        {% if user.is_superuser %}
+                        <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Company" %}</th>
+                        {% endif %}
+                        <th class="text-center" style="width: 10em;" scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cat in cat_users %}
+                        <tr>
+                            <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                            <td class="text-center">{{ cat.cat_key }}</td>
+                            <td class="text-center">{{ cat.cat_wording }}</td>
+                            <td class="text-center">
+                                {% if cat.cat_enable %}<i class="fas fa-check" style="color: green"></i>
+                                {% else %}<i class="fas fa-times" style="color: red"></i>
+                                {% endif %}
+                            </td>
+                            {% if user.is_superuser %}<td class="text-center">{{ cat.cat_company }}</td>{% endif %}
+                            <td class="text-center">
+                            <span data-tooltip="{%  dis_play "Display" %}">
+                                <span class="bs-modal" data-form-url="{% url 'app_create_chklst:chk-catdisplay' cat.pk %}" ><i class="tabicon fas fa-eye mr-2" style="color: forestgreen; !important"></i></span>
+                            </span>
+                            <span data-tooltip="{%  dis_play "Update" %}">
+                                <span class="bs-modal" data-form-url="{% url 'app_create_chklst:chk-catupdate' cat.pk %}" ><i class="tabicon fas fa-edit mr-2" style="color: dodgerblue;"></i></span>
+                            </span>
+                            <span data-tooltip="{%  dis_play "Delete" %}">
+                                <span class="bs-modal" data-form-url="{% url 'app_create_chklst:chk-catdelete' cat.pk %}" ><i class="tabicon fas fa-trash-alt" style="color: red; !important"></i></a>
+                            </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12">
+
+            </div>
+        </div>

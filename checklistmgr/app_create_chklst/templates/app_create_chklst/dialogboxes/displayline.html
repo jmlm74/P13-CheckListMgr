@@ -1,0 +1,28 @@
+{% load widget_tweaks %}
+{% load dis_play %}
+<div class="modal-header">
+  <h3 class="modal-title">{% dis_play "Linedetails" %}</h3>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <div class="text-center">
+    <h4>{% dis_play "Key" %}  :
+        {{ line.line_key }}</h4>
+  </div>
+  <div class="">
+    {% dis_play "Wording" %}  :
+    {{ line.line_wording }}
+  </div>
+  <div class="">
+    {% dis_play "Enable" %}  :
+    {% if line.line_enable %}{% dis_play "Yes" %}{% else %}{% dis_play "No" %}{% endif %}
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">{% dis_play "Close" %}</button>
+</div>

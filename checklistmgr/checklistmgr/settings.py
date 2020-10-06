@@ -58,12 +58,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'extra_views',
+    'bootstrap_modal_forms',
     'widget_tweaks',
     'django_extensions',
     'crispy_forms',
     'app_utilities.apps.AppUtilitiesConfig',
     'app_user.apps.AppUserConfig',
     'app_home.apps.AppHomeConfig',
+    'app_create_chklst.apps.AppCreateChklstConfig',
+    'app_input_chklst.apps.AppInputChklstConfig',
 
 ]
 
