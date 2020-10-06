@@ -7,7 +7,7 @@ SECRET_KEY = get_env_variable('SECRET_KEY', "nxx(or0igwys!l7q60i2c_3a36v59k2qtx3
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
+        'NAME': 'testdb',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '',
