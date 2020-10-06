@@ -15,7 +15,10 @@ class CategoryModelForm(BSModalModelForm):
 
     def clean(self):
         super(CategoryModelForm, self).clean()
-        if not self.cleaned_data['cat_company']:
+        try:
+            if not self.cleaned_data['cat_company']:
+                self.cleaned_data['cat_company'] = self.request.user.user_company
+        except KeyError:
             self.cleaned_data['cat_company'] = self.request.user.user_company
         return self.cleaned_data
 
