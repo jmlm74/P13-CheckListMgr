@@ -7,8 +7,8 @@ from app_utilities.models import Translation
 
 class Line(models.Model):
     class LineType(models.TextChoices):
-        CHOICE = "C", Translation.get_translation("Checkbox", language="UK")
-        TEXT = "T", Translation.get_translation("Text", language="UK")
+        CHOICE = "C", "Choice"
+        TEXT = "T", "Text"
 
     line_key = models.CharField(max_length=30, verbose_name='Line key')
     line_wording = models.CharField(max_length=80, verbose_name='Line title')
