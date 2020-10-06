@@ -58,10 +58,6 @@ footer {
     border-bottom-color: black;
 }
 
-.mt-5{
-    margin-top: 5%;
-}
-
 .rounded{
     border: 1px solid black;
     padding: 0px 5px 5px 5px;
@@ -70,4 +66,32 @@ footer {
 
 .rounded.active{
     background-color: blueviolet;
+}
+
+[data-tooltip]:before {
+    /* needed - do not touch */
+    content: attr(data-tooltip);
+    position: absolute;
+    opacity: 0;
+
+    /* customizable */
+    transition: all 0.15s ease;
+    padding: 10px;
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px silver;
+}
+
+[data-tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+
+    /* customizable */
+    background: lightblue;
+    margin-top: -1%;
+    margin-left: 1%;
+}
+
+[data-tooltip]:not([data-tooltip-persistent]):before {
+    pointer-events: none;
 }

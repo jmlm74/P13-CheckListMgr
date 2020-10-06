@@ -61,8 +61,16 @@ class RegisterView(View):
             if request.POST['password'] == request.POST['confirm_password']:
                 admin = request.POST.get('admin', 'False') == 'on'
                 if 'company' not in request.POST:
-                    company = None
-                    pro = False
+                    if request.user.is_authenticated:
+                        if request.user.admin:
+                            company = request.user.user_company
+                            pro = True
+                        else:
+                            company = None
+                            pro = False
+                    else:
+                        company = None
+                        pro = False
                 else:
                     company = form.cleaned_data['company']
                     pro = True
@@ -77,7 +85,8 @@ class RegisterView(View):
                         phone=form.cleaned_data['phone'],
                         picture=form.cleaned_data['picture'],
                         admin=admin,
-                        user_company=company
+                        user_company=company,
+                        pro=pro
                     )
                 except IntegrityError:
                     form.add_error(None, 'Errdupleuser')

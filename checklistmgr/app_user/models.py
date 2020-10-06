@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -12,6 +14,8 @@ class Address(models.Model):
     zipcode = models.CharField(max_length=20, blank=True, default="", verbose_name="Zip Code")
     city = models.CharField(max_length=50, blank=True, default="", verbose_name="City")
     country = models.CharField(max_length=40, blank=True, default="", verbose_name="Country")
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_date = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         verbose_name = "Address"
@@ -39,6 +43,8 @@ class Company(models.Model):
                                     unique=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="society", null=True, blank=True,
                                 verbose_name="Address")
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_date = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         verbose_name = "Company"
@@ -61,7 +67,6 @@ class User(AbstractUser):
                                            default=None, null=True)
     user_company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='user_company',
                                      default=None, null=True, blank=True)
-
 
 
     def __str__(self):

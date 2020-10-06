@@ -48,7 +48,7 @@ class UserCheckListMgrRegister(forms.Form):
         self.fields['company'].empty_label = "-------"
         self.fields['admin'].required = False
         self.fields['password'].widget.attrs = {'placeholder': '8 chars min'}
-        self.fields['confirm_password'].widget.attrs = {'placeholder': '8 chars min'}
+
 
     def clean_picture(self):
         # picture is not in data --> no picture selected
