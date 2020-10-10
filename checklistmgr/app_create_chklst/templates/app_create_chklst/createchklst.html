@@ -1,0 +1,84 @@
+{# main page  #}
+{% extends 'base.html' %}
+{% load static %}
+{% load dis_play %}
+{% block body_block %}
+<div class="my_body dragndrop" id="createchklst">
+    <div class="container-fluid">
+
+        <div class="row align-items-top justify-content-center text-center col-12">
+            <h2 class="my_title align-self-center">{% dis_play title %}</h2>
+        </div>
+
+
+                <form method="post" enctype="multipart/form-data" action="" id="myform">
+                    {% csrf_token %}
+                    <div class="row form-row mt-2 mb-5">
+                    <div class="col-sm-3">
+                        {% dis_play "Key" %}* : {{ form.chk_key }}
+                    </div>
+                    <div class="col-sm-8">
+                        {% dis_play "Description" %}* : {{ form.chk_title }}
+                        &nbsp;
+                        {% if user.is_superuser %}
+                            {% dis_play "Company" %}* : {{ form.chk_company }}
+                            &nbsp;
+                        {% endif %}
+                        {% dis_play "Enable" %}* : {{ form.chk_enable }}
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" id="submit-btn" class="btn btn-primary">{% dis_play "Create" %}</button>
+                    </div>
+                    </div>
+                </form>
+
+
+        <div class="col-sm-12">
+            <div class="lists ">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="toto list categories ">
+                            <h4 class="text-center">{% dis_play "Categories" %}</h4>
+                            <hr class="bold-hr">
+                            <div class="list-categories">
+                                {% for category in categories %}
+                                    <div class="list-item  cat-item overflow-auto" id="cat-{{ category.pk }}" draggable="true">
+                                        <span class="text-center"> {{ category.cat_key }}</span>
+                                        <span>- {{ category.cat_wording|truncatechars:20 }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="toto list lines">
+                        <h4 class="text-center">{% dis_play "Lines" %}</h4>
+                        <hr class="bold-hr">
+                        <div class="list-lines">
+                            {% for line in lines %}
+                                <div class="list-item line-item overflow-auto"  id="lin-{{ line.pk }}" draggable="true">
+                                    <span class="text-center"> {{ line.line_key }}</span>
+                                    <span>- {{ line.line_wording|truncatechars:20 }} - {{ line.line_type }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="toto list checklists overflow-auto" id="chklst-items">
+                            <h4 class="text-center">{%  dis_play "Checklist" %}</h4>
+                            <hr class="bold-hr">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% include 'partials/_back.html' %}
+    </div>
+</div>
+<script>
+const inputError = "{%  dis_play "Inputerror" %}"
+</script>
+{% endblock body_block %}

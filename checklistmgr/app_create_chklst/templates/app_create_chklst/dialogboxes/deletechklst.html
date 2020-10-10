@@ -1,0 +1,21 @@
+{% load dis_play %}
+{% load widget_tweaks %}
+<form method="post" action="">
+  {% csrf_token %}
+    <div class="modal-header">
+        <h3>{% dis_play "Deletechklst" %}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+    <p class="delete-text">{% dis_play "Msgdeletechk" %}
+      <strong>{{ checklist.chk_key }}</strong>?</p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" id="delete-btn" class="btn btn-danger">{% dis_play "Delete" %}</button>
+  </div>
+    </div>
+</form>

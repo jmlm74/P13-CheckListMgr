@@ -1,14 +1,17 @@
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
-from django.shortcuts import render, redirect
-from django.views import View
-from django.urls import reverse_lazy
-from django.db.models import Q
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from bootstrap_modal_forms.generic import (BSModalCreateView,
+                                           BSModalReadView,
+                                           BSModalUpdateView,
+                                           BSModalDeleteView)
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import View
 
-
-from app_create_chklst.models import Category, Line
-from app_create_chklst.forms import CategoryModelForm, LineModelForm
+from app_create_chklst.forms import CategoryModelForm, LineModelForm, CheckListCreateForm
+from app_create_chklst.models import (Category,
+                                      Line)
 
 
 class CategoryCreateView(BSModalCreateView):
@@ -42,6 +45,7 @@ class LineUpdateView(BSModalUpdateView):
     success_message = 'LineUpdateOK'
     success_url = reverse_lazy('app_create_chklst:catlineMgmt')
 
+
 class CategoryDeleteView(BSModalDeleteView):
     template_name = 'app_create_chklst/dialogboxes/deletecategory.html'
     model = Category
@@ -60,6 +64,7 @@ class CategoryDisplayView(BSModalReadView):
     model = Category
     template_name = 'app_create_chklst/dialogboxes/displaycategory.html'
 
+
 class LineDisplayView(BSModalReadView):
     model = Line
     template_name = 'app_create_chklst/dialogboxes/displayline.html'
@@ -71,12 +76,12 @@ def CatandLineMgmtView(request):
         return render(request, 'app_create_chklst/catandlinemgmt.html', context=context)
     if request.method == 'GET':
         list(messages.get_messages(request))
-        if error := request.GET.get('error', None):
+        if error := request.GET.get('error', None, ):
             if error[0:4] == 'Line':
                 context['line_error'] = error
             else:
                 context['error'] = error
-        if message := request.GET.get('message', None):
+        if message := request.GET.get('message', None, ):
             if message[0:4] == 'Line':
                 context['line_message'] = message
             else:
@@ -89,7 +94,7 @@ def CatandLineMgmtView(request):
             categories = Category.objects.filter(Q(cat_company=request.user.user_company))
             lines = Line.objects.filter(Q(line_company=request.user.user_company))
         # Cat paginator
-        cat_page = request.GET.get('catpage', 1)
+        cat_page = request.GET.get('catpage', 1, )
         cat_paginator = Paginator(categories, 5)
         try:
             cat_users = cat_paginator.page(cat_page)
@@ -100,7 +105,7 @@ def CatandLineMgmtView(request):
 
         # Lines paginator
 
-        line_page = request.GET.get('linepage', 1)
+        line_page = request.GET.get('linepage', 1, )
         line_paginator = Paginator(lines, 5)
         try:
             line_users = line_paginator.page(line_page)
@@ -108,7 +113,6 @@ def CatandLineMgmtView(request):
             line_users = line_paginator.page(1)
         except EmptyPage:
             line_users = line_paginator.page(line_paginator.num_pages)
-
 
         context['categories'] = categories
         context['cat_users'] = cat_users

@@ -3,7 +3,7 @@
 {% load static %}
 {% load dis_play %}
 {% block body_block %}
-<header class="my_body">
+<div class="my_body" id="catandlinemgmt">
     {% include "partials/_modal.html" %}
 
     <div class="container">
@@ -59,7 +59,7 @@
         {% include "app_create_chklst/partials/_linetable.html" %}
         {% include 'partials/_back.html' %}
     </div>
-</header>
+</div>
 <script>
 const formURL = "{%  url 'app_create_chklst:chk-catcreate' %}"
 const formURL2 = "{%  url 'app_create_chklst:chk-linecreate' %}"

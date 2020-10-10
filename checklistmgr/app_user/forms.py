@@ -1,4 +1,4 @@
-from io import StringIO, BytesIO
+from io import BytesIO
 from PIL import Image
 from django import forms
 
@@ -31,8 +31,7 @@ class UserCheckListMgrRegister(forms.Form):
     preferred_language = forms.ModelChoiceField(label="language", queryset=UserLanguages.objects.all(), initial=0)
     phone = forms.CharField(max_length=31, label="Phone")
     picture = forms.ImageField()
-    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all().order_by('company_name'),
-                                     initial="-------")
+    company = forms.ModelChoiceField(label="Company", queryset=Company.objects.all().order_by('company_name'))
     admin = forms.BooleanField(initial=False)
 
     class Meta:
@@ -49,7 +48,6 @@ class UserCheckListMgrRegister(forms.Form):
         self.fields['admin'].required = False
         self.fields['password'].widget.attrs = {'placeholder': '8 chars min'}
 
-
     def clean_picture(self):
         # picture is not in data --> no picture selected
         if not self.cleaned_data['picture']:
@@ -65,6 +63,7 @@ class UserCheckListMgrRegister(forms.Form):
             return photo
         else:
             return ''
+
 
 """
 the 2 forms CompanyCreate and AddressCreate are used in a single view (Create company)
@@ -108,5 +107,4 @@ class AddressCreateForm(forms.ModelForm):
         self.fields['street_number'].required = False
         self.fields['address2'].required = False
         self.fields['country'].initial = 'France'
-
 

@@ -95,14 +95,59 @@ class CheckList(models.Model):
     def __str__(self):
         return self.chk_key
 
+    def chklst_detail(self):
+        liste = []
+        lines = self.chk_line.all()
+        for line in lines:
+            mydict = {'line_cat': 'line',
+                      'pos': line.cll_lines.get(chk_line_checklist_id=self.id).chk_line_position,
+                      'key': line.line_key,
+                      'wording': line.line_wording,
+                      'id': line.id,
+                      'type': line.line_type}
+            liste.append(mydict)
+
+        categories = self.chk_category.all()
+        for category in categories:
+            mydict = {'line_cat': 'cat',
+                      'pos': category.clc_categories.get(chk_cat_checklist_id=self.id).chk_cat_position,
+                      'key': category.cat_key,
+                      'wording': category.cat_wording,
+                      'id': category.id,
+                      'type': None}
+            liste.append(mydict)
+
+        liste2 = sorted(liste, key=lambda mydic: mydic['pos'])
+        return liste2
+
 
 class CheckListCategory(models.Model):
     chk_cat_position = models.PositiveSmallIntegerField(verbose_name='Category Position')
     chk_cat_category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='clc_categories')
     chk_cat_checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE, related_name='clc_checklists')
 
+    class Meta:
+        UniqueConstraint(fields=['chk_cat_category', 'chk_cat_checklist'], name='Unique checklistcategory')
+        ordering = ['chk_cat_checklist', ]
+        indexes = [
+            models.Index(fields=['chk_cat_checklist'], name='I_CheckListCategory')
+        ]
+
+    def __str__(self):
+        return str(self.chk_cat_position)
+
 
 class CheckListLine(models.Model):
     chk_line_position = models.PositiveSmallIntegerField(verbose_name='Line Position')
-    chk_line_category = models.ForeignKey(Line, on_delete=models.CASCADE, related_name='cll_categories')
+    chk_line_line = models.ForeignKey(Line, on_delete=models.CASCADE, related_name='cll_lines')
     chk_line_checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE, related_name='cll_checklists')
+
+    class Meta:
+        UniqueConstraint(fields=['chk_line_line', 'chk_line_checklist'], name='Unique checklistline')
+        ordering = ['chk_line_checklist', ]
+        indexes = [
+            models.Index(fields=['chk_line_checklist'], name='I_CheckListLine')
+        ]
+
+    def __str__(self):
+        return str(self.chk_line_position)

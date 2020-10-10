@@ -52,6 +52,7 @@
                     </li>
                     {% endif %}
                     {% if user.is_authenticated %}
+                    {% if user.admin or not user.pro %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
                                 {% dis_play "Checklist" %}
@@ -59,9 +60,13 @@
                             {% if user.admin or not user.pro %}
                             <div class="dropdown-menu small">
                                 <a class="dropdown-item small" href="{% url 'app_create_chklst:catlineMgmt' %}">{% dis_play "Categories/Lines" %}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item small" href="{% url 'app_create_chklst:chk-chklstcreate' %}">{% dis_play "Createchklst" %}</a>
                             </div>
                             {% endif %}
+
                         </li>
+                    {% endif %}
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pricing</a>

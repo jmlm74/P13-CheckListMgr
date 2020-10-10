@@ -59,7 +59,7 @@ class RegisterView(View):
             except MultiValueDictKeyError:
                 pass
             if request.POST['password'] == request.POST['confirm_password']:
-                admin = request.POST.get('admin', 'False') == 'on'
+                admin = request.POST.get('admin', 'False', ) == 'on'
                 if 'company' not in request.POST:
                     if request.user.is_authenticated:
                         if request.user.admin:

@@ -205,7 +205,7 @@ class TestDeleteUser(TransactionTestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         self.c.login(username='toto1', password='12345678')
-        user_to_delete = User.objects.get(username='toto2')
+        user_to_delete = User.objects.get(,,
         id = user_to_delete.id
         data = {'id': id}
         data = json.dumps(data)

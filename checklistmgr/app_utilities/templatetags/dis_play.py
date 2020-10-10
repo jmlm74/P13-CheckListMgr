@@ -75,3 +75,18 @@ def dis_play_date(context):
 @register.filter
 def to_str(value):
     return str(value)
+
+
+@register.simple_tag
+def find_value_in_listdict(value, my_list_dict):
+    """
+    Template tag to find if a value is in dict
+    :param value: value to find
+    :param my_list_dict: a list of dict
+    :return: boolean
+    """
+    found = False
+    for my_dict in my_list_dict:
+        if value in my_dict.values():
+            found = True
+    return found

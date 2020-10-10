@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views import View
 from django.views.generic.base import TemplateView
 
 from app_user.forms import UserCheckListMgrFormLogin
+from app_create_chklst.models import CheckList
 
 
 class Index(View):
@@ -75,7 +77,21 @@ class Main(View):
             request.session['language']
         except KeyError:
             request.session['language'] = 'UK'
-        # self.context['form'] = self.form(None)
+        if request.user.is_superuser:
+            checklists = CheckList.objects.all()
+        else:
+            checklists = CheckList.objects.filter(chk_company=request.user.user_company_id)
+
+        chk_page = request.GET.get('chkpage', 1, )
+        chk_paginator = Paginator(checklists, 5)
+        try:
+            checklists = chk_paginator.page(chk_page)
+        except PageNotAnInteger:
+            checklists = chk_paginator.page(1)
+        except EmptyPage:
+            checklists = chk_paginator.page(chk_paginator.num_pages)
+
+        self.context['checklists'] = checklists
         return render(request, self.template_name, context=self.context)
 
     def get_context_data(self, **kwargs):

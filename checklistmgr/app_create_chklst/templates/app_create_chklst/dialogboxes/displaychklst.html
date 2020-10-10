@@ -1,0 +1,45 @@
+{% load widget_tweaks %}
+{% load dis_play %}
+<div class="container-fluid">
+    <div class="row modal-header text-center justify-content-center col-12">
+        <h3 class="modal-title align-self-center">{% dis_play title %}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row mt-3">
+            <div class="col-12">
+                <strong>{% dis_play "Key" %} : </strong>{{ checklist.chk_key }}
+            </div>
+            <div class="col-12">
+                <strong>{% dis_play "Description" %} : </strong>{{ checklist.chk_title }}
+            </div>
+            <div class="col-12">
+                <strong>{% dis_play "Enable" %} : </strong>
+                {% if cheklist.chk_enable %}
+                    <i class="fas fa-check" style="color: green"></i>
+                {% else %}
+                    <i class="fas fa-times" style="color: red"></i>
+                {% endif %}
+            </div>
+        </div>
+        <hr class="bold-hr"/>
+        <div class="display-chklst">
+
+        {% for detail in details %}
+            {% if detail.line_cat == 'cat' %}
+                <dt>{{ detail.wording }}</dt>
+            {% else %}
+                <dd style="line-height: 0.8;">{{ detail.wording }}</dd>
+            {% endif %}
+        {% endfor %}
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{% dis_play "Close" %}</button>
+        </div>
+    </div>
+</div>
