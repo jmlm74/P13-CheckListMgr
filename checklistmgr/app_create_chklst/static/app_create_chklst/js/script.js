@@ -1,14 +1,14 @@
-import {SendAjax} from '../../../../static/js/modul.js '
+import {SendAjax, getCookie, test2} from '../../../../static/js/modul.js'
 
 if ((document.getElementById('createchklst'))||(document.getElementById('updatechklst')) ){   // create checklist page
     console.log("JS createchklst-updatechecklst loaded");
+    const csrfToken = getCookie('csrftoken');
 
     document.getElementById('submit-btn').addEventListener('click', e => {
         let chklst_items = document.getElementById("chklst-items").children;
         let data = {};
         let chk = [];
         let chk_pos = 0;
-
         const my_array = ['cat', 'lin'];
 
         const chk_key = document.getElementById('id_chk_key').value;
@@ -46,12 +46,12 @@ if ((document.getElementById('createchklst'))||(document.getElementById('updatec
             }
         }
         data['lines'] = chk;
-        console.log(data)
+        // console.log(data)
         data = JSON.stringify(data);
         // ici send ajax
-        SendAjax('POST', '/app_create_chklst/create_chklst/', data)
+        SendAjax('POST', '/app_create_chklst/create_chklst/', data, csrfToken)
             .done(function () {
-                window.location.replace('/app_home/main/')
+                window.location.replace(returnURL)
             })
             .fail(function (response) {
                 console.error("Erreur Ajax : " + response.data);
@@ -107,8 +107,10 @@ if (document.querySelector('.dragndrop')) {
 /* * End for drag-n-drop * */
 /* *********************** */
 }
-
-if (document.getElementById('catandlinemgmt')) {    //category and line management page
+/* *********************** */
+/* * Beginning Modal box * */
+/* *********************** */
+if ((document.getElementById('catandlinemgmt')) || (document.getElementById('main'))) {    //category and line management page
 //JQuery is used for BSModal (Bootstrap)
     $(function () {
         console.log("Jquery loaded!!!!!")
@@ -173,3 +175,6 @@ if (document.getElementById('catandlinemgmt')) {    //category and line manageme
 
     });
 }
+/* ********************* */
+/* * Beginning end box * */
+/* ********************* */

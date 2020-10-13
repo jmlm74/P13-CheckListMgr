@@ -1,4 +1,9 @@
-export function SendAjax(type='POST' ,url, data, datatype='json', contenttype='application/json' ){
+export function SendAjax(type='POST' ,
+                         url,
+                         data,
+                         csrftoken = "",
+                         datatype='json',
+                         contenttype='application/json'){
     /*
     Send ajax request to server
     */
@@ -8,6 +13,7 @@ export function SendAjax(type='POST' ,url, data, datatype='json', contenttype='a
         data: data,
         dataType: datatype,
         contentType: contenttype,
+        headers: {'X-CSRFToken': csrftoken }
     })
 };
 
@@ -15,3 +21,37 @@ export function test2(message)
     {
         console.log(message);
     }
+
+export function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+/*
+export function getCookie(name) {
+  if (!document.cookie) {
+    return null;
+  }
+
+  const xsrfCookies = document.cookie.split(';')
+    .map(c => c.trim())
+    .filter(c => c.startsWith(name + '='));
+
+  if (xsrfCookies.length === 0) {
+    return null;
+  }
+  return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+}
+
+ */

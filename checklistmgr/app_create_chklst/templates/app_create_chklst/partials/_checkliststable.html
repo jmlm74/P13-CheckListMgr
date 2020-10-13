@@ -10,21 +10,31 @@
                     </a>
                 </div>
             {% endif %}
-            <div class="col-8 text-right">
-            {% include 'app_home/partials/_chklistpaginator.html' with page_obj=checklists %}
-            </div>
-            <div class="col-12 mb-3">
-                <table id="cat_table" class="table small">
+            <div class="row align-items-top justify-content-center text-center col-12 small">
+                {% include 'partials/_errormessage.html' %}
+                <table id="cat_table" class="table">
                     <thead>
                     <tr>
                         <th class="text-center" style="width: 5em;" scope="col">#</th>
-                        <th class="text-center" style="width: 20em;" scope="col">{% dis_play "Key" %}</th>
-                        <th class="text-center" scope="col">{%  dis_play "Wording" %}</th>
+                        {% for sort_link in sort_link_list %}
+                        <th scope="col">
+                            <a href="{{ sort_link.path }}">
+                                {% if sort_link.title == "Enable" %}
+                                    {% if user.admin or not user.pro %}
+                                        {% dis_play sort_link.title %}
+                                    {% endif %}
+                                {% else %}
+                                    {% dis_play sort_link.title %}
+                                {% endif %}
+                                {% if sort_link.indicator == 'sort-asc' %}▲{% endif %}
+                                {% if sort_link.indicator == 'sort-desc' %}▼{% endif %}
+                            </a>
+                        </th>
+                        {% endfor %}
+                        {% if user.is_superuser %}
+                            <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Company" %}</th>
+                        {% endif %}
                         {% if user.admin or not user.pro %}
-                            <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Enable" %}</th>
-                            {% if user.is_superuser %}
-                                <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Company" %}</th>
-                            {% endif %}
                             <th class="text-center" style="width: 10em;" scope="col"></th>
                         {% endif %}
                     </tr>
@@ -58,6 +68,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% include 'partials/_pagination_listview_jm.html' %}
             </div>
             <div class="col-12">
 

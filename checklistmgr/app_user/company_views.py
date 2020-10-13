@@ -5,13 +5,30 @@ from django.views.generic.edit import UpdateView
 from django.views.generic import View
 from django.contrib import messages
 from django.db.models import Q
-
+from sortable_listview import SortableListView
 
 from app_user.models import Company, Address
 from app_user.forms import CompanyCreateForm, AddressCreateForm
 
-
+"""
 class ListCompaniesView(ListView):
+    ""
+    List  companies --> ListView
+
+    ""
+    context = {'title': "Companylist"}
+    context_object_name = "companies"
+    template_name = 'app_user/list_company.html'
+    queryset = Company.objects.filter(~Q(address_id=1) & ~Q(address_id=None)).order_by('company_name')
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Companylist"
+        return context
+"""
+
+class ListCompaniesView(SortableListView):
     """
     List  companies --> ListView
 
@@ -21,6 +38,8 @@ class ListCompaniesView(ListView):
     template_name = 'app_user/list_company.html'
     queryset = Company.objects.filter(~Q(address_id=1) & ~Q(address_id=None)).order_by('company_name')
     paginate_by = 5
+    allowed_sort_fields = {"company_name": {'default_direction': '', 'verbose_name': 'Company'}, }
+    default_sort_field = 'company_name'  # mandatory
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -35,5 +35,4 @@ def get_address(request):
             print(type(address))
             address = serializers.serialize("json", address)
             data = {'address': address, 'data': 'OK'}
-
     return JsonResponse(data)

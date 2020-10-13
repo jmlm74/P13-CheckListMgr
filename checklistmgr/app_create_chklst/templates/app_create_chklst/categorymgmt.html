@@ -9,14 +9,16 @@
     <div class="container">
         {% include 'partials/_title.html' %}
         {% include "app_create_chklst/partials/_categorytable.html" %}
+        {% comment %}
         <hr class="bold-hr" />
         {% include "app_create_chklst/partials/_linetable.html" %}
+        {% endcomment %}
         {% include 'partials/_back.html' %}
     </div>
 </div>
 <script>
 const formURL = "{%  url 'app_create_chklst:chk-catcreate' %}"
 const formURL2 = "{%  url 'app_create_chklst:chk-linecreate' %}"
-const returnURL = "{% url 'app_create_chklst:catlineMgmt' %}"
+const returnURL = "{% url 'app_create_chklst:chk-catmgmt' %}"
 </script>
 {% endblock body_block %}

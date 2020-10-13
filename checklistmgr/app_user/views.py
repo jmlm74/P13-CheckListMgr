@@ -1,6 +1,7 @@
 import json
 
 import requests
+from bootstrap_modal_forms.generic import BSModalDeleteView
 from django.conf import settings as conf_settings
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -12,7 +13,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -230,7 +231,7 @@ class UserListView(SortableListView):
     context = {'title': "Userlist"}
     context_object_name = "users"
 
-    allowed_sort_fields = {"username": {'default_direction': '', 'verbose_name': 'user'},
+    allowed_sort_fields = {"username": {'default_direction': '', 'verbose_name': 'User'},
                                "first_name": {'default_direction': '', 'verbose_name': 'Firstname'},
                                "last_name": {'default_direction': '', 'verbose_name': 'Lastname'},
                                "email": {'default_direction': '', 'verbose_name': 'Email'},
@@ -238,7 +239,7 @@ class UserListView(SortableListView):
                                "preferred_language": {'default_direction': '', 'verbose_name': 'Language'},
                                "tt": {'default_direction': '', 'verbose_name': ''},
                                "user_company": {'default_direction': '', 'verbose_name': 'Company'},
-                               "is_active": {'default_direction': '', 'verbose_name': 'Active user'}, }
+                               "is_active": {'default_direction': '', 'verbose_name': 'Enable'}, }
 
     default_sort_field = 'username'  # mandatory
     paginate_by = 5
@@ -250,16 +251,24 @@ class UserListView(SortableListView):
 
         if self.request.user.is_superuser:
             return User.objects.all().order_by('user_company').order_by(order)
-        if self.request.user.user_company is None:
-            return User.objects.all().order_by('user_company').filter(is_active=True).filter(user_company=None)
+        if self.request.user.admin:
+            return User.objects.filter(user_company=self.request.user.user_company)\
+                .order_by(order).order_by('username')
         else:
-            return User.objects.filter(user_company=self.request.user.user_company).filter(is_active=True). \
-                order_by('username')
+            return User.objects.filter(username=self.request.user.username)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sort'] = self.request.GET.get('sort', 'user_company')
+        context['title'] = 'Userlist'
         return context
 
-
-#
+class LineDeleteView(BSModalDeleteView):
+    """
+    Line delete --> modal view
+    """
+    template_name = 'app_user/dialogboxes/deleteuser.html'
+    model = User
+    success_message = 'UserdeleteOK'
+    success_url = reverse_lazy('app_user:list')

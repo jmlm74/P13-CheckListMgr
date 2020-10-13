@@ -2,6 +2,7 @@
 {% load static %}
 {% load dis_play %}
 {% block body_block %}
+{% load widget_tweaks %}
 <div class="my_body dragndrop" id="updatechklst">
     <div class="container-fluid">
 
@@ -14,7 +15,7 @@
                     {% csrf_token %}
                     <div class="row form-row mt-2 mb-5">
                     <div class="col-sm-3">
-                        {% dis_play "Key" %}* : {{ form.chk_key }}
+                        {% dis_play "Key" %}* : {% render_field form.chk_key|append_attr:"readonly:readonly" %}
                     </div>
                     <div class="col-sm-8">
                         {% dis_play "Description" %}* : {{ form.chk_title }}
@@ -99,5 +100,6 @@
 </div>
 <script>
 const inputError = "{%  dis_play "Inputerror" %}"
+const returnURL = "{% url 'app_create_chklst:chk-main' %}"
 </script>
 {% endblock body_block %}

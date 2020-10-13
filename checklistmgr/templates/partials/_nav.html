@@ -19,9 +19,10 @@
                         <a class="nav-link" href="{% url 'app_home:index' %}">{% dis_play "Home" %}<span class="sr-only">(current)</span></a>
                     </li>
                     {% else %}
-                        <a class="nav-link" href="{% url 'app_home:main' %}">{% dis_play "Welcome" %}<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'app_home:main' %}">{% dis_play "Main" %}<span class="sr-only">(current)</span></a>
                     </li>
                     {%  endif %}
+                    {% comment %}
                     {% if user.id|to_str == user.user_company.name|to_str and user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
@@ -51,6 +52,7 @@
                     </div>
                     </li>
                     {% endif %}
+
                     {% if user.is_authenticated %}
                     {% if user.admin or not user.pro %}
                         <li class="nav-item dropdown">
@@ -68,9 +70,22 @@
                         </li>
                     {% endif %}
                     {% endif %}
+                    {% endcomment %}
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link" href="{% url 'app_user:list' %}">{% dis_play "Usermenu" %}</a>
                     </li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'app_user:listcompanies' %}">{% dis_play "Companies" %}</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'app_create_chklst:chk-main' %}">{% dis_play "Checklists" %}</a>
+                    </li>
+                    {% endif %}
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">

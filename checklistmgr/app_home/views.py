@@ -69,32 +69,9 @@ class ContactView(TemplateView):
 
 
 class Main(View):
-    context = {}
+    context = {'title': 'Main'}
     template_name = "app_home/main.html"
 
     def get(self, request):
-        try:
-            request.session['language']
-        except KeyError:
-            request.session['language'] = 'UK'
-        if request.user.is_superuser:
-            checklists = CheckList.objects.all()
-        else:
-            checklists = CheckList.objects.filter(chk_company=request.user.user_company_id)
-
-        chk_page = request.GET.get('chkpage', 1, )
-        chk_paginator = Paginator(checklists, 5)
-        try:
-            checklists = chk_paginator.page(chk_page)
-        except PageNotAnInteger:
-            checklists = chk_paginator.page(1)
-        except EmptyPage:
-            checklists = chk_paginator.page(chk_paginator.num_pages)
-
-        self.context['checklists'] = checklists
         return render(request, self.template_name, context=self.context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Main'
-        return context

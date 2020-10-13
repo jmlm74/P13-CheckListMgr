@@ -15,44 +15,6 @@ window.onload = function () {
         });
     }
 
-    if (document.querySelector("#list_users")) {    // list users page
-        console.log("In list users page")
-        let data_msg={}
-        data_msg['msg'] = 'Userdeletequestion'
-        data_msg = JSON.stringify(data_msg)
-        var msg_delete = ""
-        // just to get the delete msg
-        SendAjax('POST', '/app_utilities/get_message/',data_msg)
-        .done(function(response){
-            msg_delete = response['msg']
-        })
-        // if click on trash --> get the id
-         document.querySelectorAll('.fa-trash-alt').forEach(item => {
-            item.addEventListener('click',event => {
-                // console.log(item.id);
-                let pos = item.id.indexOf('-');
-                let id = item.id.substr(0,pos);
-                let username = item.id.substr(pos+1);
-                if (window.confirm(`${msg_delete} : ${username} ?`)){
-                    let data={}
-                    data['id'] = id
-                    data = JSON.stringify(data);
-                    SendAjax('POST','/app_user/delete_user/',data)
-                    .done(function(response){
-                        let elt_to_remove = document.getElementById(id)
-                        elt_to_remove.parentNode.removeChild(elt_to_remove)
-                    })
-                    .fail( function(response) {
-                        console.error("Erreur Ajax : " + response.data);
-                        alert("Erreur Ajax - "+ response.data);
-                    });
-                }
-                else {
-                   // console.log("don't delete")
-                }
-            });
-        });
-    }
     if (document.querySelector("#company-create-form")){  // Create company page
         let address_elt = document.querySelector('#id_address');
         address_elt.addEventListener('change', item => {
@@ -95,4 +57,41 @@ window.onload = function () {
         })
     }
 }
-
+if (document.querySelector("#list_users")) {    // list users page
+    console.log("In list users page")
+    let data_msg={}
+    data_msg['msg'] = 'Userdeletequestion'
+    data_msg = JSON.stringify(data_msg)
+    var msg_delete = ""
+    // just to get the delete msg
+    SendAjax('POST', '/app_utilities/get_message/',data_msg)
+    .done(function(response){
+        msg_delete = response['msg']
+    })
+    // if click on trash --> get the id
+     document.querySelectorAll('.trash').forEach(item => {
+        item.addEventListener('click',event => {
+            console.log(item.id);
+            let pos = item.id.indexOf('-');
+            let id = item.id.substr(0,pos);
+            let username = item.id.substr(pos+1);
+            if (window.confirm(`${msg_delete} : ${username} ?`)){
+                let data={}
+                data['id'] = id
+                data = JSON.stringify(data);
+                SendAjax('POST','/app_user/delete_user/',data)
+                .done(function(response){
+                    let elt_to_remove = document.getElementById(id)
+                    elt_to_remove.parentNode.removeChild(elt_to_remove)
+                })
+                .fail( function(response) {
+                    console.error("Erreur Ajax : " + response.data);
+                    alert("Erreur Ajax - "+ response.data);
+                });
+            }
+            else {
+               // console.log("don't delete")
+            }
+        });
+    });
+}

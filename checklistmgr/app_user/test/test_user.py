@@ -205,9 +205,9 @@ class TestDeleteUser(TransactionTestCase):
         """
         print(inspect.currentframe().f_code.co_name)
         self.c.login(username='toto1', password='12345678')
-        user_to_delete = User.objects.get(,,
-        id = user_to_delete.id
-        data = {'id': id}
+        user_to_delete = User.objects.get(username='toto2')
+        user_id = user_to_delete.id
+        data = {'id': user_id}
         data = json.dumps(data)
         response = self.c.post("/app_user/delete_user/", data, content_type="application/json")
         assert response.status_code == 200

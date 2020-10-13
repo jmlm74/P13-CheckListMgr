@@ -93,7 +93,7 @@ class TestCategoriesAndLines(TransactionTestCase):
         categories = Category.objects.all()
         assert response.status_code == 302
         assert categories.count() == 1
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/catmgmt/"
 
 
     def test_create_line_is_ok(self):
@@ -111,7 +111,7 @@ class TestCategoriesAndLines(TransactionTestCase):
         lines = Line.objects.all()
         assert response.status_code == 302
         assert lines.count() == 1
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/linemgmt/"
 
     def test_update_category_is_ok(self):
         """
@@ -132,7 +132,7 @@ class TestCategoriesAndLines(TransactionTestCase):
         categories = Category.objects.all()
         assert response.status_code == 302
         assert categories[0].cat_key == "test2"
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/catmgmt/"
 
     def test_update_line_is_ok(self):
         """
@@ -155,7 +155,7 @@ class TestCategoriesAndLines(TransactionTestCase):
         lines = Line.objects.all()
         assert response.status_code == 302
         assert lines[0].line_key == "test2"
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/linemgmt/"
 
     def test_delete_category_is_ok(self):
         """
@@ -170,10 +170,9 @@ class TestCategoriesAndLines(TransactionTestCase):
         my_category.save()
         response = self.c.post("/app_create_chklst/catdelete/" + str(my_category.id))
         categories = Category.objects.all()
-        print(categories)
         assert response.status_code == 302
         assert categories.count() == 0
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/catmgmt/"
 
     def test_delete_line_is_ok(self):
         """
@@ -191,4 +190,4 @@ class TestCategoriesAndLines(TransactionTestCase):
         lines = Line.objects.all()
         assert response.status_code == 302
         assert lines.count() == 0
-        assert response.url == "/app_create_chklst/catlinemgmt/"
+        assert response.url == "/app_create_chklst/linemgmt/"
