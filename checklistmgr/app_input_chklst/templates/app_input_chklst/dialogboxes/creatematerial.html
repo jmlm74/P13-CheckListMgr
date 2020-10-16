@@ -1,0 +1,85 @@
+{% load dis_play %}
+{% load widget_tweaks %}
+<form method="post" action="" class="modal-form">
+  {% csrf_token %}
+    <div class="modal-header">
+        <h3>{% dis_play title %}</h3>
+        <span data-tooltip="{% dis_play 'Helpcreatemat' %}"><i class="fas fa-question-circle"></i></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        {% if form.non_field_errors %}
+            <div class="invalid mb-2">
+            <p class="error">
+                <ul class="errorslist">
+                    {% for error in form.non_field_errors %}<li>{% dis_play  error  %}</li>{% endfor %}
+                </ul>
+            </p>
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            {% dis_play "Designation" %}* :<br />
+            {{ form.mat_designation }} &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="{% if form.mat_designation.errors %} invalid{% endif %}">
+                {% for error in form.mat_designation.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <p class="form-group">
+            {% dis_play "Serial/N" %} :<br/>
+            {{ form.mat_registration }}
+            <div class="{% if form.mat_registration.errors %} invalid{% endif %}">
+                {% for error in form.mat_registration.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </p>
+        <div class="form-group">
+            {% dis_play "Type" %} : {{ form.mat_type }}
+            <div class="{% if form.mat_type.errors %} invalid{% endif %}">
+                {% for error in form.mat_type.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Model" %} : {{ form.mat_model }}
+            <div class="{% if form.mat_model.errors %} invalid{% endif %}">
+                {% for error in form.mat_model.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Materialprim" %} : {{ form.mat_material }}
+            <span data-tooltip="{% dis_play 'Helpcreatematprim' %}"><i class="fas fa-question-circle"></i></span>
+            <div class="{% if form.mat_material.errors %} invalid{% endif %}">
+                {% for error in form.mat_material.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Manager" %} : {{ form.mat_manager }}
+            <span data-tooltip="{% dis_play 'Helpcreatematmgr' %}"><i class="fas fa-question-circle"></i></span>
+            <div class="{% if form.mat_manager.errors %} invalid{% endif %}">
+                {% for error in form.mat_manager.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Enable" %}* : {{ form.mat_enable }}
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="submit-btn btn btn-primary">{% dis_play btn %}</button>
+        </div>
+    </div>
+</form>

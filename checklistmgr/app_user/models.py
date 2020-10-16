@@ -40,7 +40,7 @@ class Company(models.Model):
     company_name = models.CharField(max_length=100,
                                     verbose_name="Society",
                                     unique=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="society", null=True, blank=True,
+    address = models.ForeignKey(Address, on_delete=models.RESTRICT, related_name="society", null=True, blank=True,
                                 verbose_name="Address")
     created_date = models.DateTimeField(auto_now_add=True, blank=True)
     modified_date = models.DateTimeField(auto_now=True, blank=True)
@@ -64,7 +64,7 @@ class User(AbstractUser):
                                 blank=True, null=True, verbose_name="Picture")
     preferred_language = models.ForeignKey(UserLanguages, on_delete=models.CASCADE, related_name='user_language',
                                            default=None, null=True)
-    user_company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='user_company',
+    user_company = models.ForeignKey(Company, on_delete=models.RESTRICT, related_name='user_company',
                                      default=None, null=True, blank=True)
 
     def __str__(self):

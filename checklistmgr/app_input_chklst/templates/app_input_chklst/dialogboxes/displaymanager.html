@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+{% load dis_play %}
+<div class="modal-header">
+        <h3>{% dis_play title %}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="text-center">
+            <h4>
+            {{ manager.mgr_name }}
+            </h4>
+        </div>
+        <p class="">
+            <strong>{% dis_play "Contactname" %} : </strong>
+            {{ manager.mgr_contact|default_if_none:"" }}
+        </p>
+
+        {% if user.is_superuser %}
+        <p class="">
+            <strong>{% dis_play "Company" %} : </strong>{{ manager.mgr_company|default_if_none:"" }}
+        </p>
+        {% endif %}
+        <p class="">
+            <strong>{% dis_play "Phone" %} : </strong>{{ manager.mgr_phone|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Email1" %} : </strong>{{ manager.mgr_email1|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Email2" %} : </strong>{{ manager.mgr_email2|default_if_none:"" }}
+        </p>
+        <p class="row col-12">
+            <span class="col-6 text-left">
+            <strong>{% dis_play "Address" %} : </strong>{{ manager.mgr_address|default_if_none:"-------" }}
+            </span>
+            <span class="col-6 text-left">
+            <strong>{% dis_play "Enable" %}* : </strong>{{ manager.mgr_enable|yesno }}
+            </span>
+        </p>
+
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">{% dis_play "Close" %}</button>
+        </div>
+    </div>

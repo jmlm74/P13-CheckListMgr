@@ -1,0 +1,66 @@
+{% load dis_play %}
+<div class="row mt-3">
+    <div class="col-2">
+        <h3>{% dis_play "Materials" %}</h3>
+    </div>
+    <div class="col-2 mb-3">
+        <button id="create-mat" class="btn btn-primary" type="button" name="button">
+            <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
+        </button>
+    </div>
+    <div class="row align-items-top justify-content-center text-center col-12 small">
+    {% include 'partials/_errormessage.html' %}
+        <table id="cat_table" class="table">
+            <thead>
+            <tr>
+                <th class="text-center" style="width: 5em;" scope="col">#</th>
+                {% for sort_link in sort_link_list %}
+                    <th scope="col">
+                        <a href="{{ sort_link.path }}">
+                            {% dis_play sort_link.title %}
+                            {% if sort_link.indicator == 'sort-asc' %}▲{% endif %}
+                            {% if sort_link.indicator == 'sort-desc' %}▼{% endif %}
+                        </a>
+                    </th>
+                {% endfor %}
+                {% if user.is_superuser %}
+                    <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Company" %}</th>
+                {% endif %}
+                <th class="text-center" style="width: 10em;" scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mat in materials %}
+                <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ mat.mat_designation }}</td>
+                    <td class="text-center">{{ mat.mat_registration }}</td>
+                    <td class="text-center">{{ mat.mat_type }}</td>
+                    <td class="text-center">{{ mat.mat_model }}</td>
+                    <td class="text-center">
+                        {% if mat.mat_enable %}<i class="fas fa-check" style="color: green"></i>
+                        {% else %}<i class="fas fa-times" style="color: red"></i>
+                        {% endif %}
+                    </td>
+                    <td class="text-center" style="width: 10em;">{{ mat.mat_manager|default_if_none:"" }}</td>
+                    <td class="text-center" style="width: 7em;">{{ mat.mat_material|default_if_none:"" }}</td>
+                    <td class="text-center">
+                    <span data-tooltip="{%  dis_play "Display" %}">
+                        <span class="bs-modal" data-form-url="{% url 'app_input_chklst:inp-matdisplay' mat.pk %}" ><i class="tabicon fas fa-eye mr-2" style="color: forestgreen; !important"></i></span>
+                    </span>
+                    <span data-tooltip="{%  dis_play "Update" %}">
+                        <span class="bs-modal" data-form-url="{% url 'app_input_chklst:inp-matupdate' mat.pk %}" ><i class="tabicon fas fa-edit mr-2" style="color: dodgerblue;"></i></span>
+                    </span>
+                    <span data-tooltip="{%  dis_play "Delete" %}">
+                        <span class="bs-modal" data-form-url="{% url 'app_input_chklst:inp-matdelete' mat.pk %}" ><i class="tabicon fas fa-trash-alt" style="color: red; !important"></i></span>
+                    </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if sort %}
+            {% include 'partials/_pagination_listview_jm.html' %}
+        {% endif %}
+    </div>
+</div>

@@ -229,3 +229,4 @@ class LineMgmtView(SortableListView):
         context['sort'] = self.request.GET.get('sort', 'line_key')
         context['title'] = 'Lines'
         return context
+

@@ -1,0 +1,20 @@
+{# main page  #}
+{% extends 'base.html' %}
+{% load static %}
+{% load dis_play %}
+{% block body_block %}
+<div class="my_body" id="mgrmgmt">
+    {% include "partials/_modal.html" %}
+
+    <div class="container">
+        {% include 'partials/_title.html' %}
+        {% include "app_input_chklst/partials/_addresstable.html" %}
+        {% include 'partials/_back.html' %}
+    </div>
+</div>
+<script>
+const formURL = "{%  url 'app_input_chklst:inp-addrcreate' %}"
+const formURL2 = "{%  url 'app_create_chklst:chk-linecreate' %}"
+const returnURL = "{% url 'app_input_chklst:inp-addrmgmt' %}"
+</script>
+{% endblock body_block %}

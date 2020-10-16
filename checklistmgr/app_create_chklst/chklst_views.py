@@ -216,7 +216,7 @@ class MainChkLstView(SortableListView):
             return CheckList.objects.all().order_by(order)
         else:
             return CheckList.objects.filter(chk_company=self.request.user.user_company_id)\
-                .filter(chk_enable=True).order_by(order)
+                .order_by(order)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

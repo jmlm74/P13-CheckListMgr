@@ -30,6 +30,7 @@ urlpatterns = [
     path('app_user/', include('app_user.urls')),
     path('app_utilities/', include('app_utilities.urls')),
     path('app_create_chklst/', include('app_create_chklst.urls')),
+    path('app_input_chklst/', include('app_input_chklst.urls')),
     path('', ahv.Index.as_view(), name='index'),
     path('accounts/login/', RedirectView.as_view(url='/app_home/index/')),
     path('reset/done/',

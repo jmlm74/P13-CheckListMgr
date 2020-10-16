@@ -21,3 +21,7 @@ def plus(var, value):
 @register.simple_tag
 def define_str(val=None):
     return str(val)
+
+@register.simple_tag
+def concat_str(var1, var2):
+    return str(var1) + str(var2)

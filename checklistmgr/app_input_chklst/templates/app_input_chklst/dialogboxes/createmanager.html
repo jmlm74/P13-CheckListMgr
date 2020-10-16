@@ -1,0 +1,77 @@
+{% load dis_play %}
+{% load widget_tweaks %}
+<form method="post" action="" class="modal-form">
+  {% csrf_token %}
+    <div class="modal-header">
+        <h3>{% dis_play title %}</h3>
+        <span data-tooltip="{% dis_play 'Helpcreatemgr' %}"><i class="fas fa-question-circle"></i></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        {% if form.non_field_errors %}
+            <div class="invalid mb-2">
+            <p class="error">
+                <ul class="errorslist">
+                    {% for error in form.non_field_errors %}<li>{% dis_play  error  %}</li>{% endfor %}
+                </ul>
+            </p>
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            {% dis_play "Manager" %}* :<br />
+            {{ form.mgr_name }} &nbsp;&nbsp;&nbsp;&nbsp;
+             {% dis_play "Enable" %}* : {{ form.mgr_enable }}
+            <div class="{% if form.mgr_name.errors %} invalid{% endif %}">
+                {% for error in form.mgr_name.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+        <p class="form-group">
+            {% dis_play "Contactname" %} :<br/>
+            {{ form.mgr_contact }}
+            <div class="{% if form.mgr_contact.errors %} invalid{% endif %}">
+                {% for error in form.mgr_contact.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </p>
+
+        {% if user.is_superuser %}
+        <div class="form-group">
+            {% dis_play "Company" %}* : {{ form.mgr_company }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            {% dis_play "Phone" %} : {{ form.mgr_phone }}
+        </div>
+        <div class="form-group">
+            {% dis_play "Email1" %} : {{ form.mgr_email1 }}
+            <div class="{% if form.mgr_email1.errors %} invalid{% endif %}">
+                {% for error in form.mgr_email1.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Email2" %} : {{ form.mgr_email2 }}
+            <div class="{% if form.mgr_email2.errors %} invalid{% endif %}">
+                {% for error in form.mgr_email2.errors %}
+                    <p class="help-block error">{% dis_play error %}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {% dis_play "Address" %} : {{ form.mgr_address }}
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="submit-btn btn btn-primary">{% dis_play btn %}</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,74 @@
+{% load dis_play %}
+{% load define %}
+<div class="row mt-3">
+    <div class="col-2">
+        <h3>{% dis_play "Addresses" %}</h3>
+    </div>
+    <div class="col-2 mb-3">
+        <button id="create-adr" class="btn btn-primary" type="button" name="button">
+            <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
+        </button>
+    </div>
+    <div class="row align-items-top justify-content-center text-center col-12 small">
+    {% include 'partials/_errormessage.html' %}
+        <table id="cat_table" class="table">
+            <thead>
+            <tr>
+                <th class="text-center" style="width: 3em;" scope="col">#</th>
+                <th scope="col" style="width: 15em;">
+
+                    <a href="{{ sort_link_list.0.path }}">
+                        {% dis_play sort_link_list.0.title %}
+
+                        {% if sort_link_list.0.indicator == 'sort-asc' %}▲{% endif %}
+                        {% if sort_link_list.0.indicator == 'sort-desc' %}▼{% endif %}
+                    </a>
+                </th>
+                <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Street_number" %}</th>
+                <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Street_type" %}</th>
+                <th class="text-center" style="width: 15em;" scope="col">{% dis_play "Address1" %}</th>
+                <th class="text-center" style="width: 15em;" scope="col">{% dis_play "Address2" %}</th>
+                <th scope="col">
+                    <a href="{{ sort_link_list.1.path }}">
+                        {% dis_play sort_link_list.1.title %}
+                        {% if sort_link_list.1.indicator == 'sort-asc' %}▲{% endif %}
+                        {% if sort_link_list.1.indicator == 'sort-desc' %}▼{% endif %}
+                    </a>
+                </th>
+                <th class="text-center" scope="col">{% dis_play "City" %}</th>
+                <th class="text-center" scope="col">{% dis_play "Country" %}</th>
+            <th class="text-center" style="width: 10em;" scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for addr in addresses %}
+                <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ addr.address_name }}</td>
+                    <td class="text-center">{{ addr.street_number }}</td>
+                    <td class="text-center">{{ addr.stree_type }}</td>
+                    <td class="text-center">{{ addr.address1 }}</td>
+                    <td class="text-center">{{ addr.address2 }}</td>
+                    <td class="text-center">{{ addr.zipcode }}</td>
+                    <td class="text-center">{{ addr.city }}</td>
+                    <td class="text-center">{{ addr.country }}</td>
+                    <td class="text-center">
+                    <span data-tooltip="{%  dis_play "Display" %}">
+                        <span class="bs-modal" data-form-url="{% url 'app_input_chklst:inp-addrdisplay' addr.pk %}" ><i class="tabicon fas fa-eye mr-2" style="color: forestgreen; !important"></i></span>
+                    </span>
+                    <span data-tooltip="{%  dis_play "Update" %}">
+                        <span class="bs-modal-large" data-form-url="{% url 'app_input_chklst:inp-addrupdate' addr.pk %}" ><i class="tabicon fas fa-edit mr-2" style="color: dodgerblue;"></i></span>
+                    </span>
+                    <span data-tooltip="{%  dis_play "Delete" %}">
+                        <span class="bs-modal" data-form-url="{% url 'app_input_chklst:inp-addrdelete' addr.pk %}" ><i class="tabicon fas fa-trash-alt" style="color: red; !important"></i></span>
+                    </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if sort %}
+            {% include 'partials/_pagination_listview_jm.html' %}
+        {% endif %}
+    </div>
+</div>

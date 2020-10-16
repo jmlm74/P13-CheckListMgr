@@ -25,6 +25,7 @@
                     </a>
                 </div>
             {% endif %}
+            {% if user.admin or not user.pro%}
             <div class="col-sm-2 col-12">
                 <a href="{% url 'app_create_chklst:chk-main' %}">
                     <button type="button" class="btn btn-primary btn-block">
@@ -33,6 +34,17 @@
                     </button>
                 </a>
             </div>
+            {% endif %}
+            {% if user.pro %}
+            <div class="col-sm-2 col-12">
+                <a href="{% url 'app_input_chklst:inp-main' %}">
+                    <button type="button" class="btn btn-primary btn-block">
+                        <i class="fas fa-3x fa-cogs"></i><br />
+                        {% dis_play "Materials" %}
+                    </button>
+                </a>
+            </div>
+            {% endif %}
         </div>
         {% include 'partials/_back.html' %}
     </div>

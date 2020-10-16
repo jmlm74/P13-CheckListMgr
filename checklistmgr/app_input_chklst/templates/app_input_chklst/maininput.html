@@ -4,30 +4,25 @@
 {% load dis_play %}
 {% block body_block %}
 
-<style>
-.display-chklst{
-    overflow-y: auto;
-    max-height: 25em;
-}
-</style>
 <div class="my_body" id="main">
     {% include "partials/_modal.html" %}
     <div class="container">
         {% include 'partials/_title.html' %}
         <div class="row mt-5 mb-5">
             <div class="col-sm-2 col-12">
-                <a href="{% url 'app_create_chklst:chk-catmgmt' %}">
+                <a href="{% url 'app_input_chklst:inp-mgrmgmt' %}">
                     <button type="button" class="btn btn-primary btn-block">
-                            <i class="fas fa-3x fa-paragraph"></i><br />
-                            {% dis_play "Categories" %}
+                            <i class="fas fa-3x fa-users-cog"></i><br />
+                            {% dis_play "Managers" %}
                     </button>
                 </a>
             </div>
             <div class="col-sm-2 col-12">
-                <a href="{% url 'app_create_chklst:chk-linemgmt' %}">
+                <a href="{% url 'app_input_chklst:inp-addrmgmt' %}">
                 <button type="button" class="btn btn-primary btn-block">
-                    <i class="fas fa-3x fa-align-justify"></i><br />
-                    {% dis_play "Lines" %}
+                    <!-- <img src="{% static 'app_input_chklst/img/mailbox-small.png' %}"><br /> -->
+                    <i class="fas fa-3x fa-mail-bulk"></i><br />
+                    {% dis_play "Addresses" %}
                 </button>
                 </a>
             </div>
@@ -42,13 +37,13 @@
             </div>
             {% endif %}
         </div>
-        {% include "app_create_chklst/partials/_checkliststable.html" %}
+        {% include "app_input_chklst/partials/_materialtable.html" %}
         {% include 'partials/_back.html' %}
     </div>
 </div>
 <script>
-const formURL = "{%  url 'app_create_chklst:chk-main' %}"
+const formURL = "{%  url 'app_input_chklst:inp-matcreate' %}"
 const formURL2 = "{%  url 'app_create_chklst:chk-main' %}"
-const returnURL = "{% url 'app_create_chklst:chk-main' %}"
+const returnURL = "{% url 'app_input_chklst:inp-main' %}"
 </script>
 {% endblock body_block %}

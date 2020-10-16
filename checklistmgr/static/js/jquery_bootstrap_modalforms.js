@@ -34,8 +34,8 @@ https://github.com/trco/django-bootstrap-modal-forms
 
     // Check if form.is_valid() & either show errors or submit it via callback
     var isFormValid = function (settings, callback) {
-        //console.log(settings.modalForm)
 
+        //console.log(settings.modalForm)
         $.ajax({
             type: $(settings.modalForm).attr("method"),
             url: $(settings.modalForm).attr("action"),
@@ -44,7 +44,6 @@ https://github.com/trco/django-bootstrap-modal-forms
                 $(settings.submitBtn).prop("disabled", true);
             },
             success: function (response) {
-
                 if ($(response).find(settings.errorClass).length > 0) {
                     // Form is not valid, update it with errors
                     $(settings.modalID).find(settings.modalContent).html(response);
@@ -63,11 +62,11 @@ https://github.com/trco/django-bootstrap-modal-forms
     // Submit form callback function
     var submitForm = function (settings) {
         if (!settings.asyncUpdate) {
+            console.log(settings.modalForm)
             $(settings.modalForm).submit();
         } else {
             var asyncSettingsValid = validateAsyncSettings(settings.asyncSettings);
             var asyncSettings = settings.asyncSettings;
-
             if (asyncSettingsValid) {
                 $.ajax({
                     type: $(settings.modalForm).attr("method"),

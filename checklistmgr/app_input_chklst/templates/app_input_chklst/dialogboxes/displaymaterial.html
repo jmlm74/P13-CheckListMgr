@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+{% load dis_play %}
+<div class="modal-header">
+        <h3>{% dis_play title %}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="text-center">
+            <h4>
+            {{ material.mat_designation }}
+            </h4>
+        </div>
+        <p class="">
+            <strong>{% dis_play "Serial/N" %} : </strong> {{ material.mat_registration|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Type" %} : </strong> {{ material.mat_type|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Model" %} : </strong>{{ material.mat_model|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Enable" %} : </strong>{{ material.mat_active|yesno }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Manager" %} : </strong>{{ material.mat_manager|default_if_none:"" }}
+        </p>
+        <p class="">
+            <strong>{% dis_play "Materialprim" %} : </strong>{{ Material.mat_material|default_if_none:"" }}
+        </p>
+        {% if mat2nd %}
+            <hr>
+            <h4>{% dis_play "Matlinked" %}</h4>
+            {% for mat2 in mat2nd %}
+                <p><strong>{{ mat2.mat_designation|truncatechars:"20" }}</strong> -
+                {{ mat2.mat_registration|truncatechars:"20"  }} -
+                {{ mat2.mat_type|truncatechars:"20"  }} - {{ mat2.mat_model|truncatechars:"20"  }}</p>
+            {% endfor %}
+
+        {% endif %}
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">{% dis_play "Close" %}</button>
+        </div>
+    </div>
