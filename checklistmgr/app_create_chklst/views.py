@@ -188,7 +188,7 @@ class CategoryMgmtView(SortableListView):
                            "cat_wording": {'default_direction': '', 'verbose_name': 'Wording'},
                            "cat_enable": {'default_direction': '', 'verbose_name': 'Enable'},}
     default_sort_field = 'cat_key'  # mandatory
-    paginate_by = 5
+    paginate_by = 15
 
     def get_queryset(self):
         order = self.request.GET.get('sort', 'cat_key')
@@ -214,7 +214,7 @@ class LineMgmtView(SortableListView):
                            "line_enable": {'default_direction': '', 'verbose_name': 'Enable'},
                            "line_type": {'default_direction': '', 'verbose_name': 'Type'},}
     default_sort_field = 'line_key'  # mandatory
-    paginate_by = 5
+    paginate_by = 15
 
     def get_queryset(self):
         order = self.request.GET.get('sort', 'line_key')

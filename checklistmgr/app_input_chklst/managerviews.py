@@ -48,6 +48,7 @@ class ManagerCreateView(BSModalCreateView):
     success_message = 'CreatemgrOK'
     success_url = reverse_lazy('app_input_chklst:inp-mgrmgmt')
 
+
     def get_context_data(self, **kwargs):
         context = super(ManagerCreateView, self).get_context_data(**kwargs)
         context['title'] = "Createmgr"

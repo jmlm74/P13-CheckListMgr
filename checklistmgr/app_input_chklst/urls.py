@@ -28,6 +28,7 @@ urlpatterns = [
 
 # Materials
     path('materialcreate/', login_required(aicmatv.MaterialCreateView.as_view()), name='inp-matcreate'),
+    path('materialcreate/<str:return_url>', login_required(aicmatv.MaterialCreateView.as_view()), name='inp-matcreate'),
     path('materialdisplay/<int:pk>', login_required(aicmatv.MaterialDisplayView.as_view()), name='inp-matdisplay'),
     path('materialupdate/<int:pk>', login_required(aicmatv.MaterialUpdateView.as_view()), name='inp-matupdate'),
     path('materialdelete/<int:pk>', login_required(aicmatv.MaterialDeleteView.as_view()), name='inp-matdelete'),

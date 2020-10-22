@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views import View
 from django.views.generic.base import TemplateView
+from sortable_listview import SortableListView
 
 from app_user.forms import UserCheckListMgrFormLogin
 from app_create_chklst.models import CheckList
@@ -75,3 +77,26 @@ class Main(View):
     def get(self, request):
         return render(request, self.template_name, context=self.context)
 
+
+class MainView(SortableListView):
+    context = {'title': 'Main'}
+    template_name = "app_home/main.html"
+    context_object_name = "checklists"
+    allowed_sort_fields = {"chk_key": {'default_direction': '', 'verbose_name': 'Key'},
+                           "chk_title": {'default_direction': '', 'verbose_name': 'Wording'},
+                           }
+    default_sort_field = 'chk_key'  # mandatory
+    paginate_by = 5
+
+    def get_queryset(self):
+        order = self.request.GET.get('sort', 'chk_key')
+        if self.request.user.is_superuser:
+            return CheckList.objects.all().order_by(order)
+        else:
+            return CheckList.objects.filter(Q(chk_company=self.request.user.user_company)).order_by(order)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sort'] = self.request.GET.get('sort', 'chk_key')
+        context['title'] = 'Main'
+        return context

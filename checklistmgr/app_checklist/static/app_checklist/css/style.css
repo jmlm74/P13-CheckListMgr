@@ -1,0 +1,37 @@
+.switch-toggle {
+  /*float: left;*/
+  background: #242729;
+  height: 2em;
+}
+.switch-toggle input {
+  position: absolute;
+  opacity: 0;
+}
+.switch-toggle input + label {
+  padding: 7px;
+  /*float:left;*/
+  color: #fff;
+  cursor: pointer;
+}
+
+.valid input:checked + label {
+  background: green;
+}
+.NA input:checked + label {
+  background: blue;
+}
+.default input:checked + label {
+  background: red;
+}
+
+/*
+.switch-toggle.valid input:checked + label {
+    background: green;
+}
+.switch-toggle.NA input:checked + label {
+  background: blue;
+}
+.switch-toggle.default input:checked + label {
+  background: red;
+}
+/*

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dis_play %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+<div class="container" id="checklist_chklst">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+             aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+    </div>
+    <span class="my_body" id="main">
+        {% include 'partials/_title.html' %}
+    </span>
+        <form method="post" action="" id="form_id">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <h4 class="text-center">{{ checklist.title }}</h4>
+            </div>
+            <hr class="bold-hr mb-3">
+            {% for item in details %}
+
+                    {% if item.line_cat == 'cat' %}
+                        <hr />
+                        <div class="col-12 row">
+                            <p id="cat-{{ item.id }}">
+                                <h5>{{ item.wording }}</h5>
+                            </p>
+                        </div>
+                        <hr />
+                    {% else %}
+                        <div class="text-left row col-12"  id="lin-{{ item.id }}">
+                            <div class="col-sm-9">
+                                <span>{{ item.wording }} : </span>
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="switch-toggle small" name="but-{{ item.id }}" >
+                                    <span class="valid"><input id="{{ item.id }}-on" name="state-d-{{ item.id }}" type="radio"  />
+                                        <label for="{{ item.id }}-on" onclick="">Valide</label></span>
+                                    <span class="NA"><input id="{{ item.id }}-na" name="state-d-{{ item.id }}" type="radio" checked="checked" />
+                                        <label for="{{ item.id }}-na" onclick="">N/A</label></span>
+                                    <span class="default"><input id="{{ item.id }}-off" name="state-d-{{ item.id }}" type="radio" />
+                                        <label for="{{ item.id }}-off" onclick="">Defaut</label></span>
+                                </span>
+                            </div>
+                        </div>
+                    {% endif %}
+            {% endfor %}
+            {{ form.chk_save.as_hidden }}
+            <hr class="bold-hr mt-3"/>
+            <input type="submit" class="btn btn-primary" name="previous" value="Previous"/>
+            <input type="submit" class="btn btn-primary" name="next" value="Next"/>
+        </form>
+
+    </div>
+{% include 'partials/_back.html' %}
+</div>
+{% endblock %}

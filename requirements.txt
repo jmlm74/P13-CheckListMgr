@@ -10,6 +10,7 @@ django-crispy-forms==1.9.2
 django-debug-toolbar==2.2
 django-extensions==3.0.8
 django-extra-views==0.13.0
+django-formtools==2.2
 django-sortable-listview==0.43
 django-widget-tweaks==1.4.8
 Faker==0.9.1

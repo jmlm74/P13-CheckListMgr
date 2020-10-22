@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dis_play %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+<div class="container" id="checklist_mat">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+             aria-valuemin="0" aria-valuemax="100"style="width: 25%;"></div>
+    </div>
+    <div class="my_body" id="main">
+        {% include 'partials/_title.html' %}
+        {# {{ wizard.management_form }} #}
+
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {% dis_play "Designation" %}* :
+                <select name="material" id="mat_select">
+                    <option value="0">--------</option>
+                    {% for mat in materials %}
+                        <option value="{{ mat.id }}">{{ mat.mat_designation }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <p class="form-group">
+                {% dis_play "Serial/N" %} :<br/>
+                {{ form.mat_registration }}
+            </p>
+            <div class="form-group">
+                {% dis_play "Type" %} : {{ form.mat_type }}
+            </div>
+            <div class="form-group">
+                {% dis_play "Model" %} : {{ form.mat_model }}
+            </div>
+            <div class="form-group">
+                {% dis_play "Materialprim" %} : {{ form.mat_material }}
+            </div>
+            {{ form.mat_manager.as_hidden }}
+            {{ form.mat_id.as_hidden }}
+        <input type="submit" class="btn btn-primary" value="Next"/>
+ </form>
+
+    </div>
+{% include 'partials/_back.html' %}
+</div>
+{% endblock %}

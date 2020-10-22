@@ -1,0 +1,48 @@
+{% load dis_play %}
+        <div class="row mt-3">
+            <div class="col-2">
+                <h3>{% dis_play "Checklists" %}</h3>
+            </div>
+            <div class="row align-items-top justify-content-center text-center col-12 small">
+                {% include 'partials/_errormessage.html' %}
+                <table id="cat_table" class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center" style="width: 5em;" scope="col">#</th>
+                        {% for sort_link in sort_link_list %}
+                        <th scope="col">
+                            <a href="{{ sort_link.path }}">
+                                {% if sort_link.title == "Enable" %}
+                                    {% if user.admin or not user.pro %}
+                                        {% dis_play sort_link.title %}
+                                    {% endif %}
+                                {% else %}
+                                    {% dis_play sort_link.title %}
+                                {% endif %}
+                                {% if sort_link.indicator == 'sort-asc' %}▲{% endif %}
+                                {% if sort_link.indicator == 'sort-desc' %}▼{% endif %}
+                            </a>
+                        </th>
+                        {% endfor %}
+                        {% if user.is_superuser %}
+                            <th class="text-center" style="width: 5em;" scope="col">{% dis_play "Company" %}</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for checklist in checklists %}
+                        <tr>
+                            <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                            <td class="text-center"><a href={% url 'app_checklist:saisie1' checklist.pk %}>{{ checklist.chk_key }}</a></td>
+                            <td class="text-center">{{ checklist.chk_title }}</td>
+                            {% if user.is_superuser %}<td class="text-center">{{ checklist.chk_company }}</td>{% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% include 'partials/_pagination_listview_jm.html' %}
+            </div>
+            <div class="col-12">
+
+            </div>
+        </div>
