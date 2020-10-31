@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
+{% load define %}
 {% block body_block %}
 {% load crispy_forms_tags %}
 <div class="container" id="checklist_mat">
+{% include "partials/_modal.html" %}
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
-             aria-valuemin="0" aria-valuemax="100"style="width: 25%;"></div>
+             aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
     </div>
     <div class="my_body" id="main">
         {% include 'partials/_title.html' %}
@@ -16,7 +18,7 @@
             {% csrf_token %}
 
             <div class="form-group">
-                {% dis_play "Designation" %}* :
+                {% dis_play "Designation" %} :
                 <select name="material" id="mat_select">
                     <option value="0">--------</option>
                     {% for mat in materials %}
@@ -40,10 +42,24 @@
             </div>
             {{ form.mat_manager.as_hidden }}
             {{ form.mat_id.as_hidden }}
-        <input type="submit" class="btn btn-primary" value="Next"/>
+            <div class="row col-12">
+                <div class="col-6 mb-3">
+                    <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
+                </div>
+                <div class="col-6 mb-3">
+                    <button id="create-mat" class="btn btn-primary" type="button" name="button">
+                        <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
+                    </button>
+                </div>
+            </div>
  </form>
 
     </div>
 {% include 'partials/_back.html' %}
 </div>
+
+<script>
+let formURL = "{%  url 'app_input_chklst:inp-matcreate' %}".concat('',"?url=").concat('',"{{ url }}")
+const formURL2 = "{%  url 'app_create_chklst:chk-main' %}"
+</script>
 {% endblock %}

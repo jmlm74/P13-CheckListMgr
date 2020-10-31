@@ -1,0 +1,171 @@
+{% load dis_play %}
+{% load define %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style type="text/css">
+            .no-oveflow{
+                overflow:hidden
+            }
+            .bold-hr{
+                border: 1px solid black;
+            }
+            footer
+            {
+                position        : fixed;
+                right           : 0;
+                bottom          : 0;
+                margin-bottom   : -10mm;
+                height          : 10mm;
+                text-align      : center;
+                font-size       : 15px;
+            }
+            img{
+                height:500px;
+            }
+            .borderj{
+                border: 1px solid black !important;
+            }
+        </style>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <div class='container-fluid'>
+            <header>
+                <div class="row justify-center">
+                    <h3 class="col-10 text-center">{{ Checklist.cld_checklist.chk_title }}</h3>
+                    <h6 class="col-2 justify-center">date : {% now "d/m/Y" %} </h6>
+                </div>
+            </header>
+            <hr class="bold-hr">
+            <section class="row">
+                <div class="col-4 border no-oveflow  borderj ">
+
+                        <div class="bg-info font-weight-bold text-center ">{% dis_play "Operator" %}</div>
+                            {{ Checklist.cld_user.full_name }}<br />
+                            <hr class="bold-hr">
+                            {{ Checklist.cld_company.company_name }}<br />
+                            {{ Checklist.cld_company.address.street_number }} {{ Checklist.cld_company.address.street_type }}
+                            {{ Checklist.cld_company.address.address1 }}<br />
+                            {{ Checklist.cld_company.address.address2 }}<br />
+                            {{ Checklist.cld_company.address.zipcode }} {{ Checklist.cld_company.address.city }}<br />
+
+                </div>
+                <div class="col-4 borderj no-oveflow">
+
+                        <div class="bg-info font-weight-bold text-center">{% dis_play "Material" %}</div>
+                        {{ Checklist.cld_material.mat_designation }}<br>
+                        {{ mat.mat_registration }}<br />
+                        {{ mat.mat_model }}<br>
+                        {{ mat.mat_type }}<br>
+                        <hr class="bold-hr">
+                        {{ mat.material }}
+
+                </div>
+                <div class="col-4 borderj no-oveflow">
+
+                        <div class="bg-info font-weight-bold text-center">{% dis_play "Manager" %}</div>
+                    {{ Checklist.cld_manager.mgr_name }}<br>
+                    {{ mgr.mgr_contact }}<br>
+                    {{ Checklist.cld_manager.mgr_address.street_number }} {{ Checklist.cld_manager.mgr_address.street_type }}
+                    {{ Checklist.cld_manager.mgr_address.address1 }} <br />
+                    {{ Checklist.cld_manager.mgr_address.address2 }}<br>
+                    {{ Checklist.cld_manager.mgr_address.zipcode }} {{ Checklist.cld_manager.mgr_address.city }}<br>
+                    {% dis_play "Phone" %} : {{ mgr.mgr_phone }}<br :>
+                </div>
+            </section>
+            <hr class="bold-hr">
+            {% for item in details %}
+                    {% if item.line_cat == 'cat' %}
+                        {% if not forloop.first %}
+                        <div class="row mt-3">
+                            <div class="col-2"><strong class="bg-info">{% dis_play "Remarks" %} : </strong></div>
+                            <div class="col-10">
+                                <textarea class="remarks" id="text-{{ item.id }}"
+                                          rows="5" cols="50">{% dis_play_remark item.id %}</textarea>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <hr />
+                        <div class="col-12 row">
+                            <p id="cat-{{ item.id }}">
+                                <h5>{{ item.wording }}</h5>
+                            </p>
+                        </div>
+                        <hr />
+                    {% else %}
+                        <div class="text-left row col-12"  id="lin-{{ item.id }}">
+                            <div class="col-8 col-md-9 border">
+                                <span>{{ item.wording }} : </span>
+                            </div>
+                            <div class="col-4 col-md-3 text-right border">
+                                {% dis_play_result item.id as val%}
+                                {% if val == "n/a" %}
+                                    <span class="text-primary">
+                                {% elif val == "valid" %}
+                                    <span class="text-success">
+                                {% else %}
+                                    <span class="text-danger">
+                                {% endif %}
+                                     {% dis_play val %}
+                                </span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if forloop.last %}
+                        <div class="row col-12 mt-3">
+                            <div class="col-2 "><strong class="bg-info">{% dis_play "Remarks" %} : </strong></div>
+                            <div class="col-10">
+                                <textarea class="remarks" id="text-{{ item.id }}"
+                                          rows="5" cols="50">{% dis_play_remark item.id %}</textarea>
+                            </div>
+                        </div>
+                    {% endif %}
+            {% endfor %}
+            <hr class="bold-hr" />
+            <div class="row col-12 mt-3">
+            <div class="col-3 "><strong class="bg-info">{% dis_play "Globalremarks" %} : </strong></div>
+                <textarea class="remarks col-9" id="remarks"
+                          rows="5" cols="50">{{ Checklist.cld_remarks }}</textarea>
+            </div>
+            <hr class="bold-hr" />
+            <div class="row mt-3">
+                <div class="col-12 text-center font-weight-bold">{% dis_play "Checklistis" %} :
+                    {% if Checklist.cld_valid %}
+                        {% dis_play "Valid" as result%}
+                        <button type=button class="btn btn-success">{{ result|upper }}</button>
+                    {% else %}
+                        {% dis_play "Notvalid" as result%}
+                        <button type=button class="btn btn-danger">{{ result|upper }}</button>
+                    {% endif %}
+                </div>
+                <p class="col-12 text-center font-weight-bold mt-3">{% dis_play "Uniqueident" %} : {{ Checklist.cld_key }}</p>
+            </div>
+            <hr class="bold-hr" />
+            {% if fotos %}
+                <hr class="bold-hr" />
+                <div class="row mt-1 text-center justify-center">
+                    <h5 class="col-12 text-center">{% dis_play "Images" %}</h5>
+                </div>
+
+                    {% for foto in fotos %}
+                        {% cycle '<div class="row col-12 mt-3">' '' %}
+                            <div class="col-6 justify-center text-center">
+                                <img src="file://{{ foto.pho_file.path }}" /> <br />
+                                <span class="text-center">{{ foto.pho_caption }}</span>
+                            </div>
+                        {% cycle '' '</div>' %}
+                    {% endfor %}
+
+
+            {% endif %}
+
+        </div>
+    <footer>
+    {{ Checklist.cld_checklist.chk_title }} - {{ Checklist.cld_user.username }} - {{ Checklist.cld_company }}
+        - {% now "d/m/Y" %}
+    </footer>
+    </body>
+
+</html>

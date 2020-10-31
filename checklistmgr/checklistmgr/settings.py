@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #'extra_views',
-    'formtools',
+    # 'formtools',
     'bootstrap_modal_forms',
     'widget_tweaks',
     'django_extensions',
@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'app_create_chklst.apps.AppCreateChklstConfig',
     'app_input_chklst.apps.AppInputChklstConfig',
     'app_checklist.apps.AppChecklistConfig',
+
+    # 'django_cleanup.apps.CleanupConfig',
 
 ]
 

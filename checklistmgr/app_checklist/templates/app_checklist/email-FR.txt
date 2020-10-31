@@ -1,0 +1,13 @@
+{% autoescape off %}
+Bonjour,
+
+Veuillez trouver en P.J. le compte rendu de la Check-list effectuée sur votre matériel {{ material }}.
+
+Cordialement.
+---
+{{ society }}
+{{ society1 }}
+{{ society2 }}
+{{ society3 }}
+
+{% endautoescape %}

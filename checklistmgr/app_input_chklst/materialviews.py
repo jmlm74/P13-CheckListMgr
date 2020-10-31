@@ -18,11 +18,16 @@ class MaterialCreateView(BSModalCreateView):
     success_message = 'CreatematOK'
     success_url = reverse_lazy('app_input_chklst:inp-main')
 
-    def get_context_data(self, **kwargs):
-        context = super(MaterialCreateView, self).get_context_data(**kwargs)
+    def get_success_url(self):
         url = self.request.GET.get('url', None)
         if url:
-            self.success_url = url
+            return url
+        return self.success_url
+
+    def get_context_data(self, **kwargs):
+        context = super(MaterialCreateView, self).get_context_data(**kwargs)
+        print(kwargs)
+
         context['title'] = "Createmat"
         context['btn'] = "Create"
         context['form'].fields['mat_manager'].queryset = Manager.objects.\

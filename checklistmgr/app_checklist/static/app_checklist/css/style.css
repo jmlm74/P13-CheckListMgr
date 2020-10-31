@@ -1,7 +1,11 @@
 .switch-toggle {
-  /*float: left;*/
-  background: #242729;
+  /*float: left;
+  background: #242729; */
+  background: darkgray;
   height: 2em;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 2px 2px 1px silver;
 }
 .switch-toggle input {
   position: absolute;
@@ -24,14 +28,12 @@
   background: red;
 }
 
-/*
-.switch-toggle.valid input:checked + label {
-    background: green;
+.dz{
+  border: dashed !important;
+  border-color: #ccc !important;
+  border-radius: 10px !important;
 }
-.switch-toggle.NA input:checked + label {
-  background: blue;
+
+.dz:hover {
+  background-color: aliceblue !important;
 }
-.switch-toggle.default input:checked + label {
-  background: red;
-}
-/*

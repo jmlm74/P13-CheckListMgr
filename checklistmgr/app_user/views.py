@@ -19,7 +19,6 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
 from sortable_listview import SortableListView
 
@@ -27,7 +26,6 @@ from app_user.forms import (UserCheckListMgrRegister,
                             Company)
 from app_user.models import User
 from app_utilities.models import Translation
-
 
 
 class RegisterView(View):

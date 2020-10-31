@@ -13,25 +13,38 @@ let init = () => {      // init
             document.getElementById("mat_select").value=mat_id;
         }
     }
-     if (document.getElementById('checklist_chklst')) { // checklist : reset the save input (hidden)
-         console.log('INIT')
+     if (document.getElementById('checklist_chklst')) { // checklist : restore radio buttons and remarks
+         // restore radiobuttons states
          let chk_save = document.getElementById('id_chk_save').value;
          while (chk_save.length > 0){
-         //for (let i=0; i<10; i++){
              let item = chk_save.substring(0, chk_save.indexOf(","));
              chk_save = chk_save.substring(chk_save.indexOf(",") + 1);
-             console.log(item)
              let item_id = item.substring(0,item.indexOf(":"));
              if (item_id) {document.getElementById(item_id).checked = true;}
-
          }
-
+         // restore remarks
+         const chk_remsave = document.getElementById('id_chk_remsave').value;
+         if(chk_remsave.length>5) {
+             let remarks = chk_remsave.split('],[')
+             remarks.forEach(remark => {
+                 remark = remark.replace('[[', '[');
+                 remark = remark.replace(']]', ']');
+                 let rem_id = remark.substring(1, remark.indexOf(']['))
+                 let rem = remark.substring(remark.indexOf('][')+2, remark.indexOf(']}}'))
+                 document.getElementById(rem_id).value = rem
+             })
+         }
+     }
+     if (document.getElementById('checklist_fin')) { // checklist_save : the dropzone
      }
 }
 
+/* init for the whole pages of the application */
 window.onload = init();     // init load pages
 
-
+/******************************************************/
+/* man & mat page --> Ajax the refresh form fields :) */
+/******************************************************/
 if (document.getElementById('checklist_man')){      // manager page
     console.log("js man loaded")
     const csrfToken = getCookie('csrftoken');
@@ -103,14 +116,22 @@ if (document.getElementById('checklist_mat')){      // material page
                 });
         }
     })
-
 }
+/**************************/
+/* end of man & mat pages */
+/**************************/
 
+/*********************************/
+/* Save the checklist - Function */
+/*********************************/
 const save_all = (event) => {
-    console.log("save");
+    // save the radiobuttons state
     let data_save= []
     const chk_save = document.getElementById('id_chk_save');
     chk_save.value = '';
+    /***********************************************************/
+    /* get all the elements by status the put them in an array */
+    /***********************************************************/
     let validsElts = document.getElementsByClassName('valid');
     let naElts = document.getElementsByClassName('NA');
     let defaultElts = document.getElementsByClassName('default');
@@ -135,14 +156,159 @@ const save_all = (event) => {
             data_save.push(elt)
         }
     }
+    // to stop the loop in the init !
     data_save.push(',')
     chk_save.value = data_save
+    // save the remarks
+    let remark_save = []
+    let remarks = document.getElementsByClassName('remarks');
+    let chk_remsave = document.getElementById('id_chk_remsave')
+    for (let i = 0; i<remarks.length; i++){
+        //console.log(remarks[i])
+        let remark = `[[${remarks[i].id}][${remarks[i].value}]}}]`
+        remark_save.push(remark)
+    }
+    chk_remsave.value = remark_save
     return true
 }
+    /******************************************************/
+    /* save the check-list on submit (back) or on preview */
+    /******************************************************/
 
 if (document.getElementById('checklist_chklst')) {
     console.log("chklist js");
     let form_chk = document.getElementById("form_id");
     form_chk.onsubmit = save_all.bind(form_chk);
 }
+/********************************************/
+/* end of checklist (save and eventhandler) */
+/********************************************/
 
+/* *********************** */
+/* * Beginning Modal box * */
+/* *********************** */
+if ((document.getElementById('checklist_mat')) || (document.getElementById('checklist_man'))) {    // manager page
+//JQuery is used for BSModal (Bootstrap)
+    $(function () {
+        console.log("Jquery loaded!!!!!")
+        console.log(formURL)
+        console.log(formURL2)
+        $("#create-mgr").modalForm({
+            formURL: formURL,
+            modalID: "#create-modal"
+        });
+        $("#create-mat").modalForm({
+            formURL: formURL,
+            modalID: "#create-modal"
+        });
+        $("#create-adr").modalForm({
+            formURL: formURL,
+            modalID: "#create-modal-large"
+        });
+        $("#create-line").modalForm({
+            formURL: formURL2,
+            modalID: "#create-modal"
+        });
+
+        $(".bs-modal-large").each(function () {
+            $(this).modalForm(
+                {
+                    formURL: $(this).data("form-url"),
+                    modalID: "#modal-large"
+                });
+        });
+
+        $(".bs-modal").each(function () {
+            $(this).modalForm(
+                {
+                    formURL: $(this).data("form-url"),
+                    modalID: "#modal"
+                });
+        });
+
+        // Hide message
+        $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+            $(".alert").slideUp(500);
+        });
+
+    });
+}
+/* ********************* */
+/* * Beginning end box * */
+/* ********************* */
+
+
+if (document.getElementById('checklist_fin')) { // checklist_save : the dropzone
+
+    /************/
+    /* DROPZONE */
+    /************/
+    Dropzone.autoDiscover = false;
+    let caption = "";
+    // console.log(uploadURL)
+    $(function()
+    {
+         var myDropzone = new Dropzone("div#dropzoneForm", {
+            url: uploadURL,
+            maxFiles: 5,
+            maxFilesize: 5,
+            acceptedFiles: '.png, .jpg, .jpeg',
+            addRemoveLinks: true,
+            params: {newchecklist_id: newchecklistID}
+        });
+
+        let fotos = document.getElementById("id_cld_fotosave").value;
+        if (fotos.length >5) {
+            // console.log(fotos)
+            fotos = fotos.replace('[', '')
+            fotos = fotos.replace(']', '')
+            fotos = fotos.replace(/\'/g, '')
+            fotos = fotos.split(', ')  // now fotos is an array
+            // console.log(fotos)
+
+            fotos.forEach(foto => {
+                // console.log(foto)
+                let filename = foto.split('\\').pop().split('/').pop();
+                // let x = foto.replace(/\..+$/, '');
+                var mockFile = {name: filename, status: Dropzone.ADDED, accepted: true};
+                let thumbnail = "/media/" + foto
+                // console.log(thumbnail)
+                myDropzone.displayExistingFile(mockFile, thumbnail);
+            });
+        }
+        myDropzone.on("addedfile", e => {
+            caption = prompt(promptmsg);
+        });
+        myDropzone.on("sending", function(file, xhr, formData){
+           formData.append('caption', caption)
+        });
+        myDropzone.on("removedfile", file => {
+            let data={}
+            const csrfToken = getCookie('csrftoken');
+            data['filename'] = file.name
+            data['checklist_id'] = newchecklistID
+            data = JSON.stringify(data);
+            // ici send ajax
+            SendAjax('POST', removeURL, data, csrfToken)
+            .done(function (response) {
+                console.log(response)
+            });
+        });
+    });
+    /****************/
+    /* FIN DROPZONE */
+    /****************/
+    const csrfToken = getCookie('csrftoken');
+    document.getElementById("pdf-preview").addEventListener("click", e => {
+        let data = {}
+        data['cld_key'] = document.getElementById("id_cld_key").value
+        data['cld_valid'] = document.getElementById("id_cld_valid").checked
+        data['cld_remarks'] = document.getElementById("id_cld_remarks").value
+        data = JSON.stringify(data);
+            // ici send ajax
+            SendAjax('POST', '/app_checklist/beforepreview/', data, csrfToken)
+                .done(function (response) {
+                    return true;
+                });
+    });
+}

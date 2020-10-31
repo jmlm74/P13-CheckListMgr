@@ -1,10 +1,15 @@
 import json
+import os
 
+from django.conf import settings
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 
-from app_checklist.forms import MaterialChecklistForm, ManagerChecklistForm, ChklstChecklistForm
+from app_checklist.forms import ChekListInput1Form, ChekListInput2Form, ChekListInput3Form
+from app_checklist.models import CheckListDone
 from app_input_chklst.models import Material, Manager
 from app_create_chklst.models import CheckList
 
@@ -15,7 +20,7 @@ class ChekListInput1(View):
     """
     context = {'title': 'Material'}
     template_name = "app_checklist/checklist_mat.html"
-    form = MaterialChecklistForm
+    form = ChekListInput1Form
     context_object_name = 'material'
 
     def get(self, request, *args, **kwargs):
@@ -26,18 +31,38 @@ class ChekListInput1(View):
                 del request.session['mgr']
             if 'chklst' in request.session:
                 del request.session['chklst']
+            if 'chksave' in request.session:
+                del request.session['chksave']
             if 'checklist_id' in request.session:
                 del request.session['checklist_id']
-
             request.session.modified = True
+            list(messages.get_messages(request))
+            self.context['checklist_id'] = kwargs['pk']
+            self.context['url'] = reverse('app_checklist:saisie1') + str(kwargs['pk'])
         self.context["materials"] = Material.objects.filter(mat_company=self.request.user.user_company).\
-            filter(mat_enable=True).order_by('mat_company')
+            filter(mat_enable=True).order_by('mat_designation')
         # first load of page
         if 'mat' not in request.session:
             request.session['checklist_id'] = kwargs['pk']
             request.session['mat'] = {}
             request.session['mat']['encours'] = 0
             self.context['form'] = self.form
+            # find if a checklist is already in progress for user and catch the id or create a new one to get the id
+            checklist_done = CheckListDone.objects.filter(cld_user=self.request.user).filter(cld_status=0)
+            if checklist_done.count() == 0:
+                new_checklist = CheckListDone.objects.create(cld_user=self.request.user)
+            else:
+                new_checklist = checklist_done[0]
+                file = new_checklist.cld_pdf_file
+                if file:
+                    media_root = getattr(settings, 'MEDIA_ROOT', None)
+                    try:
+                        os.remove(os.path.join(media_root, str(file)))
+                    except FileNotFoundError:
+                        pass
+                for photo in new_checklist.pho_chklst.all():
+                    photo.delete()
+            request.session['newchecklist_id'] = new_checklist.pk
         # not the first load --> get all the form values in session (dict mat) then load the form with them
         elif request.session['mat']['encours'] == 1:
             mat_registration = request.session['mat']['mat_registration']
@@ -77,12 +102,14 @@ class ChekListInput2(View):
     """
     context = {'title': 'Manager'}
     template_name = "app_checklist/checklist_man.html"
-    form = ManagerChecklistForm
+    form = ChekListInput2Form
     context_object_name = 'manager'
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
+        list(messages.get_messages(request))
+        self.context['url'] = reverse('app_checklist:saisie2')
         self.context["managers"] = Manager.objects.filter(mgr_company=self.request.user.user_company).\
-             filter(mgr_enable=True)
+            filter(mgr_enable=True)
         if 'mgr' not in request.session:
             # the 1st load of form
             request.session['mgr'] = {}
@@ -99,7 +126,7 @@ class ChekListInput2(View):
                                                       'mgr_email2': manager.mgr_email2,
                                                       'mgr_id': manager.pk,
                                                       'manager': manager.mgr_name, })
-        else:
+        elif request.session['mgr']['encours'] == 1:
             # not the 1st load --> load the form data in the session dict then display
             mgr_id = request.session['mgr']['id']
             mgr_contact = request.session['mgr']['mgr_contact']
@@ -112,6 +139,8 @@ class ChekListInput2(View):
                                                       'mgr_email2': mgr_email2,
                                                       'mgr_id': mgr_id,
                                                        })
+        else:
+            self.context['form'] = self.form
         return render(request, self.template_name, context=self.context)
 
     def post(self, request, *args, **kwargs):
@@ -127,6 +156,7 @@ class ChekListInput2(View):
             request.session['mgr']['mgr_email2'] = form.cleaned_data['mgr_email2']
             request.session['mat']['manager'] = request.POST['manager']
         # 2 submit buttons next & previous
+        request.session['mgr']['encours'] = 1
         if 'previous' in request.POST:
             return redirect('app_checklist:saisie1')
 
@@ -137,9 +167,9 @@ class ChekListInput3(View):
     """
     view for input manager of a checklist
     """
-    context = {'title': ''}
+    context = {'title': 'Checklist'}
     template_name = "app_checklist/checklist_chklst.html"
-    form = ChklstChecklistForm
+    form = ChekListInput3Form
     context_object_name = 'Checklist'
 
     def get(self, request):
@@ -149,30 +179,28 @@ class ChekListInput3(View):
         self.context['checklist'] = checklist
         self.context['details'] = details
         # 1st load
-        if 'chklst' not in request.session:
+        if 'chklst' not in request.session or request.session['chklst'] == 0:
             request.session['chklst'] = {}
             request.session['chklst'] = 0
             self.context['form'] = self.form
         else:
             chk_save = request.session['chklst']['save']
-            self.context['form'] = self.form(initial={'chk_save': chk_save, })
+            chk_remsave = request.session['chklst']['remsave']
+            self.context['form'] = self.form(initial={'chk_save': chk_save, 'chk_remsave': chk_remsave })
         return render(request, self.template_name, context=self.context)
 
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST)
-
         if form.is_valid():
             # valid --> save the form in session
             request.session['chklst'] = {}
-            request.session['chklst']['save'] = request.POST['chk_save']  # id
-
+            request.session['chklst']['save'] = request.POST['chk_save']  # save radiobuttons states
+            request.session['chklst']['remsave'] = request.POST['chk_remsave'] # save remarks
+            # print(request.POST['chk_remsave'])
         # 2 submit buttons next & previous
-
         if 'previous' in request.POST:
             return redirect('app_checklist:saisie2')
-
-        return redirect('app_home:main')
-
+        return redirect('app_checklist:saisie4')
 
 
 # Ajax

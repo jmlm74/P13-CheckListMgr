@@ -24,4 +24,5 @@ def define_str(val=None):
 
 @register.simple_tag
 def concat_str(var1, var2):
+    print(f"{var1} - {var2}")
     return str(var1) + str(var2)

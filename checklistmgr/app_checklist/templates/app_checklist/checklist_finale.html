@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dis_play %}
+{% load define %}
+{% block body_block %}
+{% load crispy_forms_tags %}
+<div class="container" id="checklist_fin">
+{% include "partials/_modal.html" %}
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+             aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+    </div>
+    <div class="my_body" id="main">
+        {% include 'partials/_title.html' %}
+
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {% dis_play "Uniquekey" %} : {{ form.cld_key }}
+            </div>
+
+            <p class="form-group">
+                {% dis_play "Chklstvalid" %} : {{ form.cld_valid }}
+            </p>
+            <div class="form-group">
+                {% dis_play "Remarks" %} :<br/> {{ form.cld_remarks }}
+            </div>
+            {{ form.cld_fotosave.as_hidden }}
+
+            <span class="mt-3">Photos : 5 Max - 1Mo Max</span>
+             <div class="dropzone dz" id="dropzoneForm">
+                <div class="fallback">
+                    <input name="file" type="file" multiple/>
+                </div>
+            </div>
+
+            <div class="row col-12 mt-3">
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                </div>
+                <div class="col-3 mb-3">
+                    <a id="pdf-preview" class="btn btn-primary" target="_blank" rel="noopener"
+                       href="{%  url 'app_checklist:pdf' %} ">{% dis_play "PDFPreview" %}</a>
+                </div>
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" value="{% dis_play "Save" %}"/>
+                </div>
+            </div>
+        </form>
+
+    </div>
+{% include 'partials/_back.html' %}
+</div>
+
+
+<script>
+let uploadURL = "{%  url 'app_checklist:upload_photos' %}"
+let newchecklistID = "{{ newchecklist_id }}"
+let promptmsg = "{% dis_play "Msgcaption" %}"
+const removeURL = "{%  url 'app_checklist:remove_photos' %}"
+</script>
+{% endblock %}

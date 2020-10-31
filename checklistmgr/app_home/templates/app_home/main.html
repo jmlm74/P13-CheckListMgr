@@ -47,6 +47,30 @@
             {% endif %}
         </div>
         {% include "app_home/partials/_checkliststable.html" %}
+        <hr class="bold-hr mt-3" />
+        <div class="row class="mt-2>
+            <div class="col-12 text-center">
+                <h3>Dernières Check-lists</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul>
+                    {% for checklistok in checklistsdone %}
+                        {% if checklistok.cld_valid %}
+                            <li class="mt-1 text-success">
+                        {% else %}
+                            <li class="mt-1 text-danger">
+                        {% endif %}
+                        <a href="{{ checklistok.cld_pdf_file.url }}" target="_blank" style="color:inherit;">
+                        {{ checklistok.cld_key }} -
+                        {{checklistok.cld_manager.mgr_name}} - {{checklistok.cld_material.mat_designation}}</a>
+                        - {{ checklistok.modified_date|date:"d/m/Y" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         {% include 'partials/_back.html' %}
     </div>
 </div>

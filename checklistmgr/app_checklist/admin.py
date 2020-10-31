@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from app_checklist.models import CheckListPhoto, CheckListDone
+admin.site.register(CheckListPhoto)
+admin.site.register(CheckListDone)
+

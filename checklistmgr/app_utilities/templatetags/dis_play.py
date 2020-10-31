@@ -26,6 +26,8 @@ def dis_play(context, value):
         language = context.request.session['language']
     except KeyError:
         language = "UK"
+    except AttributeError:
+        language = "UK"
     text_to_display = Translation.get_translation(value, language=language)
     return text_to_display
 
@@ -90,3 +92,41 @@ def find_value_in_listdict(value, my_list_dict):
         if value in my_dict.values():
             found = True
     return found
+
+
+@register.simple_tag(takes_context=True)
+def dis_play_result(context, item):
+    """
+        Template tag to return the choice of specific Item in checklist (Valid, N/A, Not Valid)
+        Args :
+            Context --> use to get session data
+            the item_id
+        Return:
+              choice (string)
+    """
+    if str(item) + "-on" in context['dict_choices']:
+        return "valid"
+    elif str(item) + "-na" in context['dict_choices']:
+        return "n/a"
+    return 'default'
+
+@register.simple_tag(takes_context=True)
+def dis_play_remark(context, rem_id):
+    """
+        Template tag to return the remarks in checklist
+        Args :
+            Context --> use to get session data
+            the remark_id
+        Return:
+              remark (string)
+    """
+    remark_id = "text-"+str(rem_id)
+    try:
+        remark = context['dict_remarks'][remark_id]
+        return remark.replace("{CRLF}", "\r\n")
+    except KeyError:
+        return 'ERREUR'
+
+@register.filter('timestamp_to_date')
+def timestamp_to_date(timestamp):
+    return datetime.date.fromtimestamp(int(timestamp))

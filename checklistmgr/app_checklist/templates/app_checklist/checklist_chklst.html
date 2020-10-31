@@ -11,16 +11,31 @@
     <span class="my_body" id="main">
         {% include 'partials/_title.html' %}
     </span>
-        <form method="post" action="" id="form_id">
+        <form method="post" action="" id="form_id" small>
             {% csrf_token %}
-
+            <div class="row col-12">
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                </div>
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
+                </div>
+            </div>
             <div class="form-group">
                 <h4 class="text-center">{{ checklist.title }}</h4>
             </div>
             <hr class="bold-hr mb-3">
             {% for item in details %}
-
                     {% if item.line_cat == 'cat' %}
+                        {% if not forloop.first %}
+                        <div class="row mt-3">
+                            <div class="col-2"><strong>Remarques : </strong></div>
+                            <div class="col-10">
+                                <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
+                                            placeholder="Entrez vos remarques"></textarea>
+                            </div>
+                        </div>
+                        {% endif %}
                         <hr />
                         <div class="col-12 row">
                             <p id="cat-{{ item.id }}">
@@ -30,26 +45,43 @@
                         <hr />
                     {% else %}
                         <div class="text-left row col-12"  id="lin-{{ item.id }}">
-                            <div class="col-sm-9">
+                            <div class="col-8 col-md-9 border">
                                 <span>{{ item.wording }} : </span>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-4 col-md-3 text-right border">
                                 <span class="switch-toggle small" name="but-{{ item.id }}" >
                                     <span class="valid"><input id="{{ item.id }}-on" name="state-d-{{ item.id }}" type="radio"  />
-                                        <label for="{{ item.id }}-on" onclick="">Valide</label></span>
+                                        <label for="{{ item.id }}-on" onclick="">{% dis_play "Valid" %}</label></span>
                                     <span class="NA"><input id="{{ item.id }}-na" name="state-d-{{ item.id }}" type="radio" checked="checked" />
-                                        <label for="{{ item.id }}-na" onclick="">N/A</label></span>
+                                        <label for="{{ item.id }}-na" onclick="">{% dis_play "N/A" %}</label></span>
                                     <span class="default"><input id="{{ item.id }}-off" name="state-d-{{ item.id }}" type="radio" />
-                                        <label for="{{ item.id }}-off" onclick="">Defaut</label></span>
+                                        <label for="{{ item.id }}-off" onclick="">{% dis_play "Default" %}</label></span>
                                 </span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if forloop.last %}
+                        <div class="row col-12 mt-3">
+                            <div class="col-2"><strong>Remarques : </strong></div>
+                            <div class="col-10">
+                                <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
+                                          placeholder="Entrez vos remarques"></textarea>
+
                             </div>
                         </div>
                     {% endif %}
             {% endfor %}
             {{ form.chk_save.as_hidden }}
+            {{ form.chk_remsave.as_hidden }}
             <hr class="bold-hr mt-3"/>
-            <input type="submit" class="btn btn-primary" name="previous" value="Previous"/>
-            <input type="submit" class="btn btn-primary" name="next" value="Next"/>
+           <div class="row col-12">
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                </div>
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
+                </div>
+           </div>
         </form>
 
     </div>

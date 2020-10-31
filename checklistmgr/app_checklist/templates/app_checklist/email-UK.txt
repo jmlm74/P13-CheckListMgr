@@ -1,0 +1,13 @@
+{% autoescape off %}
+Hello,
+
+Please find attached the report of the Checklist carried out on your material {{material}}.
+
+Cordially.
+---
+{{society}}
+{{ society1 }}
+{{ society2 }}
+{{ society3 }}
+
+{% endautoescape %}

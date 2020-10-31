@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from sortable_listview import SortableListView
 
+from app_checklist.models import CheckListDone
 from app_user.forms import UserCheckListMgrFormLogin
 from app_create_chklst.models import CheckList
 
@@ -99,4 +100,7 @@ class MainView(SortableListView):
         context = super().get_context_data(**kwargs)
         context['sort'] = self.request.GET.get('sort', 'chk_key')
         context['title'] = 'Main'
+        checklistsdone = CheckListDone.objects.filter(cld_company=self.request.user.user_company).\
+            order_by('modified_date')[:15]
+        context['checklistsdone'] = checklistsdone
         return context

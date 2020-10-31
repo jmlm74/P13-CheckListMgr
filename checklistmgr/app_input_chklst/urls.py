@@ -14,6 +14,7 @@ urlpatterns = [
 
     # Managers
     path('managermgmt/', login_required(aicmgrv.MgrMgmtView.as_view()), name='inp-mgrmgmt'),
+    path('managercreate/<slug:return_url>', login_required(aicmgrv.ManagerCreateView.as_view()), name='inp-mgrcreate'),
     path('managercreate/', login_required(aicmgrv.ManagerCreateView.as_view()), name='inp-mgrcreate'),
     path('managerdisplay/<int:pk>', login_required(aicmgrv.ManagerDisplayView.as_view()), name='inp-mgrdisplay'),
     path('managerupdate/<int:pk>', login_required(aicmgrv.ManagerUpdateView.as_view()), name='inp-mgrupdate'),
@@ -28,7 +29,7 @@ urlpatterns = [
 
 # Materials
     path('materialcreate/', login_required(aicmatv.MaterialCreateView.as_view()), name='inp-matcreate'),
-    path('materialcreate/<str:return_url>', login_required(aicmatv.MaterialCreateView.as_view()), name='inp-matcreate'),
+    path('materialcreate/<slug:return_url>', login_required(aicmatv.MaterialCreateView.as_view()), name='inp-matcreate'),
     path('materialdisplay/<int:pk>', login_required(aicmatv.MaterialDisplayView.as_view()), name='inp-matdisplay'),
     path('materialupdate/<int:pk>', login_required(aicmatv.MaterialUpdateView.as_view()), name='inp-matupdate'),
     path('materialdelete/<int:pk>', login_required(aicmatv.MaterialDeleteView.as_view()), name='inp-matdelete'),

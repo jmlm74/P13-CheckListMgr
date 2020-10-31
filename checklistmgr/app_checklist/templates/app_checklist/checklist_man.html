@@ -4,6 +4,7 @@
 {% block body_block %}
 {% load crispy_forms_tags %}
 <div class="container" id="checklist_man">
+{% include "partials/_modal.html" %}
     <div class="progress">
         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
              aria-valuemin="0" aria-valuemax="100"style="width: 50%;"></div>
@@ -37,10 +38,27 @@
                 {% dis_play "Email2" %} : {{ form.mgr_email2 }}
                 {{ form.mgr_id.as_hidden }}
             </div>
-        <input type="submit" class="btn btn-primary" name="previous" value="Previous"/>
-        <input type="submit" class="btn btn-primary" name="next" value="Next"/>
+            <div class="row col-12">
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                </div>
+                <div class="col-3 mb-3">
+                    <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
+                </div>
+                <div class="col-6 mb-3">
+                    <button id="create-mgr" class="btn btn-primary" type="button" name="button">
+                        <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
+                    </button>
+                </div>
+            </div>
  </form>
     </div>
 {% include 'partials/_back.html' %}
 </div>
+    <script>
+let formURL = "{%  url 'app_input_chklst:inp-mgrcreate' %}".concat('',"?url=").concat('',"{{ url }}")
+// formURL = formURL.concat('',"{{ url }}")
+// console.log(formURL)
+const formURL2 = "{%  url 'app_create_chklst:chk-main' %}"
+</script>
 {% endblock %}
