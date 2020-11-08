@@ -6,6 +6,9 @@ from app_user.models import User, UserLanguages, Company, Address
 
 
 class UserCheckListMgrFormLogin(forms.Form):
+    """
+    Login form (homepage)
+    """
     username = forms.CharField(label="User")
     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
     bot_catcher = forms.CharField(required=False,
@@ -67,6 +70,7 @@ class UserCheckListMgrRegister(forms.Form):
 
 """
 the 2 forms CompanyCreate and AddressCreate are used in a single view (Create company)
+just used by the admin-site !!!!
 """
 class CompanyCreateForm(forms.ModelForm):
     address = forms.ModelChoiceField(queryset=Address.objects.exclude(address_name__exact='').order_by('address_name'),

@@ -6,6 +6,10 @@ from app_user.models import Company
 
 
 class CategoryModelForm(BSModalModelForm):
+    """
+    Create/update category form
+    Clean method is to set the user company automatically
+    """
     class Meta:
         model = Category
         fields = '__all__'
@@ -25,6 +29,10 @@ class CategoryModelForm(BSModalModelForm):
 
 
 class LineModelForm(BSModalModelForm):
+    """
+    Create/update line form
+    Clean method is to set the user company automatically
+    """
     class Meta:
         model = Line
         fields = '__all__'
@@ -42,6 +50,10 @@ class LineModelForm(BSModalModelForm):
 
 
 class CheckListCreateForm(forms.Form):
+    """
+    Checklist creation form
+    Drag&Drop essentially --> the Django form is basic
+    """
     chk_key = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'size': '20'}))
     chk_title = forms.CharField(max_length=80, widget=forms.TextInput(attrs={'size': '30'}))
     chk_enable = forms.BooleanField(initial=True)

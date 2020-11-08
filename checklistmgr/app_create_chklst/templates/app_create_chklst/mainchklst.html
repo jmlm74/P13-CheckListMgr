@@ -1,21 +1,15 @@
-{# main page  #}
+{# main page for checklist   #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
 {% block body_block %}
 
-<style>
-.display-chklst{
-    overflow-y: auto;
-    max-height: 25em;
-}
-</style>
 <div class="my_body" id="main">
     {% include "partials/_modal.html" %}
     <div class="container">
         {% include 'partials/_title.html' %}
         <div class="row mt-5 mb-5">
-            <div class="col-sm-2 col-12">
+            <div class="col-6 col-md-2">
                 <a href="{% url 'app_create_chklst:chk-catmgmt' %}">
                     <button type="button" class="btn btn-primary btn-block">
                             <i class="fas fa-3x fa-paragraph"></i><br />
@@ -23,7 +17,7 @@
                     </button>
                 </a>
             </div>
-            <div class="col-sm-2 col-12">
+            <div class="col-6 col-md-2">
                 <a href="{% url 'app_create_chklst:chk-linemgmt' %}">
                 <button type="button" class="btn btn-primary btn-block">
                     <i class="fas fa-3x fa-align-justify"></i><br />

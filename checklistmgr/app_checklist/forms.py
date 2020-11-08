@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import forms
 
 from app_input_chklst.models import Material, Manager
@@ -13,7 +15,7 @@ class ChekListInput1Form(forms.Form):
     mat_id = forms.IntegerField(initial=0)
 
     class Meta:
-        fields = ['mat_designation', 'mat_registration', 'mat_type', 'mat_model', 'mat_material', 'mat_manager' ]
+        fields = ['mat_designation', 'mat_registration', 'mat_type', 'mat_model', 'mat_material', 'mat_manager', ]
 
     def __init__(self, *args, **kwargs):
         super(ChekListInput1Form, self).__init__(*args, **kwargs)
@@ -75,11 +77,12 @@ class ChekListInput4Form(forms.Form):
     cld_fotosave = forms.CharField(max_length=1000, label='foto_save')
 
     class Meta:
-        fields = ['cld_key', 'cld_valid', 'cld_remarks', 'cld_fotosave' ]
+        fields = ['cld_key', 'cld_valid', 'cld_remarks', 'cld_fotosave', ]
 
     def __init__(self, *args, **kwargs):
         super(ChekListInput4Form, self).__init__(*args, **kwargs)
         self.fields['cld_key'].required = False
+        self.fields['cld_key'].initial = str(datetime.now().timestamp())[:15]
         self.fields['cld_valid'].required = False
         self.fields['cld_remarks'].required = False
         self.fields['cld_fotosave'].required = False

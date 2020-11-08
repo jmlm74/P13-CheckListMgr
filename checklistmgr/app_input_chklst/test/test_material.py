@@ -65,7 +65,7 @@ class Testmaterials(TransactionTestCase):
         assert path == '/app_input_chklst/materialupdate/5'
         assert resolve(path).view_name == 'app_input_chklst:inp-matupdate'
 
-    def test_form_Creatematerial_isvalid(self):
+    def test_FORM_Creatematerial_isvalid(self):
         """
         verify the create material form is valid
         """
@@ -81,7 +81,7 @@ class Testmaterials(TransactionTestCase):
         })
         assert(form.is_valid())
 
-    def test_form_Creatematerial_isNOTvalid(self):
+    def test_FORM_Creatematerial_isNOTvalid(self):
         """
         verify the create material form is NOT valid --> invalid data
         """
@@ -97,7 +97,7 @@ class Testmaterials(TransactionTestCase):
         })
         assert not (form.is_valid())
 
-    def test_create_material_is_ok(self):
+    def test_VIEW_create_material_is_ok(self):
         """
             Verify checklist creation is OK --> RC = 302 + 1 more line in the table
         """
@@ -117,7 +117,7 @@ class Testmaterials(TransactionTestCase):
         assert response.status_code == 302
         assert nb1 + 1 == nb2
 
-    def test_create_material_is_NOTok(self):
+    def test_VIEW_create_material_is_NOTok(self):
         """
             Verify material creation is NOT OK --> RC = 200 and same number of lines
         """
@@ -146,7 +146,7 @@ class Testmaterials(TransactionTestCase):
         assert response.status_code == 200
         assert nb1 == nb2
 
-    def test_update_material_is_ok(self):
+    def test_VIEW_update_material_is_ok(self):
         """
             Verify material update is OK --> RC = 302 + updated material
         """

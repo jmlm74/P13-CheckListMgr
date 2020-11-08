@@ -42,7 +42,6 @@ def error_view_handler(request, exception, status):
                  context : error detail to be displayed
     """
     print(f"Erreur {status} - {exception}")
-    #  line for sentry
     return render(request, template_name='errors/errors.html', status=status,
                   context={'error': str(exception), 'status': status,
                            'title': VIEW_ERRORS[status]['title'],

@@ -1,32 +1,15 @@
-from django.shortcuts import render
-from django.db.models import ObjectDoesNotExist
-from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView
-from django.views.generic import View
 from django.contrib import messages
+from django.db.models import ObjectDoesNotExist
 from django.db.models import Q
+from django.shortcuts import render
+from django.views.generic import View
+from django.views.generic.edit import UpdateView
+
 from sortable_listview import SortableListView
 
-from app_user.models import Company, Address
 from app_user.forms import CompanyCreateForm, AddressCreateForm
+from app_user.models import Company, Address
 
-"""
-class ListCompaniesView(ListView):
-    ""
-    List  companies --> ListView
-
-    ""
-    context = {'title': "Companylist"}
-    context_object_name = "companies"
-    template_name = 'app_user/list_company.html'
-    queryset = Company.objects.filter(~Q(address_id=1) & ~Q(address_id=None)).order_by('company_name')
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = "Companylist"
-        return context
-"""
 
 class ListCompaniesView(SortableListView):
     """
@@ -47,8 +30,13 @@ class ListCompaniesView(SortableListView):
         return context
 
 
-
 class CreateCompanyView(View):
+    """
+    creat company view
+    2 forms : The company (just the name --> model Company)
+            : The address (may already exist !) --> model Address
+    The creation is a 2 step creation : The company and then the address if it doesn't already exist
+    """
     context = {'title': "Createcompany"}
     form = CompanyCreateForm
     form2 = AddressCreateForm
@@ -60,8 +48,8 @@ class CreateCompanyView(View):
         return render(request, self.template_name, context=self.context)
 
     def post(self, request):
-        form = self.form(request.POST)
-        form2 = self.form2(request.POST)
+        form = self.form(request.POST)  # the company
+        form2 = self.form2(request.POST)  # the address
         if form.is_valid():
             if form2.is_valid():
                 company = form.cleaned_data['company_name']
@@ -74,8 +62,10 @@ class CreateCompanyView(View):
                 zipcode = form2.cleaned_data['zipcode']
                 country = form2.cleaned_data['country']
                 try:
+                    # verify the address exists or not
                     new_memo = Address.objects.get(address_name__iexact=memo)
                 except ObjectDoesNotExist:
+                    # don't exist
                     new_memo = Address(address_name=memo,
                                        street_number=street_number,
                                        street_type=street_type,
@@ -86,6 +76,7 @@ class CreateCompanyView(View):
                                        country=country)
                     new_memo.save()
                 else:
+                    # already exist --> modifications are applied
                     new_memo.street_number = street_number
                     new_memo.street_type = street_type
                     new_memo.address1 = address1
@@ -105,6 +96,9 @@ class CreateCompanyView(View):
 
 
 class EditCompanyView(UpdateView):
+    """
+    Modify Company --> same principle as the creation --> 2 steps
+    """
     context = {'title': "Companyupdate"}
     form = CompanyCreateForm
     form2 = AddressCreateForm
@@ -133,7 +127,7 @@ class EditCompanyView(UpdateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, pk):
-        request.POST._mutable = True
+        request.POST._mutable = True  # to modify the POST
         request.POST['update'] = True
         form = self.form(request.POST)
         form2 = self.form2(request.POST)
@@ -184,6 +178,3 @@ class EditCompanyView(UpdateView):
             self.context['form'] = form
             self.context['form2'] = form2
             return render(request, self.template_name, self.context)
-
-
-

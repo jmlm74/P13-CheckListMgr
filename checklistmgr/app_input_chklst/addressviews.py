@@ -1,13 +1,12 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
-from django.contrib import messages
-from django.db.models import Q, RestrictedError
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from sortable_listview import SortableListView
 
-from app_create_chklst.forms import CategoryModelForm
-from app_input_chklst.forms import ManagerCreateForm, AddressCreateForm
-from app_input_chklst.models import Manager
+from django.contrib import messages
+from django.db.models import RestrictedError
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+
+from app_input_chklst.forms import AddressCreateForm
 from app_user.models import Address
 
 

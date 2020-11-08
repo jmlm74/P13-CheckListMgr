@@ -5,6 +5,11 @@ from app_user.models import Company, Address
 
 
 class Manager(models.Model):
+    """
+    Manager model -->
+    Foreign key : Address and Company
+    Can be disabled --> not usable in checklist input
+    """
     mgr_name = models.CharField(max_length=30, verbose_name="Owner")
     mgr_contact = models.CharField(max_length=30, verbose_name="Contact", null=True, blank=True)
     mgr_phone = models.CharField(max_length=31, verbose_name="Phone", null=True, blank=True)
@@ -38,6 +43,12 @@ class Manager(models.Model):
 
 
 class Material(models.Model):
+    """
+    Material -->
+    Foreign key : Manager, company Material --> a material may be on another material
+    --> IE A TAIL LIFT ON A TRUCK --> 2 materials : The truck (primary) then the tail lift (secondary)
+    Can be disabled --> not usable in checklist input
+    """
     mat_designation = models.CharField(max_length=30, verbose_name="Naming")
     mat_registration = models.CharField(max_length=30, verbose_name="Serial", null=True, blank=True)
     mat_type = models.CharField(max_length=30, verbose_name="Type", null=True, blank=True)

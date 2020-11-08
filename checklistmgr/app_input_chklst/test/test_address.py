@@ -59,7 +59,7 @@ class Testaddresses(TransactionTestCase):
         assert path == '/app_input_chklst/addressupdate/5'
         assert resolve(path).view_name == 'app_input_chklst:inp-addrupdate'
 
-    def test_form_Createaddress_isvalid(self):
+    def test_FORM_Createaddress_isvalid(self):
         """
         verify the create address form is valid
         """
@@ -74,7 +74,7 @@ class Testaddresses(TransactionTestCase):
                                        })
         assert(form.is_valid())
 
-    def test_form_Createaddress_isNOTvalid(self):
+    def test_FORM_Createaddress_isNOTvalid(self):
         """
         verify the create address form is NOT valid --> invalid data
         """
@@ -89,7 +89,7 @@ class Testaddresses(TransactionTestCase):
                                        })
         assert not (form.is_valid())
 
-    def test_create_address_is_ok(self):
+    def test_VIEW_create_address_is_ok(self):
         """
             Verify address creation is OK --> RC = 302 + 1 more line in the table
         """
@@ -108,7 +108,7 @@ class Testaddresses(TransactionTestCase):
         assert response.status_code == 302
         assert nb1 + 1 == nb2
 
-    def test_create_address_is_NOTok(self):
+    def test_VIEW_create_address_is_NOTok(self):
         """
             Verify address creation is NOT OK --> RC = 200 and same number of lines
         """
@@ -136,7 +136,7 @@ class Testaddresses(TransactionTestCase):
         assert response.status_code == 200
         assert nb1 == nb2
 
-    def test_update_address_is_ok(self):
+    def test_VIEW_update_address_is_ok(self):
         """
             Verify address update is OK --> RC = 302 + updated address
         """

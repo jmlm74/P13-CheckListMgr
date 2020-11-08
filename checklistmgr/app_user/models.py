@@ -5,6 +5,9 @@ from django.db import models
 
 
 class Address(models.Model):
+    """
+    Address -> Same model for companies addresses or managers
+    """
     address_name = models.CharField(max_length=50, verbose_name="Mnemonic address name")
     street_number = models.PositiveSmallIntegerField(default=0, verbose_name="Street Number")
     street_type = models.CharField(max_length=20, blank=True, default="", verbose_name="Street Type")
@@ -25,6 +28,9 @@ class Address(models.Model):
 
 
 class UserLanguages(models.Model):
+    """
+    Language code : FR - Francais....
+    """
     code = models.CharField(max_length=2, verbose_name='Language code', default='FR', unique=True, primary_key=True)
     language = models.CharField(max_length=20, verbose_name='Language', default='Francais')
 
@@ -37,6 +43,10 @@ class UserLanguages(models.Model):
 
 
 class Company(models.Model):
+    """
+    Company
+    Just a name and an address (what else ?)
+    """
     company_name = models.CharField(max_length=100,
                                     verbose_name="Society",
                                     unique=True)
@@ -56,6 +66,13 @@ class Company(models.Model):
 
 
 class User(AbstractUser):
+    """
+    User model --> inheri AbstractUser
+    The email is here to be unique --> reset password !!!!
+    admin --> just admin for the app not is_admin !
+    pro --> Professional user
+    Picture : An avatar but not really used !
+    """
     email = models.EmailField(max_length=255, unique=True, verbose_name='Email')
     admin = models.BooleanField(default=False, verbose_name="is admin")
     pro = models.BooleanField(default=False, verbose_name="is pro")
@@ -70,7 +87,3 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    # todo # used for tables2 maybe to be deleted in the finale version
-    @property
-    def full_name(self):
-        return "{} - {}".format(self.first_name, self.last_name)

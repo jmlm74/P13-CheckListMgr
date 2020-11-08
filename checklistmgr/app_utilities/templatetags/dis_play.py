@@ -24,9 +24,9 @@ def dis_play(context, value):
     """
     try:
         language = context.request.session['language']
-    except KeyError:
+    except KeyError as e:
         language = "UK"
-    except AttributeError:
+    except AttributeError as e:
         language = "UK"
     text_to_display = Translation.get_translation(value, language=language)
     return text_to_display
@@ -76,6 +76,9 @@ def dis_play_date(context):
 
 @register.filter
 def to_str(value):
+    """
+    return the value in arg in str (don't exist in django)
+    """
     return str(value)
 
 
@@ -129,4 +132,9 @@ def dis_play_remark(context, rem_id):
 
 @register.filter('timestamp_to_date')
 def timestamp_to_date(timestamp):
+    """
+    Template tag to return a date format
+    args :timestamp format
+    returns : dattime format
+    """
     return datetime.date.fromtimestamp(int(timestamp))

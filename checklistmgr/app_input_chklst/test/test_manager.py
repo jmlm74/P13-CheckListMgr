@@ -76,7 +76,7 @@ class Testmanagers(TransactionTestCase):
         assert path == '/app_input_chklst/managerupdate/5'
         assert resolve(path).view_name == 'app_input_chklst:inp-mgrupdate'
 
-    def test_create_manager_is_ok(self):
+    def test_VIEW_create_manager_is_ok(self):
         """
             Verify manager creation is OK --> RC = 302 + 1 more manager in the table
         """
@@ -96,7 +96,7 @@ class Testmanagers(TransactionTestCase):
         assert response.status_code == 302
         assert nb1 + 1 == nb2
 
-    def test_create_manager_is_NOTok(self):
+    def test_VIEW_create_manager_is_NOTok(self):
         """
             Verify manager creation is NOT OK --> RC = 200 and same number of lines --> duplicate
         """
@@ -116,7 +116,7 @@ class Testmanagers(TransactionTestCase):
         assert response.status_code == 200
         assert nb1 == nb2
 
-    def test_update_manager_is_ok(self):
+    def test_VIEW_update_manager_is_ok(self):
         """
             Verify manager update is OK --> RC = 302 + updated manager
         """

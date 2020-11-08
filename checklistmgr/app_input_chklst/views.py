@@ -1,14 +1,14 @@
 from django.db.models import Q
-from django.shortcuts import render
 
-# Create your views here.
 from sortable_listview import SortableListView
 
-from app_create_chklst.models import CheckList
 from app_input_chklst.models import Material
 
 
 class MainInputView(SortableListView):
+    """
+    List materials --> sortable list view
+    """
     context = {'title': 'Materials'}
     template_name = "app_input_chklst/maininput.html"
     context_object_name = "materials"

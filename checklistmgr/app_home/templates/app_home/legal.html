@@ -1,4 +1,4 @@
-{# Homepage template - 3 parts : The SearchForm - Presentation (about) - Contact #}
+{# legal & contrib page : The same page with aa display none or block in a JS script #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -88,16 +88,22 @@
         </div>
 
 
-        <div id="contrib" style="display: none;">
-            <p>
-             <p class="h2">{% dis_play "app_home_legal_text43" %}</p>
-            </p>
-            <p> {% dis_play "app_home_legal_text44" %} </p>
-            <p> {% dis_play "app_home_legal_text45" %} <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
-                 <a href="https://www.flaticon.com/" title="Flaticon"> - www.flaticon.com</a></p>
-            <p> {% dis_play "app_home_legal_text46" %} <a href="https://fontawesome.com/">Font Awsome</a>  </p>
-            <p> Modal views from <a href="https://github.com/trco/django-bootstrap-modal-forms">https://github.com/trco/django-bootstrap-modal-forms</a></p>
-        </div>
+            <div id="contrib" style="display: none;">
+                <p>
+                 <p class="h2">{% dis_play "app_home_legal_text43" %}</p>
+                </p>
+                <p>{% dis_play "app_home_legal_text44" %} </p>
+                <p>{% dis_play "Develframework" %} : <a href="https://www.djangoproject.com/">Django</a></p>
+                <p>{% dis_play "CSSframework" %} : <a href="https://getbootstrap.com/">Bootstrap</a></p>
+                <p>{% dis_play "app_home_legal_text45" %} : <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
+                     <a href="https://www.flaticon.com/" title="Flaticon"> - www.flaticon.com</a></p>
+                <p>{% dis_play "app_home_legal_text46" %} : <a href="https://fontawesome.com/">Font Awsome</a>  </p>
+                <p>{% dis_play "ModalViews" %} : <a href="https://github.com/trco/django-bootstrap-modal-forms">https://github.com/trco/django-bootstrap-modal-forms</a></p>
+                <p>{% dis_play "Sortlists" %} : <a href="https://github.com/aptivate/django-sortable-listview">django-sortable-listview</a></p>
+                <p>Dropzone : <a href="https://www.dropzonejs.com/">dropzone.js</a></p>
+                <p>Drag'nDrop : <a href="https://github.com/Bernardo-Castilho/dragdroptouch">dragdroptouch</a></p>
+                <p>{% dis_play "pdfcreate" %} : <a href="https://weasyprint.org/">Weasyprint</a></p>
+            </div>
         </div>
     {% include 'partials/_back.html' %}
     </div>

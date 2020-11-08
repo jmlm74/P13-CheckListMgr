@@ -1,8 +1,7 @@
-{# Register form  #}
+{# list company  form  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
-{% load crispy_forms_tags %}
 {% block body_block %}
 <header class="my_body">
     <div class="container">
@@ -56,11 +55,7 @@
                             <td>{{ company.address.zipcode }}</td>
                             <td>{{ company.address.city }}</td>
                             <td>{{ company.address.country }}</td>
-                            <td> {% comment %}
-                                <span data-tooltip="{%  dis_play "Delete" %}">
-                                    <i id="{{ user.id }}-{{ user.username }}" class="fas fa-trash-alt"></i>
-                                </span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;{% endcomment %}
+                            <td>
                                 <span data-tooltip="{% dis_play "Update" %}">
                                     <a  href="{% url 'app_user:editcompany' company.id %}" ><i class="fas fa-edit"></i></a>
                                 </span>

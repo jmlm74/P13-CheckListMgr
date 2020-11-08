@@ -1,16 +1,19 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
-from django.contrib import messages
-from django.db.models import Q, RestrictedError
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from sortable_listview import SortableListView
 
-from app_create_chklst.forms import CategoryModelForm
+from django.contrib import messages
+from django.db.models import Q, RestrictedError
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+
 from app_input_chklst.forms import ManagerCreateForm
 from app_input_chklst.models import Manager
 
 
 class MgrMgmtView(SortableListView):
+    """
+    List managers --> list sortable
+    """
     context = {'title': 'Managers'}
     template_name = "app_input_chklst/managermgmt.html"
     context_object_name = "managers"
@@ -19,7 +22,7 @@ class MgrMgmtView(SortableListView):
                            "mgr_phone": {'default_direction': '', 'verbose_name': 'Phone'},
                            "line_email1": {'default_direction': '', 'verbose_name': 'Email1'},
                            "line_email2": {'default_direction': '', 'verbose_name': 'Email2'},
-                           "line_Enable": {'default_direction': '', 'verbose_name': 'Enable'},}
+                           "line_Enable": {'default_direction': '', 'verbose_name': 'Enable'}, }
     default_sort_field = 'mgr_name'  # mandatory
     paginate_by = 5
 
@@ -40,7 +43,7 @@ class MgrMgmtView(SortableListView):
 
 class ManagerCreateView(BSModalCreateView):
     """
-    Create manager --> modal View
+    Create manager --> modal create View
     """
     template_name = 'app_input_chklst/dialogboxes/createmanager.html'
     form_class = ManagerCreateForm
@@ -61,10 +64,9 @@ class ManagerCreateView(BSModalCreateView):
         return context
 
 
-
 class ManagerDisplayView(BSModalReadView):
     """
-    Manager display --> modal view
+    Manager display --> modal display/read view
     """
     model = Manager
     template_name = 'app_input_chklst/dialogboxes/displaymanager.html'
@@ -77,7 +79,7 @@ class ManagerDisplayView(BSModalReadView):
 
 class ManagerUpdateView(BSModalUpdateView):
     """
-    Update manager --> modal view
+    Update manager --> modal update view
     """
     model = Manager
     template_name = 'app_input_chklst/dialogboxes/createmanager.html'
@@ -91,9 +93,10 @@ class ManagerUpdateView(BSModalUpdateView):
         context['btn'] = "Update"
         return context
 
+
 class ManagerDeleteView(BSModalDeleteView):
     """
-    Manager Delete --> modal view
+    Manager Delete --> modal delete view
     """
     template_name = 'app_input_chklst/dialogboxes/deletemgr.html'
     model = Manager

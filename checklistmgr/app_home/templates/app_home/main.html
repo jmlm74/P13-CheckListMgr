@@ -7,7 +7,7 @@
     <div class="my_body" id="main">
         {% include 'partials/_title.html' %}
         <div class="row buttons col-12 mt-5 mb-5">
-            <div class="col-sm-2 col-12">
+            <div class=" col-md-3 col-xl-2 d-none d-md-block">
                 <a href="{% url 'app_user:list' %}">
                     <button type="button" class="btn btn-primary btn-block">
                         <i class="fas fa-3x fa-user"></i><br />
@@ -16,7 +16,7 @@
                 </a>
             </div>
             {% if user.is_superuser %}
-                <div class="col-sm-2 col-12">
+                <div class="col-md-3 col-xl-2 d-none d-md-block">
                     <a href="{% url 'app_user:listcompanies' %}">
                         <button type="button" class="btn btn-primary btn-block">
                             <i class="fas fa-3x fa-building"></i><br />
@@ -26,7 +26,7 @@
                 </div>
             {% endif %}
             {% if user.admin or not user.pro%}
-            <div class="col-sm-2 col-12">
+            <div class="col-md-3 col-xl-2  d-none d-md-block">
                 <a href="{% url 'app_create_chklst:chk-main' %}">
                     <button type="button" class="btn btn-primary btn-block">
                         <i class="fas fa-3x fa-tasks"></i><br />
@@ -36,7 +36,7 @@
             </div>
             {% endif %}
             {% if user.pro %}
-            <div class="col-sm-2 col-12">
+            <div class="col-md-3 col-xl-2 d-none d-md-block">
                 <a href="{% url 'app_input_chklst:inp-main' %}">
                     <button type="button" class="btn btn-primary btn-block">
                         <i class="fas fa-3x fa-cogs"></i><br />
@@ -48,14 +48,39 @@
         </div>
         {% include "app_home/partials/_checkliststable.html" %}
         <hr class="bold-hr mt-3" />
-        <div class="row class="mt-2>
+        <div class="row mt-2">
+
+            <form id="form-search">
+                {% csrf_token %}
+                <div class="col-12">
+                <span class="col-12 col-md-4">
+                    <label for="smaterial">Material</label>
+                    <select name="smaterial" id="search-material" style="max-width: 10em;" ></select>
+                </span>
+                 <span class="col-12 col-md-4">
+                    <label for="smanager">Manager</label>
+                     <select name="smanager" id="search-manager" style="max-width: 10em;"></select>
+                </span>
+                <span class="col-12 col-md-3">
+                    <label for="sdate">Date</label>
+                    <input type="text" name="sdate" id="search-date" size="10" maxlength="10" placeholder="yyyy-mm-dd">
+                </span>
+                <span class=" col-12 col-md-1 mt-2">
+                    <button type="submit" class="btn btn-primary" id="search-button">search</button>
+                </span>
+                </div>
+            </form>
+
+        </div>
+        <hr class="bold-hr mt-3" />
+        <div class="row mt-2">
             <div class="col-12 text-center">
                 <h3>Dernières Check-lists</h3>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <ul>
+                <ul id="ul-chklsts">
                     {% for checklistok in checklistsdone %}
                         {% if checklistok.cld_valid %}
                             <li class="mt-1 text-success">
@@ -63,9 +88,19 @@
                             <li class="mt-1 text-danger">
                         {% endif %}
                         <a href="{{ checklistok.cld_pdf_file.url }}" target="_blank" style="color:inherit;">
-                        {{ checklistok.cld_key }} -
-                        {{checklistok.cld_manager.mgr_name}} - {{checklistok.cld_material.mat_designation}}</a>
-                        - {{ checklistok.modified_date|date:"d/m/Y" }}
+                        {% if user.is_superuser %}
+                            {{checklistok.cld_company.company_name}} -
+                        {% endif %}
+                        {% if user.pro %}
+                            {% if checklistok.cld_manager.mgr_name %}
+                                {{checklistok.cld_manager.mgr_name}} -
+                            {% endif %}
+                            {% if checklistok.cld_material.mat_designation %}
+                                {{checklistok.cld_material.mat_designation}} -
+                            {% endif %}
+                        {% endif %}
+                            {{ checklistok.cld_key }}</a> - {{ checklistok.modified_date|date:"d/m/Y" }}
+                            - {{ checklistok.cld_checklist.chk_title|truncatewords:3 }}
                         </li>
                     {% endfor %}
                 </ul>

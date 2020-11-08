@@ -1,6 +1,7 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
+
 from django.contrib import messages
-from django.db.models import Q, RestrictedError
+from django.db.models import RestrictedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
@@ -10,7 +11,7 @@ from app_input_chklst.models import Manager, Material
 
 class MaterialCreateView(BSModalCreateView):
     """
-    Create manager --> modal View
+    Create manager --> modal create View
     """
     template_name = 'app_input_chklst/dialogboxes/creatematerial.html'
     form_class = MaterialCreateForm
@@ -26,7 +27,7 @@ class MaterialCreateView(BSModalCreateView):
 
     def get_context_data(self, **kwargs):
         context = super(MaterialCreateView, self).get_context_data(**kwargs)
-        print(kwargs)
+        # print(kwargs)
 
         context['title'] = "Createmat"
         context['btn'] = "Create"
@@ -39,7 +40,7 @@ class MaterialCreateView(BSModalCreateView):
 
 class MaterialDisplayView(BSModalReadView):
     """
-    Manager display --> modal view
+    Manager display --> modal display/read view
     """
     model = Material
     template_name = 'app_input_chklst/dialogboxes/displaymaterial.html'
@@ -60,7 +61,7 @@ class MaterialDisplayView(BSModalReadView):
 
 class MaterialUpdateView(BSModalUpdateView):
     """
-    Update manager --> modal view
+    Update manager --> modal update view
     """
     model = Material
     template_name = 'app_input_chklst/dialogboxes/creatematerial.html'
@@ -77,7 +78,7 @@ class MaterialUpdateView(BSModalUpdateView):
 
 class MaterialDeleteView(BSModalDeleteView):
     """
-    Manager Delete --> modal view
+    Manager Delete --> modal delete view
     """
     template_name = 'app_input_chklst/dialogboxes/deletemat.html'
     model = Material

@@ -13,7 +13,14 @@ from app_checklist.models import CheckListDone
 from app_input_chklst.models import Material, Manager
 from app_create_chklst.models import CheckList
 
-
+"""
+All of the views above have the same principe to catch Next & Previous buttons.
+The views are a workflow --> you enter e material then a manager then The Check-list, 
+    finally the name... eventually preview the pdf file then save it en send it by mail.
+                         --> in Each step you can go previous or next without loosing data
+All the page datas are stored in session data (dicts - POST methods) to retrieve 
+them when the page is reloaded (GET method)
+"""
 class ChekListInput1(View):
     """
     view for input material for a checklist
@@ -24,6 +31,7 @@ class ChekListInput1(View):
     context_object_name = 'material'
 
     def get(self, request, *args, **kwargs):
+        # 1st load of 1st page --> remove all the context of the workflow
         if kwargs:
             if 'mat' in request.session:
                 del request.session['mat']
@@ -120,7 +128,7 @@ class ChekListInput2(View):
                 return render(request, self.template_name, context=self.context)
             # material selected --> get material manager and display (load the initial form)
             manager = Manager.objects.get(pk=request.session['mat']['manager'])
-            self.context['form'] = self.form(initial={'mgr_contact':manager.mgr_contact,
+            self.context['form'] = self.form(initial={'mgr_contact': manager.mgr_contact,
                                                       'mgr_phone': manager.mgr_phone,
                                                       'mgr_email1': manager.mgr_email1,
                                                       'mgr_email2': manager.mgr_email2,
@@ -133,18 +141,18 @@ class ChekListInput2(View):
             mgr_phone = request.session['mgr']['mgr_phone']
             mgr_email1 = request.session['mgr']['mgr_email1']
             mgr_email2 = request.session['mgr']['mgr_email2']
-            self.context['form'] = self.form(initial={'mgr_contact':mgr_contact,
+            self.context['form'] = self.form(initial={'mgr_contact': mgr_contact,
                                                       'mgr_phone': mgr_phone,
                                                       'mgr_email1': mgr_email1,
                                                       'mgr_email2': mgr_email2,
                                                       'mgr_id': mgr_id,
-                                                       })
+                                                      })
         else:
             self.context['form'] = self.form
         return render(request, self.template_name, context=self.context)
 
     def post(self, request, *args, **kwargs):
-        print(request)
+        # print(request)
         form = self.form(request.POST)
         if form.is_valid():
             # valid --> save the form in session
@@ -165,7 +173,9 @@ class ChekListInput2(View):
 
 class ChekListInput3(View):
     """
-    view for input manager of a checklist
+    view for input choices of a checklist (pro user)
+    This one is only for pro users (material & manager data exist)
+    It's more suitable to have 2 views (pro and priv)
     """
     context = {'title': 'Checklist'}
     template_name = "app_checklist/checklist_chklst.html"
@@ -186,7 +196,7 @@ class ChekListInput3(View):
         else:
             chk_save = request.session['chklst']['save']
             chk_remsave = request.session['chklst']['remsave']
-            self.context['form'] = self.form(initial={'chk_save': chk_save, 'chk_remsave': chk_remsave })
+            self.context['form'] = self.form(initial={'chk_save': chk_save, 'chk_remsave': chk_remsave, })
         return render(request, self.template_name, context=self.context)
 
     def post(self, request, *args, **kwargs):
@@ -195,12 +205,61 @@ class ChekListInput3(View):
             # valid --> save the form in session
             request.session['chklst'] = {}
             request.session['chklst']['save'] = request.POST['chk_save']  # save radiobuttons states
-            request.session['chklst']['remsave'] = request.POST['chk_remsave'] # save remarks
+            request.session['chklst']['remsave'] = request.POST['chk_remsave']  # save remarks
             # print(request.POST['chk_remsave'])
         # 2 submit buttons next & previous
         if 'previous' in request.POST:
             return redirect('app_checklist:saisie2')
         return redirect('app_checklist:saisie4')
+
+
+def cheklistinput3_priv(request, *args, **kwargs):
+    """
+    view for input choices of a checklist (private user)
+    This one is only for priv users (material & manager data don't exist)
+    """
+    if 'mat' in request.session:
+        del request.session['mat']
+    if 'mgr' in request.session:
+        del request.session['mgr']
+    if 'chklst' in request.session:
+        del request.session['chklst']
+    if 'chksave' in request.session:
+        del request.session['chksave']
+    if 'checklist_id' in request.session:
+        del request.session['checklist_id']
+    request.session.modified = True
+    list(messages.get_messages(request))
+    request.session['checklist_id'] = kwargs['pk']
+    request.session['mat'] = {'encours': '1',
+                              'id': '0',
+                              'manager': '0',
+                              'mat_model': '',
+                              'mat_registration': '',
+                              'mat_type': '',
+                              'material': ''}
+    request.session['mgr'] = {'encours': '1',
+                              'id': '0',
+                              'mgr_contact': '',
+                              'mgr_email1': '',
+                              'mgr_email2': '',
+                              'mgr_phone': ''}
+    checklist_done = CheckListDone.objects.filter(cld_user=request.user).filter(cld_status=0)
+    if checklist_done.count() == 0:
+        new_checklist = CheckListDone.objects.create(cld_user=request.user)
+    else:
+        new_checklist = checklist_done[0]
+        file = new_checklist.cld_pdf_file
+        if file:
+            media_root = getattr(settings, 'MEDIA_ROOT', None)
+            try:
+                os.remove(os.path.join(media_root, str(file)))
+            except FileNotFoundError:
+                pass
+        for photo in new_checklist.pho_chklst.all():
+            photo.delete()
+    request.session['newchecklist_id'] = new_checklist.pk
+    return redirect('app_checklist:saisie3')
 
 
 # Ajax
@@ -212,8 +271,8 @@ def getmanager(request):
     if request.method == 'POST':
         data = {'data': 'ERROR'}
         request_data = json.loads(request.read().decode('utf-8'))
-        id = request_data['id']
-        manager = Manager.objects.get(pk=id)
+        man_id = request_data['id']
+        manager = Manager.objects.get(pk=man_id)
         data['data'] = 'OK'
         data['mgr_name'] = manager.mgr_name
         data['mgr_contact'] = manager.mgr_contact
@@ -248,4 +307,3 @@ def getmaterial(request):
             data['mat_material'] = ''
         # data = json.dumps(data)
     return JsonResponse(data)
-

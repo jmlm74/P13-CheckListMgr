@@ -9,6 +9,11 @@ from django.core import serializers
 
 @csrf_exempt
 def get_message(request):
+    """
+    Ajax function
+    args - Request --> Get data in, json format : Message to get the translation
+    returns : The translation in user language or UK if no user connected in json format
+    """
     if request.method == 'POST':
         request_data = json.loads(request.read().decode('utf-8'))
         msg = request_data['msg']
@@ -23,16 +28,18 @@ def get_message(request):
 
 @csrf_exempt
 def get_address(request):
+    """
+        Ajax function
+        args - Request --> Get data in, json format : id for the address to return
+        returns : The address found in json format or ERREUR
+        """
     if request.method == 'POST':
         request_data = json.loads(request.read().decode('utf-8'))
         id_address = request_data['id']
-        try:
-            address = Address.objects.filter(pk=int(id_address))
-        except ObjectDoesNotExist:
+        address = Address.objects.filter(pk=int(id_address))
+        if not address:
             data = {'data': 'Error'}
         else:
-            print(address)
-            print(type(address))
             address = serializers.serialize("json", address)
             data = {'address': address, 'data': 'OK'}
     return JsonResponse(data)

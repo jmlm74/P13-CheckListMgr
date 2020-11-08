@@ -1,3 +1,4 @@
+{# Template for finale --> input4  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -36,14 +37,14 @@
             </div>
 
             <div class="row col-12 mt-3">
-                <div class="col-3 mb-3">
+                <div class="col-6 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-6 col-md-3 mb-3">
                     <a id="pdf-preview" class="btn btn-primary" target="_blank" rel="noopener"
                        href="{%  url 'app_checklist:pdf' %} ">{% dis_play "PDFPreview" %}</a>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-12 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" value="{% dis_play "Save" %}"/>
                 </div>
             </div>

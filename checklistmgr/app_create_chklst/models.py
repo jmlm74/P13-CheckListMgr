@@ -5,7 +5,20 @@ from app_user.models import User, Company
 from app_utilities.models import Translation
 
 
+"""
+In these models: 
+- all the foreign key on Company model are also used to get a unique constraint
+on model - company --> U can't have a duplicate on a company but 2 companies may have the same
+line-key or category-key
+- All the indexes are on the company  
+"""
+
+
 class Line(models.Model):
+    """
+    Line Model
+    may be in several Check-lists --> Check list have a many to many relationship
+    """
     class LineType(models.TextChoices):
         CHOICE = "C", "Choice"
         TEXT = "T", "Text"
@@ -38,6 +51,10 @@ class Line(models.Model):
 
 
 class Category(models.Model):
+    """
+    Category model
+    may be in several Check-lists --> Check list have a many to many relationship
+    """
     cat_key = models.CharField(max_length=30, verbose_name='Category key')
     cat_wording = models.CharField(max_length=80, verbose_name='Category title')
     cat_enable = models.BooleanField(verbose_name='Category enabled', default=True)
@@ -62,6 +79,15 @@ class Category(models.Model):
 
 
 class CheckList(models.Model):
+    """
+    Checklist model
+    A check list may have several categories and several lines (The "through" is to give the
+        position in the Checklist)
+    The checklist  of course have a company and a user (not used here but may be later for stats)
+
+    The method chklst_detail returns the complete detail for the instance
+    --> The categories & lines in the proper order to be displayed
+    """
     chk_key = models.CharField(max_length=30, verbose_name='Check-List key')
     chk_title = models.CharField(max_length=80, verbose_name='Check-List title')
     chk_enable = models.BooleanField(verbose_name='Check-List enabled')
@@ -122,6 +148,11 @@ class CheckList(models.Model):
 
 
 class CheckListCategory(models.Model):
+    """
+       Many to many relationship between CheckList & categories with the position
+       The unique constraint is to prevent having a category twice in a checklist.
+       It should be not possible but .... :)
+    """
     chk_cat_position = models.PositiveSmallIntegerField(verbose_name='Category Position')
     chk_cat_category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='clc_categories')
     chk_cat_checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE, related_name='clc_checklists')
@@ -138,6 +169,11 @@ class CheckListCategory(models.Model):
 
 
 class CheckListLine(models.Model):
+    """
+    Many to many relationship between CheckList & Lines with the position
+    The unique constraint is to prevent having a line twice in a checklist.
+    It should be not possible but .... :)
+    """
     chk_line_position = models.PositiveSmallIntegerField(verbose_name='Line Position')
     chk_line_line = models.ForeignKey(Line, on_delete=models.CASCADE, related_name='cll_lines')
     chk_line_checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE, related_name='cll_checklists')

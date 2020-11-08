@@ -1,4 +1,4 @@
-{# main page  #}
+{# main page for categories --> Script is there for the modal dialogue boxes #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -9,10 +9,6 @@
     <div class="container">
         {% include 'partials/_title.html' %}
         {% include "app_create_chklst/partials/_categorytable.html" %}
-        {% comment %}
-        <hr class="bold-hr" />
-        {% include "app_create_chklst/partials/_linetable.html" %}
-        {% endcomment %}
         {% include 'partials/_back.html' %}
     </div>
 </div>

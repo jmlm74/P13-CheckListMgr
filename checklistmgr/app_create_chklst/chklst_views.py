@@ -1,16 +1,15 @@
 import json
 
+from sortable_listview import SortableListView
 from bootstrap_modal_forms.generic import BSModalDeleteView, BSModalReadView
+
 from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-# from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
-from sortable_listview import SortableListView
 
 from app_create_chklst.forms import CheckListCreateForm
 from app_create_chklst.models import (Category,
@@ -30,7 +29,6 @@ class ChklstDeleteView(BSModalDeleteView):
     model = CheckList
     success_message = 'DeletechklstOK'
     success_url = reverse_lazy('app_create_chklst:chk-main')
-
 
 
 class ChklstDisplayView(BSModalReadView):
@@ -200,12 +198,15 @@ class ChkLstUpdateView(View):
 
 
 class MainChkLstView(SortableListView):
+    """
+    Main view --> Sortable list view
+    """
     context = {'title': 'Checklists'}
     template_name = "app_create_chklst/mainchklst.html"
     context_object_name = "checklists"
     allowed_sort_fields = {"chk_key": {'default_direction': '', 'verbose_name': 'Key'},
                            "chk_title": {'default_direction': '', 'verbose_name': 'Wording'},
-                           "chk_enable": {'default_direction': '', 'verbose_name': 'Enable'},}
+                           "chk_enable": {'default_direction': '', 'verbose_name': 'Enable'}, }
     default_sort_field = 'chk_key'  # mandatory
     paginate_by = 5
 

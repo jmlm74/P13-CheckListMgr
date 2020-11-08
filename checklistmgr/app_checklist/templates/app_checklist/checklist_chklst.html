@@ -1,3 +1,4 @@
+{# Template for checklist --> input2  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -14,10 +15,12 @@
         <form method="post" action="" id="form_id" small>
             {% csrf_token %}
             <div class="row col-12">
-                <div class="col-3 mb-3">
-                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
-                </div>
-                <div class="col-3 mb-3">
+                {% if user.pro %}
+                    <div class="col-5 col-md-3 mb-3">
+                        <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                    </div>
+                {% endif %}
+                <div class="col-5 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
                 </div>
             </div>
@@ -29,8 +32,8 @@
                     {% if item.line_cat == 'cat' %}
                         {% if not forloop.first %}
                         <div class="row mt-3">
-                            <div class="col-2"><strong>Remarques : </strong></div>
-                            <div class="col-10">
+                            <div class="col-6 col-md-2"><strong>Remarques : </strong></div>
+                            <div class="col-12 col-md-10">
                                 <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
                                             placeholder="Entrez vos remarques"></textarea>
                             </div>
@@ -45,25 +48,31 @@
                         <hr />
                     {% else %}
                         <div class="text-left row col-12"  id="lin-{{ item.id }}">
-                            <div class="col-8 col-md-9 border">
+                            <div class="col-12 col-md-7 col-lg-9 border">
                                 <span>{{ item.wording }} : </span>
                             </div>
-                            <div class="col-4 col-md-3 text-right border">
-                                <span class="switch-toggle small" name="but-{{ item.id }}" >
-                                    <span class="valid"><input id="{{ item.id }}-on" name="state-d-{{ item.id }}" type="radio"  />
-                                        <label for="{{ item.id }}-on" onclick="">{% dis_play "Valid" %}</label></span>
-                                    <span class="NA"><input id="{{ item.id }}-na" name="state-d-{{ item.id }}" type="radio" checked="checked" />
-                                        <label for="{{ item.id }}-na" onclick="">{% dis_play "N/A" %}</label></span>
-                                    <span class="default"><input id="{{ item.id }}-off" name="state-d-{{ item.id }}" type="radio" />
-                                        <label for="{{ item.id }}-off" onclick="">{% dis_play "Default" %}</label></span>
-                                </span>
-                            </div>
+                            {% if item.type == 'T' %}
+                                <div class="col-12 col-md-5 col-lg-3 text-right border">
+                                    <input class="remarks" id="text-{{ item.id }}" type="text" size="10" maxlength="20" />
+                                </div>
+                            {% else %}
+                                <div class="col-12 col-md-5 col-lg-3 text-right border">
+                                    <span class="switch-toggle small" name="but-{{ item.id }}" >
+                                        <span class="valid"><input id="{{ item.id }}-on" name="state-d-{{ item.id }}" type="radio"  />
+                                            <label for="{{ item.id }}-on" onclick="">{% dis_play "Valid" %}</label></span>
+                                        <span class="NA"><input id="{{ item.id }}-na" name="state-d-{{ item.id }}" type="radio" checked="checked" />
+                                            <label for="{{ item.id }}-na" onclick="">{% dis_play "N/A" %}</label></span>
+                                        <span class="default"><input id="{{ item.id }}-off" name="state-d-{{ item.id }}" type="radio" />
+                                            <label for="{{ item.id }}-off" onclick="">{% dis_play "Default" %}</label></span>
+                                    </span>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                     {% if forloop.last %}
                         <div class="row col-12 mt-3">
-                            <div class="col-2"><strong>Remarques : </strong></div>
-                            <div class="col-10">
+                            <div class="col-6 col-md-2"><strong>Remarques : </strong></div>
+                            <div class="col-12 col-sm-10">
                                 <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
                                           placeholder="Entrez vos remarques"></textarea>
 
@@ -74,11 +83,13 @@
             {{ form.chk_save.as_hidden }}
             {{ form.chk_remsave.as_hidden }}
             <hr class="bold-hr mt-3"/>
-           <div class="row col-12">
-                <div class="col-3 mb-3">
-                    <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
-                </div>
-                <div class="col-3 mb-3">
+            <div class="row col-12">
+                {% if user.pro %}
+                    <div class="col-5 col-md-3 mb-3">
+                        <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
+                    </div>
+                {% endif %}
+                <div class="col-5 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
                 </div>
            </div>

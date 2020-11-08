@@ -1,12 +1,13 @@
 import json
-from django.http import HttpResponse, JsonResponse
+from datetime import date, datetime
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from datetime import date, datetime
 
-from app_checklist.models import CheckListPhoto, CheckListDone
 from app_checklist.forms import ChekListInput4Form
+from app_checklist.models import CheckListPhoto, CheckListDone
 from app_create_chklst.models import CheckList
 from app_input_chklst.models import Material, Manager
 
@@ -32,10 +33,10 @@ class ChekListInput4(View):
         else:
             newchecklist = CheckListDone.objects.get(pk=request.session['newchecklist_id'])
             fotos = newchecklist.pho_chklst.all()
-            fotosave=[]
+            fotosave = []
             for foto in fotos:
                 fotosave.append(str(foto.pho_file))
-                print(foto.pho_file)
+                # print(foto.pho_file)
             self.context['form'] = self.form(initial={'cld_key': request.session['chksave']['cld_key'],
                                                       'cld_valid': request.session['chksave']['cld_valid'],
                                                       'cld_remarks': request.session['chksave']['cld_remarks'],
@@ -52,7 +53,7 @@ class ChekListInput4(View):
                 request.session['chksave']['cld_key'] = request.POST['cld_key']
 
                 request.session['chksave']['cld_valid'] = request.POST.get('cld_valid', False)
-                request.session['chksave']['cld_remarks'] = request.POST.get('cld_remarks','')
+                request.session['chksave']['cld_remarks'] = request.POST.get('cld_remarks', '')
                 return redirect('app_checklist:saisie3')
             else:
                 new_checklist.cld_status = 1
@@ -65,9 +66,9 @@ class ChekListInput4(View):
 # @csrf_exempt
 def before_preview(request):
     """
-    function to save datas in database before preview PDF and previos button.
+    function to save datas in database before preview PDF and previous button.
     The save should be the same but if preview the POST request datas are not the same.
-    If ajax --> get data in the "request post json data" and tret it
+    If ajax --> get data in the "request post json data" and treat it
     If Previous button : Get the data in the request POST.
     Generate a ChecklistDone model to get it in the pdfpreview (no context data because not html render)
     args : request (POST but with data or json depending on the request)
@@ -79,10 +80,10 @@ def before_preview(request):
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         is_ajax = True
-        data = {'data': 'ERREUR'}
+        # data = {'data': 'ERREUR'}
         request_data = json.loads(request.read().decode('utf-8'))
         # print(request.headers)
-        print(request_data)
+        # print(request_data)
         cld_key = request_data['cld_key']
         cld_valid = request_data['cld_valid']
         if cld_valid:
@@ -116,24 +117,24 @@ def before_preview(request):
         return JsonResponse(data)
     return newchecklist
 
+
 @csrf_exempt
 def file_upload_view(request):
-    print(request.FILES)
+    # print(request.FILES)
     data = {'data': 'ERREUR'}
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         my_file = request.FILES.get('file')
         newchecklist_id = request.POST.get('newchecklist_id', None)
         caption = request.POST.get('caption', None)
         data = {}
         if newchecklist_id is not None:
             newchecklist = CheckListDone.objects.get(pk=newchecklist_id)
-            new_photo = CheckListPhoto.objects.create(pho_file=my_file,
-                                                      pho_caption=caption,
-                                                      pho_chklst_done=newchecklist)
+            CheckListPhoto.objects.create(pho_file=my_file,
+                                          pho_caption=caption,
+                                          pho_chklst_done=newchecklist)
             data['data'] = 'OK'
     return JsonResponse(data)
-
 
 
 @csrf_exempt
@@ -141,7 +142,7 @@ def file_remove_view(request):
     data = {'data': 'ERREUR'}
     if request.method == 'POST':
         request_data = json.loads(request.read().decode('utf-8'))
-        print(request_data)
+        # print(request_data)
         filename = request_data['filename'].split('.')[0]
         checklist_id = request_data['checklist_id']
         today = date.today()
@@ -151,6 +152,4 @@ def file_remove_view(request):
         foto[0].delete()
         data = {'data': 'OK'}
     return JsonResponse(data)
-
-
 

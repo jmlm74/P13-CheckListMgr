@@ -29,7 +29,8 @@ from app_utilities.models import Translation
 def django_url_fetcher(url, *args, **kwargs):
     """
     Url fetcher from weasyprint
-    User to display pictures in pdf : tag files
+    User to display pictures in pdf : tag files : href="file:/media..."
+    taken as-is from Weasyprint
     """
     # load file:// paths directly from disk
     if url.startswith('file:'):
@@ -59,6 +60,8 @@ def django_url_fetcher(url, *args, **kwargs):
 def send_mail(request, newchecklist, result, mgr):
     """
     Send mail via MAILGUN --> loaded by thread
+    The mailgun key must be in the env variable
+    Only used ig a manager mail has been set --> only for Pro users
     """
     today = datetime.today()
     year = str(today.year)
@@ -72,13 +75,6 @@ def send_mail(request, newchecklist, result, mgr):
         language = request.session['language']
         subject = Translation.get_translation("Checklist", language=language)
         email_template_name = f"app_checklist/email-{language}.txt"
-        # the parameters are different during devel
-        if not settings.PRODUCTION:
-            domain = "127.0.0.1:8000"
-            protocol = "http"
-        else:
-            domain = "checklistmgr.jm-hayons74.fr"
-            protocol = "https"
         society1 = str(newchecklist.cld_company.address.street_number) + " " + \
                    str(newchecklist.cld_company.address.street_type) + " " + \
                    str(newchecklist.cld_company.address.address1)
@@ -107,7 +103,7 @@ def send_mail(request, newchecklist, result, mgr):
                 auth=("api", settings.MAILGUN_KEY),
                 files=[("attachment", (filename, open(full_filename, "rb").read()))],
                 data=data)
-            print(f"Retour send mail : {rc}")
+            # print(f"Retour send mail : {rc}")
         except:
            pass
     return

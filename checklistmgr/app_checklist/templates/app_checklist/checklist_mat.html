@@ -1,9 +1,9 @@
+{# Template for material --> input1  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
 {% load define %}
 {% block body_block %}
-{% load crispy_forms_tags %}
 <div class="container" id="checklist_mat">
 {% include "partials/_modal.html" %}
     <div class="progress">
@@ -12,7 +12,6 @@
     </div>
     <div class="my_body" id="main">
         {% include 'partials/_title.html' %}
-        {# {{ wizard.management_form }} #}
 
         <form method="post" action="">
             {% csrf_token %}
@@ -43,10 +42,10 @@
             {{ form.mat_manager.as_hidden }}
             {{ form.mat_id.as_hidden }}
             <div class="row col-12">
-                <div class="col-6 mb-3">
+                <div class="offset-4 offset-md-3 col-3 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
                 </div>
-                <div class="col-6 mb-3">
+                <div class="col-5 col-md-6 mb-3 text-center">
                     <button id="create-mat" class="btn btn-primary" type="button" name="button">
                         <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
                     </button>

@@ -1,4 +1,4 @@
-{# main page  #}
+{# main page for materials #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -9,7 +9,7 @@
     <div class="container">
         {% include 'partials/_title.html' %}
         <div class="row mt-5 mb-5">
-            <div class="col-sm-2 col-12">
+            <div class="col-4 col-md-2 ">
                 <a href="{% url 'app_input_chklst:inp-mgrmgmt' %}">
                     <button type="button" class="btn btn-primary btn-block">
                             <i class="fas fa-3x fa-users-cog"></i><br />
@@ -17,7 +17,7 @@
                     </button>
                 </a>
             </div>
-            <div class="col-sm-2 col-12">
+            <div class="col-4 col-md-2 ">
                 <a href="{% url 'app_input_chklst:inp-addrmgmt' %}">
                 <button type="button" class="btn btn-primary btn-block">
                     <!-- <img src="{% static 'app_input_chklst/img/mailbox-small.png' %}"><br /> -->
@@ -27,7 +27,7 @@
                 </a>
             </div>
             {% if user.is_superadmin %}
-            <div class="col-sm-2 col-12">
+            <div class="col-4 col-md-2 ">
                 <a href="{% url 'app_create_chklst:catlineMgmt' %}">
                 <button type="button" class="btn btn-primary btn-block">
 

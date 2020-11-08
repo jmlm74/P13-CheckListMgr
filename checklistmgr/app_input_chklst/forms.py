@@ -1,13 +1,15 @@
-from django import forms
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django.core.exceptions import ValidationError
 
 from app_input_chklst.models import Manager, Material
-from app_user.models import Address, Company
+from app_user.models import Address
 
 
 class ManagerCreateForm(BSModalModelForm):
-
+    """
+    create/update manager form
+    Clean --> add the user company in the manager record (not visible for the user !)
+    """
     class Meta:
         model = Manager
         fields = '__all__'
@@ -31,6 +33,9 @@ class ManagerCreateForm(BSModalModelForm):
 
 
 class AddressCreateForm(BSModalModelForm):
+    """
+    Address create/update form
+    """
     class Meta:
         model = Address
         fields = '__all__'
@@ -52,6 +57,12 @@ class AddressCreateForm(BSModalModelForm):
 
 
 class MaterialCreateForm(BSModalModelForm):
+    """
+    Material update/create form
+    clean --> add the user company
+              if secondary material add the primary material manager automatically
+              validate a manager has benn set (by user or automatically)
+    """
 
     class Meta:
         model = Material

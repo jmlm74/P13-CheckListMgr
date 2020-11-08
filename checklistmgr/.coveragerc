@@ -1,0 +1,13 @@
+[run]
+branch = True
+
+omit = 
+	*/migrations/*
+	checklistmgr/asgi.py
+	checklistmgr/wsgi.py
+	checklistmgr/prod_settings.py
+	checklistmgr/travis_settings.py
+	checklistmgr/wsgi.py
+	*/__init__.py
+	*/admin.py
+	*/test/*

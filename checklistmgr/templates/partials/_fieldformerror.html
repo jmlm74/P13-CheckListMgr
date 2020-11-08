@@ -1,3 +1,4 @@
+{#  basic display error messages (just for forms errors)  #}
 <div class="{% if field.errors %} invalid{% endif %}">
     {% for error in field.errors %}
         <p class="help-block">{{ error }}</p>

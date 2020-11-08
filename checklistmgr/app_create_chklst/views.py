@@ -19,7 +19,7 @@ All the modal view are from the BSModalview : https://github.com/trco/django-boo
 
 class CategoryCreateView(BSModalCreateView):
     """
-    Create category --> modal View
+    Create category --> modal create View
     """
     template_name = 'app_create_chklst/dialogboxes/createcategory.html'
     form_class = CategoryModelForm
@@ -30,7 +30,7 @@ class CategoryCreateView(BSModalCreateView):
 
 class LineCreateView(BSModalCreateView):
     """
-    Create line --> modal View
+    Create line --> modal create View
     """
     template_name = 'app_create_chklst/dialogboxes/createline.html'
     form_class = LineModelForm
@@ -41,7 +41,7 @@ class LineCreateView(BSModalCreateView):
 
 class CategoryUpdateView(BSModalUpdateView):
     """
-    Update category --> modal view
+    Update category --> modal update view
     """
     model = Category
     template_name = 'app_create_chklst/dialogboxes/updatecategory.html'
@@ -52,7 +52,7 @@ class CategoryUpdateView(BSModalUpdateView):
 
 class LineUpdateView(BSModalUpdateView):
     """
-    Line update --> modal view
+    Line update --> modal update view
     """
     model = Line
     template_name = 'app_create_chklst/dialogboxes/updateline.html'
@@ -63,7 +63,7 @@ class LineUpdateView(BSModalUpdateView):
 
 class CategoryDeleteView(BSModalDeleteView):
     """
-    Category Delete --> modal view
+    Category Delete --> modal create view
     """
     template_name = 'app_create_chklst/dialogboxes/deletecategory.html'
     model = Category
@@ -82,7 +82,7 @@ class CategoryDeleteView(BSModalDeleteView):
 
 class LineDeleteView(BSModalDeleteView):
     """
-    Line delete --> modal view
+    Line delete --> modal delete view
     """
     template_name = 'app_create_chklst/dialogboxes/deleteline.html'
     model = Line
@@ -101,7 +101,7 @@ class LineDeleteView(BSModalDeleteView):
 
 class CategoryDisplayView(BSModalReadView):
     """
-    Category display --> modal view
+    Category display --> modal display/read view
     """
     model = Category
     template_name = 'app_create_chklst/dialogboxes/displaycategory.html'
@@ -109,7 +109,7 @@ class CategoryDisplayView(BSModalReadView):
 
 class LineDisplayView(BSModalReadView):
     """
-    Line display --> modal view
+    Line display --> modal display/read view
     """
     model = Line
     template_name = 'app_create_chklst/dialogboxes/displayline.html'
@@ -181,6 +181,9 @@ def CatandLineMgmtView(request):
 
 
 class CategoryMgmtView(SortableListView):
+    """
+    Sortable list view of categories
+    """
     context = {'title': 'Categories'}
     template_name = "app_create_chklst/categorymgmt.html"
     context_object_name = "cat_users"
@@ -206,6 +209,9 @@ class CategoryMgmtView(SortableListView):
 
 
 class LineMgmtView(SortableListView):
+    """
+        Sortable list view of categories
+    """
     context = {'title': 'Lines'}
     template_name = "app_create_chklst/linemgmt.html"
     context_object_name = "line_users"
@@ -214,7 +220,7 @@ class LineMgmtView(SortableListView):
                            "line_enable": {'default_direction': '', 'verbose_name': 'Enable'},
                            "line_type": {'default_direction': '', 'verbose_name': 'Type'},}
     default_sort_field = 'line_key'  # mandatory
-    paginate_by = 15
+    paginate_by = 10
 
     def get_queryset(self):
         order = self.request.GET.get('sort', 'line_key')

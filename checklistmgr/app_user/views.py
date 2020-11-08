@@ -1,7 +1,8 @@
 import json
-
 import requests
+
 from bootstrap_modal_forms.generic import BSModalDeleteView
+
 from django.conf import settings as conf_settings
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -14,7 +15,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
-from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views import View
@@ -53,10 +53,12 @@ class RegisterView(View):
     def post(self, request):
         form = UserCheckListMgrRegister(request.POST, request.FILES)
         if form.is_valid():
+            """
             try:
                 print(form.cleaned_data['picture'])
             except MultiValueDictKeyError:
                 pass
+            """
             if request.POST['password'] == request.POST['confirm_password']:
                 admin = request.POST.get('admin', 'False', ) == 'on'
                 if 'company' not in request.POST:
@@ -142,14 +144,13 @@ def delete_user(request):
     """
     if request.method == 'POST':
         request_data = json.loads(request.read().decode('utf-8'))
-        print(request_data)
         id_user = request_data['id']
         try:
             user_to_delete = User.objects.get(pk=id_user)
-            print(f'{user_to_delete.username} - {user_to_delete.is_active}')
+            # print(f'{user_to_delete.username} - {user_to_delete.is_active}')
             user_to_delete.is_active = False
             user_to_delete.save()
-            print(f'{user_to_delete.username} - {user_to_delete.is_active}')
+            # print(f'{user_to_delete.username} - {user_to_delete.is_active}')
             data = {'data': 'OK'}
         except:
             data = {'data': 'Erreur'}
@@ -193,14 +194,15 @@ def reset_psw(request):
                     email = render_to_string(email_template_name, c)
                     try:
                         # send mail
-                        rc = requests.post("https://api.mailgun.net/v3/sandbox1f42285ff9e446fa9e90d34287cd8fee.mailgun.org/messages",
-                                           auth=("api", conf_settings.MAILGUN_KEY),
-                                           data={"from": "Checklist Manager <webmaster@jm-hayons74.fr>",
-                                                 "to": clean_mail,
-                                                 "subject": subject,
-                                                 "text": email,
-                                                 })
-                        print(rc)
+                        rc = requests.post(
+                            "https://api.mailgun.net/v3/sandbox1f42285ff9e446fa9e90d34287cd8fee.mailgun.org/messages",
+                            auth=("api", conf_settings.MAILGUN_KEY),
+                            data={"from": "Checklist Manager <webmaster@jm-hayons74.fr>",
+                                  "to": clean_mail,
+                                  "subject": subject,
+                                  "text": email,
+                                  })
+                        # print(rc)
                     except:
                         context['error'] = Translation.get_translation("ErrorSendmail", language=language)
 
@@ -209,7 +211,7 @@ def reset_psw(request):
 
             # else: --> advice from my mentor --> no error msg because of the bots
             #     context['error'] = Translation.get_translation('An invalid email has been entered.', language)
-        #else:
+        # else:
         #    context['error'] = Translation.get_translation('An invalid email has been entered.', language)
         #    return redirect('user_app:reset_password', error=context['error'])
 
@@ -230,14 +232,14 @@ class UserListView(SortableListView):
     context_object_name = "users"
 
     allowed_sort_fields = {"username": {'default_direction': '', 'verbose_name': 'User'},
-                               "first_name": {'default_direction': '', 'verbose_name': 'Firstname'},
-                               "last_name": {'default_direction': '', 'verbose_name': 'Lastname'},
-                               "email": {'default_direction': '', 'verbose_name': 'Email'},
-                               "phone": {'default_direction': '', 'verbose_name': 'Phone'},
-                               "preferred_language": {'default_direction': '', 'verbose_name': 'Language'},
-                               "tt": {'default_direction': '', 'verbose_name': ''},
-                               "user_company": {'default_direction': '', 'verbose_name': 'Company'},
-                               "is_active": {'default_direction': '', 'verbose_name': 'Enable'}, }
+                           "first_name": {'default_direction': '', 'verbose_name': 'Firstname'},
+                           "last_name": {'default_direction': '', 'verbose_name': 'Lastname'},
+                           "email": {'default_direction': '', 'verbose_name': 'Email'},
+                           "phone": {'default_direction': '', 'verbose_name': 'Phone'},
+                           "preferred_language": {'default_direction': '', 'verbose_name': 'Language'},
+                           "tt": {'default_direction': '', 'verbose_name': ''},
+                           "user_company": {'default_direction': '', 'verbose_name': 'Company'},
+                           "is_active": {'default_direction': '', 'verbose_name': 'Enable'}, }
 
     default_sort_field = 'username'  # mandatory
     paginate_by = 5
@@ -255,12 +257,12 @@ class UserListView(SortableListView):
         else:
             return User.objects.filter(username=self.request.user.username)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sort'] = self.request.GET.get('sort', 'user_company')
         context['title'] = 'Userlist'
         return context
+
 
 class LineDeleteView(BSModalDeleteView):
     """

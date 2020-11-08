@@ -1,3 +1,4 @@
+{# Template for manager --> input2  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -25,7 +26,7 @@
             </div>
 
             <p class="form-group">
-                {% dis_play "Contact" %} :
+                {% dis_play "Contactname" %} :
                 {{ form.mgr_contact }}
             </p>
             <div class="form-group">
@@ -39,13 +40,13 @@
                 {{ form.mgr_id.as_hidden }}
             </div>
             <div class="row col-12">
-                <div class="col-3 mb-3">
+                <div class="col-4 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" name="previous" value="{% dis_play "Previous" %}"/>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-3 col-md-3 mb-3">
                     <input type="submit" class="btn btn-primary" value="{% dis_play "Next" %}"/>
                 </div>
-                <div class="col-6 mb-3">
+                <div class="col-5 col-md-6 mb-3 text-center">
                     <button id="create-mgr" class="btn btn-primary" type="button" name="button">
                         <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
                     </button>

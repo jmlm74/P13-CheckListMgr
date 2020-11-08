@@ -1,9 +1,14 @@
 import {SendAjax, getCookie, test2} from '../../../../static/js/modul.js'
 
+
+/***************************/
+/* create/update checklist */
+/***************************/
 if ((document.getElementById('createchklst'))||(document.getElementById('updatechklst')) ){   // create checklist page
     console.log("JS createchklst-updatechecklst loaded");
     const csrfToken = getCookie('csrftoken');
 
+    // submit the form --> Ajax
     document.getElementById('submit-btn').addEventListener('click', e => {
         let chklst_items = document.getElementById("chklst-items").children;
         let data = {};
@@ -26,10 +31,10 @@ if ((document.getElementById('createchklst'))||(document.getElementById('updatec
         }
 
         if (document.getElementById('createchklst')){
-            data['action'] = 'create'
+            data['action'] = 'create'  // create checklist
         }
         else {
-            data['action'] = 'update'
+            data['action'] = 'update'  // update checklist
         }
 
         data['chk_key'] = document.getElementById('id_chk_key').value;

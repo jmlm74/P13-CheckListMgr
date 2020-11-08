@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.db.models import UniqueConstraint
 
@@ -7,8 +9,12 @@ from app_user.models import User, Company
 
 
 class CheckListDone(models.Model):
+    """
+    Checklist
+    """
     cld_status = models.PositiveSmallIntegerField(default=0, verbose_name="Status")
-    cld_key = models.CharField(max_length=15, verbose_name="Key", null=True)
+    cld_key = models.CharField(max_length=15, verbose_name="Key", null=True,
+                               default=str(datetime.now().timestamp())[:15])
     cld_mail_sent = models.BooleanField(default=False, verbose_name='Mail sent')
     cld_pdf_file = models.FileField(upload_to="checklists/%Y/%m/",
                                     max_length=100,

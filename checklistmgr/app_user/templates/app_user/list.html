@@ -1,4 +1,4 @@
-{# main page  #}
+{# list users  #}
 {% extends 'base.html' %}
 {% load static %}
 {% load dis_play %}
@@ -7,11 +7,11 @@
     <div class="container">
         {% include 'partials/_title.html' %}
          <div class="row mt-3">
-            <div class="col-3">
+            <div class="col-5 col-md-3">
                 <h3>{% dis_play "Users" %}</h3>
             </div>
         {% if user.admin %}
-            <div class="col-2 mb-3">
+            <div class="col-3 col-md-2 mb-3">
                 <a href="{% url 'app_user:register' %}" class="btn btn-primary" type="button" name="button">
                     <i class="fa fa-plus mr-2"></i>{% dis_play "Create" %}
                 </a>

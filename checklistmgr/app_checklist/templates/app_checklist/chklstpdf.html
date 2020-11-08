@@ -1,3 +1,4 @@
+{#  template pdf file --> complete HTML file (no Django template) #}
 {% load dis_play %}
 {% load define %}
 <!DOCTYPE html>
@@ -38,43 +39,45 @@
                     <h6 class="col-2 justify-center">date : {% now "d/m/Y" %} </h6>
                 </div>
             </header>
-            <hr class="bold-hr">
-            <section class="row">
-                <div class="col-4 border no-oveflow  borderj ">
+            {% if user.pro %}
+                <hr class="bold-hr">
+                <section class="row">
+                    <div class="col-4 border no-oveflow  borderj ">
 
-                        <div class="bg-info font-weight-bold text-center ">{% dis_play "Operator" %}</div>
-                            {{ Checklist.cld_user.full_name }}<br />
+                            <div class="bg-info font-weight-bold text-center ">{% dis_play "Operator" %}</div>
+                                {{ Checklist.cld_user.full_name }}<br />
+                                <hr class="bold-hr">
+                                {{ Checklist.cld_company.company_name }}<br />
+                                {{ Checklist.cld_company.address.street_number }} {{ Checklist.cld_company.address.street_type }}
+                                {{ Checklist.cld_company.address.address1 }}<br />
+                                {{ Checklist.cld_company.address.address2 }}<br />
+                                {{ Checklist.cld_company.address.zipcode }} {{ Checklist.cld_company.address.city }}<br />
+
+                    </div>
+                    <div class="col-4 borderj no-oveflow">
+
+                            <div class="bg-info font-weight-bold text-center">{% dis_play "Material" %}</div>
+                            {{ Checklist.cld_material.mat_designation }}<br>
+                            {{ mat.mat_registration }}<br />
+                            {{ mat.mat_model }}<br>
+                            {{ mat.mat_type }}<br>
                             <hr class="bold-hr">
-                            {{ Checklist.cld_company.company_name }}<br />
-                            {{ Checklist.cld_company.address.street_number }} {{ Checklist.cld_company.address.street_type }}
-                            {{ Checklist.cld_company.address.address1 }}<br />
-                            {{ Checklist.cld_company.address.address2 }}<br />
-                            {{ Checklist.cld_company.address.zipcode }} {{ Checklist.cld_company.address.city }}<br />
+                            {{ mat.material }}
 
-                </div>
-                <div class="col-4 borderj no-oveflow">
+                    </div>
+                    <div class="col-4 borderj no-oveflow">
 
-                        <div class="bg-info font-weight-bold text-center">{% dis_play "Material" %}</div>
-                        {{ Checklist.cld_material.mat_designation }}<br>
-                        {{ mat.mat_registration }}<br />
-                        {{ mat.mat_model }}<br>
-                        {{ mat.mat_type }}<br>
-                        <hr class="bold-hr">
-                        {{ mat.material }}
-
-                </div>
-                <div class="col-4 borderj no-oveflow">
-
-                        <div class="bg-info font-weight-bold text-center">{% dis_play "Manager" %}</div>
-                    {{ Checklist.cld_manager.mgr_name }}<br>
-                    {{ mgr.mgr_contact }}<br>
-                    {{ Checklist.cld_manager.mgr_address.street_number }} {{ Checklist.cld_manager.mgr_address.street_type }}
-                    {{ Checklist.cld_manager.mgr_address.address1 }} <br />
-                    {{ Checklist.cld_manager.mgr_address.address2 }}<br>
-                    {{ Checklist.cld_manager.mgr_address.zipcode }} {{ Checklist.cld_manager.mgr_address.city }}<br>
-                    {% dis_play "Phone" %} : {{ mgr.mgr_phone }}<br :>
-                </div>
-            </section>
+                            <div class="bg-info font-weight-bold text-center">{% dis_play "Manager" %}</div>
+                        {{ Checklist.cld_manager.mgr_name }}<br>
+                        {{ mgr.mgr_contact }}<br>
+                        {{ Checklist.cld_manager.mgr_address.street_number }} {{ Checklist.cld_manager.mgr_address.street_type }}
+                        {{ Checklist.cld_manager.mgr_address.address1 }} <br />
+                        {{ Checklist.cld_manager.mgr_address.address2 }}<br>
+                        {{ Checklist.cld_manager.mgr_address.zipcode }} {{ Checklist.cld_manager.mgr_address.city }}<br>
+                        {% dis_play "Phone" %} : {{ mgr.mgr_phone }}<br :>
+                    </div>
+                </section>
+            {% endif %}
             <hr class="bold-hr">
             {% for item in details %}
                     {% if item.line_cat == 'cat' %}
@@ -96,21 +99,27 @@
                         <hr />
                     {% else %}
                         <div class="text-left row col-12"  id="lin-{{ item.id }}">
-                            <div class="col-8 col-md-9 border">
+                            <div class="col-9 col-md-9 border">
                                 <span>{{ item.wording }} : </span>
                             </div>
-                            <div class="col-4 col-md-3 text-right border">
-                                {% dis_play_result item.id as val%}
-                                {% if val == "n/a" %}
-                                    <span class="text-primary">
-                                {% elif val == "valid" %}
-                                    <span class="text-success">
-                                {% else %}
-                                    <span class="text-danger">
-                                {% endif %}
-                                     {% dis_play val %}
-                                </span>
-                            </div>
+                            {% if item.type == 'T' %}
+                                <div class="col-3 col-md-3 text-right border">
+                                    {% dis_play_remark item.id %}
+                                </div>
+                            {% else %}
+                                <div class="col-3 col-md-3 text-right border">
+                                    {% dis_play_result item.id as val%}
+                                    {% if val == "n/a" %}
+                                        <span class="text-primary">
+                                    {% elif val == "valid" %}
+                                        <span class="text-success">
+                                    {% else %}
+                                        <span class="text-danger">
+                                    {% endif %}
+                                         {% dis_play val %}
+                                    </span>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                     {% if forloop.last %}

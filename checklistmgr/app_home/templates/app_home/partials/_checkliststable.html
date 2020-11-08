@@ -1,3 +1,4 @@
+{# the checklist table --> the 1st part of the main page #}
 {% load dis_play %}
         <div class="row mt-3">
             <div class="col-2">
@@ -33,7 +34,15 @@
                     {% for checklist in checklists %}
                         <tr>
                             <th class="text-center" scope="row">{{ forloop.counter }}</th>
-                            <td class="text-center"><a href={% url 'app_checklist:saisie1' checklist.pk %}>{{ checklist.chk_key }}</a></td>
+                            {% if not user.pro %}
+                                <td class="text-center">
+                                <a href={% url 'app_checklist:saisie3-priv' checklist.pk %}>{{ checklist.chk_key }}</a>
+                            </td>
+                            {% else %}
+                            <td class="text-center">
+                                <a href={% url 'app_checklist:saisie1' checklist.pk %}>{{ checklist.chk_key }}</a>
+                            </td>
+                            {% endif %}
                             <td class="text-center">{{ checklist.chk_title }}</td>
                             {% if user.is_superuser %}<td class="text-center">{{ checklist.chk_company }}</td>{% endif %}
                         </tr>

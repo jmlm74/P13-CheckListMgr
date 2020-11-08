@@ -32,9 +32,9 @@
             {% endif %}
             {% if title == 'Register' %}
             <div class="form-row">
-                <div class="col-md-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
-                <div class="col-md-4 form-group">{% dis_play "Password" %}* : {{ form.password }}</div>
-                <div class="col-md-4 form-group">{% dis_play "PasswordC" %}* : {{ form.confirm_password }}</div>
+                <div class="col-12 col-lg-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
+                <div class="col-12 col-lg-4 form-group">{% dis_play "Password" %}* : {{ form.password }}</div>
+                <div class="col-12 col-lg-4 form-group">{% dis_play "PasswordC" %}* : {{ form.confirm_password }}</div>
             </div>
             {% else %}
                 <div class="form-row">
@@ -43,20 +43,20 @@
                         <img src="{{ user.picture.url }}" alt="{% dis_play 'Picture' %}" />
                     {% endif %}
                     </div>
-                <div class="col-md-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
+                <div class="col-11 col-md-4 form-group">{% dis_play "User" %}* : {{ form.username }}</div>
                 </div>
             {% endif %}
             <hr/>
             <div class="form-row mt-0">
-                <div class="col-md-3 form-group">{% dis_play "Email" %}* : {{ form.email }}</div>
-                <div class="col-md-3 form-group">{% dis_play "Firstname" %}* : {{ form.first_name }}</div>
-                <div class="col-md-3 form-group">{% dis_play "Lastname" %}* : {{ form.last_name }}</div>
-                <div class="col-md-3 form-group mt-3">{% dis_play "Language" %} : {{ form.preferred_language }}</div>
+                <div class="col-md-4 col-lg-3 form-group">{% dis_play "Email" %}* : {{ form.email }}</div>
+                <div class="col-md-4 col-lg-3 form-group">{% dis_play "Firstname" %}* : {{ form.first_name }}</div>
+                <div class="col-md-4 col-lg-3 form-group">{% dis_play "Lastname" %}* : {{ form.last_name }}</div>
+                <div class="col-md-6 col-lg-3 form-group mt-3">{% dis_play "Language" %} : {{ form.preferred_language }}</div>
             </div>
             <hr/>
             <div class="form-row mt-0">
-                <div class="col-md-3 form-group">{% dis_play "Phone" %} : {{ form.phone }}</div>
-                <div class="col-md-5 form-group">{% dis_play "Picture" %} : {{ form.picture }}</div>
+                <div class="col-12 col-md-5 col-lg-3 form-group">{% dis_play "Phone" %} : {{ form.phone }}</div>
+                <div class="col-12 col-md-7 col-lg-5 form-group">{% dis_play "Picture" %} : {{ form.picture }}</div>
                 {% if user.is_superuser %}
                     <div class="col-md-3 form-group">{% dis_play "Company" %} : {{ form.company }}</div>
                     <div class="col-md-1 form-group">{% dis_play "Admin" %} {{ form.admin }}</div>
