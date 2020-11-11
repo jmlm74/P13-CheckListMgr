@@ -159,6 +159,7 @@ def render_pdf_view(request, *args, **kwargs):
         'dict_choices': dict_choices,
         'details': details,
         'dict_remarks': dict_remarks,
+        'user': request.user
     }
 
     # PDF generator
