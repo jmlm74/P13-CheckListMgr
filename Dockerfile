@@ -5,7 +5,8 @@ FROM python:3.8.6
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-ENV DIR1=P13-CheckListMgr
+#ENV DIR1=P13-CheckListMgr
+ENV DIR1=./
 ENV DIR2=checklistmgr
 
 # install dependencies
