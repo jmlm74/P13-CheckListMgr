@@ -23,10 +23,10 @@ if not DEBUG:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'checklistmgr',
-        'USER': 'jmlm',
-        'PASSWORD': 'jmlmpw',
-        'HOST': 'db',
+        'NAME': get_env_variable('DATABASE_NAME', ''),
+        'USER': get_env_variable('DATABASE_USER', ''),
+        'PASSWORD': get_env_variable('DATABASE_PSW', ''),
+        'HOST': get_env_variable('DATABASE_HOST', ''),
         'PORT': '5432',
     }
 }
