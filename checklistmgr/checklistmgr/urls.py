@@ -25,7 +25,6 @@ from app_home import views as ahv
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('app_home/', include('app_home.urls')),
     path('app_user/', include('app_user.urls')),
     path('app_utilities/', include('app_utilities.urls')),
@@ -49,5 +48,6 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
+        path('admin/', admin.site.urls),
     ] + urlpatterns
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

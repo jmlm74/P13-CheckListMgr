@@ -13,6 +13,11 @@ INTERNAL_IPS = []
 # security
 ALLOWED_HOSTS = ['*', ]
 SECRET_KEY = get_env_variable('SECRET_KEY', '')
+if not DEBUG:
+    try:
+        INSTALLED_APPS.remove('django.contrib.admin')
+    except ValueError:
+        pass
 
 # postgres database
 DATABASES = {
