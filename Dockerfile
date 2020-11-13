@@ -31,6 +31,9 @@ RUN ./env/bin/pip3 install -r /home/jmlm/requirements/requirements.txt
 COPY ./${DIR1}/${DIR2}/ /home/jmlm/${DIR2}
 WORKDIR /home/jmlm/${DIR2}
 
+# create django-log dir
+RUN mkdir -m 766 /var/log/django
+
 EXPOSE 8000 
 
 # Command
