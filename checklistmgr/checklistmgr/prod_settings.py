@@ -35,3 +35,24 @@ WSGI_APPLICATION = 'checklistmgr.wsgi.application'
 # static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+#logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+
