@@ -1,4 +1,4 @@
-import os
+
 
 from .settings import *
 
@@ -35,7 +35,7 @@ WSGI_APPLICATION = 'checklistmgr.wsgi.application'
 # static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#logging
+# logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -54,5 +54,4 @@ LOGGING = {
         },
     },
 }
-
 
