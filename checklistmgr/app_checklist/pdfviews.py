@@ -23,6 +23,7 @@ from django.urls import get_script_prefix
 
 from app_checklist.models import CheckListDone
 from app_create_chklst.models import CheckList
+from app_input_chklst.models import Manager, Material
 from app_utilities.models import Translation
 
 
@@ -127,8 +128,17 @@ def render_pdf_view(request, *args, **kwargs):
     checklist = CheckList.objects.get(pk=request.session['checklist_id'])
     details = checklist.chklst_detail()
 
+
     mgr = request.session['mgr']
     mat = request.session['mat']
+    if mgr['id'] != '0':
+        manager = Manager.objects.get(pk=mgr['id'])
+    else:
+        manager = None
+    if mat['id'] != '0':
+        material = Material.objects.get(pk=mat['id'])
+    else:
+        material = None
     # get choices and remarks --> in specially formatted string --> put them in dicts
     choices = request.session['chklst']['save']
     choices = choices[:-2]
@@ -152,6 +162,8 @@ def render_pdf_view(request, *args, **kwargs):
     context = {
         'mgr': mgr,
         'mat': mat,
+        'manager': manager,
+        'material': material,
         'base_url': base_url,
         'Checklist': newchecklist,
         'fotos': fotos,
