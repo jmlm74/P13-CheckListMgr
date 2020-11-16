@@ -32,10 +32,10 @@
                     {% if item.line_cat == 'cat' %}
                         {% if not forloop.first %}
                         <div class="row mt-3">
-                            <div class="col-6 col-md-2"><strong>Remarques : </strong></div>
+                            <div class="col-6 col-md-2"><strong>{% dis_play "Remarks" %} :</strong></div>
                             <div class="col-12 col-md-10">
                                 <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
-                                            placeholder="Entrez vos remarques"></textarea>
+                                            placeholder="{% dis_play "Remarkshere" %}"></textarea>
                             </div>
                         </div>
                         {% endif %}
@@ -71,10 +71,10 @@
                     {% endif %}
                     {% if forloop.last %}
                         <div class="row col-12 mt-3">
-                            <div class="col-6 col-md-2"><strong>Remarques : </strong></div>
+                            <div class="col-6 col-md-2"><strong>{% dis_play "Remarks" %} :</strong></div>
                             <div class="col-12 col-sm-10">
                                 <textarea class="remarks" id="text-{{ item.id }}" rows="5" cols="50"
-                                          placeholder="Entrez vos remarques"></textarea>
+                                          placeholder="{% dis_play "Remarkshere" %}"></textarea>
 
                             </div>
                         </div>

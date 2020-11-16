@@ -6,7 +6,7 @@
 <div class="container">
     <div class="my_body" id="main">
         {% include 'partials/_title.html' %}
-        <div class="row buttons col-12 mt-5 mb-5">
+        <div class="row buttons col-12 mt-5 mb-5 align-items-center">
             <div class=" col-md-3 col-xl-2 d-none d-md-block">
                 <a href="{% url 'app_user:list' %}">
                     <button type="button" class="btn btn-primary btn-block">
@@ -44,6 +44,20 @@
                     </button>
                 </a>
             </div>
+            {% else %}
+                <div class="offset-md-2 col-md-2 offset-xl-4 col-xl-2 d-none d-md-block">
+                {% if user.first_login %}
+                        <h5 class="blinking alert-info"> 1st login --> </h5>
+                {% endif %}
+                </div>
+                    <div class="col-md-2 col-xl-2 d-none d-md-block">
+                        <a href="{% get_media_prefix %}tuto/tutorial.pdf" target="_blank">
+                            <button type="button" class="btn btn-info btn-block">
+                                <i class="fas fa-3x fa-question"></i><br />
+                                {% dis_play "Tutorial" %}
+                            </button>
+                        </a>
+                    </div>
             {% endif %}
         </div>
         {% include "app_home/partials/_checkliststable.html" %}
@@ -53,14 +67,16 @@
             <form id="form-search">
                 {% csrf_token %}
                 <div class="col-12">
-                <span class="col-12 col-md-4">
-                    <label for="smaterial">Material</label>
-                    <select name="smaterial" id="search-material" style="max-width: 10em;" ></select>
-                </span>
-                 <span class="col-12 col-md-4">
-                    <label for="smanager">Manager</label>
-                     <select name="smanager" id="search-manager" style="max-width: 10em;"></select>
-                </span>
+                {% if user.pro %}
+                    <span class="col-12 col-md-4">
+                        <label for="smaterial">Material</label>
+                        <select name="smaterial" id="search-material" style="max-width: 10em;" ></select>
+                    </span>
+                     <span class="col-12 col-md-4">
+                        <label for="smanager">Manager</label>
+                         <select name="smanager" id="search-manager" style="max-width: 10em;"></select>
+                    </span>
+                {% endif %}
                 <span class="col-12 col-md-3">
                     <label for="sdate">Date</label>
                     <input type="text" name="sdate" id="search-date" size="10" maxlength="10" placeholder="yyyy-mm-dd">
@@ -75,7 +91,7 @@
         <hr class="bold-hr mt-3" />
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h3>Dernières Check-lists</h3>
+                <h3>{% dis_play "Lastchecklists" %}</h3>
             </div>
         </div>
         <div class="row">
