@@ -52,6 +52,7 @@ class RegisterView(View):
 
     def post(self, request):
         form = UserCheckListMgrRegister(request.POST, request.FILES)
+        new_user = None
         if form.is_valid():
             """
             try:
@@ -106,14 +107,19 @@ class RegisterView(View):
                         form.add_error(None, 'Errcreateuser')
             else:
                 form.add_error(None, 'Errpswconfir')
+        if new_user and not new_user.pro:
+            return HttpResponseRedirect(reverse('app_home:index'))
         self.context['form'] = form
         return render(request, self.template_name, self.context)
 
 
 @login_required
 def user_logout(request):
+    if(request.user.first_login):
+        user=User.objects.get(pk=request.user.id)
+        user.first_login = False
+        user.save()
     logout(request)
-    print("logout")
     return HttpResponseRedirect(reverse('app_home:index'))
 
 

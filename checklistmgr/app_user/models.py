@@ -79,6 +79,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=31, blank=True, null=True, verbose_name="Phone number")
     picture = models.ImageField(upload_to='images/', height_field=None, width_field=None, max_length=100,
                                 blank=True, null=True, verbose_name="Picture")
+    first_login = models.BooleanField(default=True)
     preferred_language = models.ForeignKey(UserLanguages, on_delete=models.CASCADE, related_name='user_language',
                                            default=None, null=True)
     user_company = models.ForeignKey(Company, on_delete=models.RESTRICT, related_name='user_company',
