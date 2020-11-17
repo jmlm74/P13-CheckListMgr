@@ -12,5 +12,37 @@ Une liste de courses qui revient toujours, des contrôles/vérification à faire
 
 **Oubliez tout cela - Check List Manager arrive !!!**  
 Créez votre compte, Créez votre checklist, validez les choix, retrouvez la pour plus tard, imprimez la.... Plus aucune excuse pour le sempiternel : ZUT, J'ai oublié !!!!  
-
+  
+  
 ## Livrables  
+
+### Principes
+2 type d'utilisateurs :  
+- Particuliers : S'enregistre directement sur le site mais n'a pas accès aux notions d' exploitants et de matériels.  
+- Professionnels : Compte créé par l'admin de site. Le professionnel peut ensuite créer des comptes de technicien, créer des exploitants et leur lier des matériels.  
+  
+un tutoriel pour les utilisateurs "particuliers" est disponible [ici](/Livrables/tutorial.pdf).  
+
+### Langages de developpement et outils  
+- python >= 3.8  
+- Django >= 3.1  
+
+### Liens
+L'application est disponible [ici](https://www.jm-hayons74.fr).  
+
+### Documentation  
+- Note d'intention - [lien](/Livrables/Note d'intention.pdf).  
+- Dossier de conception fonctionnelle - [lien](/Livrables/P13 Dossier Conception Fonctionnelle.pdf).    
+- Dossier de conception technique - [lien](/Livrables/P13 Dossier Conception Technique.pdf).    
+- Dossier d'exploitation - [lien](/Livrables/P13 Dossier Exploitation Docker.pdf).    
+- Implémentation et Bilan - [lien](/Livrables/Implementation et Bilan.pdf).    
+ 
+ ### Installation et pré-requis  
+ #### Pré-requis  
+ - Docker >= V19.03  
+ - Docker-compose >= 1.27  
+ - Conteneurs docker : Postgres:12 - Nginx:latest - jmlm74/checklistmgr  
+ 
+ #### installation  
+ - Une procédure d'installation complète se trouve dans le dossier d'exploitation (cf ci-dessus).   
+ 
