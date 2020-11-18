@@ -18,10 +18,10 @@ Créez votre compte, Créez votre checklist, validez les choix, retrouvez la pou
 
 ### Principes
 2 type d'utilisateurs :  
-- Particuliers : S'enregistre directement sur le site mais n'a pas accès aux notions d' exploitants et de matériels.  
-- Professionnels : Compte créé par l'admin de site. Le professionnel peut ensuite créer des comptes de technicien, créer des exploitants et leur lier des matériels.  
+- Particulier : S'enregistre directement sur le site mais n'a pas accès aux notions d' exploitants et de matériels.  
+- Professionnel : Compte créé par l'admin de site. Le professionnel peut ensuite créer des comptes de technicien, créer des exploitants et leur lier des matériels.  
   
-un tutoriel pour les utilisateurs "particuliers" est disponible [ici](/Livrables/tutorial.pdf).  
+Un tutoriel pour les utilisateurs "particuliers" est disponible [ici](/Livrables/tutorial.pdf).  
 
 ### Langages de developpement et outils  
 - python >= 3.8  
@@ -31,11 +31,12 @@ un tutoriel pour les utilisateurs "particuliers" est disponible [ici](/Livrables
 L'application est disponible [ici](https://www.jm-hayons74.fr).  
 
 ### Documentation  
-- Note d'intention - [lien](/Livrables/Note d'intention.pdf).  
-- Dossier de conception fonctionnelle - [lien](/Livrables/P13 Dossier Conception Fonctionnelle.pdf).    
-- Dossier de conception technique - [lien](/Livrables/P13 Dossier Conception Technique.pdf).    
-- Dossier d'exploitation - [lien](/Livrables/P13 Dossier Exploitation Docker.pdf).    
-- Implémentation et Bilan - [lien](/Livrables/Implementation et Bilan.pdf).    
+- Note d'intention - [lien](/Livrables/Note_d_intention.pdf).  
+- Dossier de conception fonctionnelle - [lien](/Livrables/P13_Dossier_Conception_Fonctionnelle.pdf).    
+- Dossier de conception technique - [lien](/Livrables/P13_Dossier_Conception_Technique.pdf).    
+- Dossier d'exploitation - [lien](/Livrables/P13_Dossier_Exploitation_Docker.pdf).    
+- Implémentation et Bilan - [lien](/Livrables/Implementation_et_Bilan.pdf).    
+- Présentation - [lien](/Livrables/presentation.pdf).    
  
  ### Installation et pré-requis  
  #### Pré-requis  
