@@ -108,11 +108,11 @@
                             {{checklistok.cld_company.company_name}} -
                         {% endif %}
                         {% if user.pro %}
-                            {% if checklistok.cld_manager.mgr_name %}
-                                {{checklistok.cld_manager.mgr_name}} -
+                            {% if checklistok.cld_man %}
+                                {{checklistok.cld_man}} -
                             {% endif %}
-                            {% if checklistok.cld_material.mat_designation %}
-                                {{checklistok.cld_material.mat_designation}} -
+                            {% if checklistok.cld_mat %}
+                                {{checklistok.cld_mat}} -
                             {% endif %}
                         {% endif %}
                             {{ checklistok.cld_key }}</a> - {{ checklistok.modified_date|date:"d/m/Y" }}
