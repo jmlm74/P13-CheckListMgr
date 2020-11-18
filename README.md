@@ -36,6 +36,7 @@ L'application est disponible [ici](https://www.jm-hayons74.fr).
 - Dossier de conception technique - [lien](/Livrables/P13_Dossier_Conception_Technique.pdf).    
 - Dossier d'exploitation - [lien](/Livrables/P13_Dossier_Exploitation_Docker.pdf).    
 - Implémentation et Bilan - [lien](/Livrables/Implementation_et_Bilan.pdf).    
+- Présentation - [lien](/Livrables/presentation.pdf).    
  
  ### Installation et pré-requis  
  #### Pré-requis  

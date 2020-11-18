@@ -1,0 +1,74 @@
+version: '3.7'
+services:
+   db:
+      image: postgres:12
+      volumes:
+         - db_data:/var/lib/postgresql/data/pgdata
+         - /var/run/postgresql:/var/run/postgresql
+         - /var/log/docker:/var/log/postgresql/
+         - /home/checklistmgr/backup:/backup
+      environment:
+         - POSTGRES_PASSWORD=${PG_PSW}
+         - POSTGRES_HOST_AUTH_METHOD=md5
+         - PGDATA=/var/lib/postgresql/data/pgdata
+      ports:
+         - 5432:5432
+      container_name: "db"
+      hostname: "db"
+      domainname: "jm-hayons74.fr"
+
+   gunicorn:
+      image: jmlm74/checklistmgr:latest
+      command: bash -c "/home/jmlm/env/bin/python manage.py makemigrations &&
+                        /home/jmlm/env/bin/python manage.py migrate &&
+                        /home/jmlm/env/bin/python manage.py collectstatic --no-input &&
+                        /home/jmlm/env/bin/gunicorn --workers 3 --access-logfile /var/log/django/gunicorn.log --bind 0.0.0.0:8000 checklistmgr.wsgi:application"
+      depends_on:
+         - db
+      volumes:
+         - static_data:/home/jmlm/checklistmgr/staticfiles/
+         - media_data:/home/jmlm/checklistmgr/media/
+         - /var/log/django:/var/log/django/
+      ports:
+         - 8000:8000
+      environment:
+         DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+         SECRET_KEY: ${SECRET_KEY}
+         MAILGUN_APU-KEY: ${MAILGUN_APIKEY}
+         DATABASE_USER: ${DATABASE_USER}
+         DATABASE_PSW: ${DATABASE_PSW}
+         DATABASE_NAME: ${DATABASE_NAME}
+         DATABASE_HOST: ${DATABASE_HOST}
+      hostname: "gunicorn"
+      container_name: "gunicorn"
+      domainname: "jm-hayons74.fr"
+
+
+   nginx:
+      image: nginx:latest
+      ports:
+         - 80:80
+         - 443:443
+      volumes:
+         - ${NGINX_CONFDIR}:/etc/nginx/conf.d
+         - static_data:/home/checklistmgr/staticfiles/
+         - media_data:/home/checklistmgr/media/
+         - /var/log/nginx:/var/log/nginx/
+      depends_on:
+         - gunicorn
+      hostname: "nginx"
+      container_name: "nginx"
+      domainname: "jm-hayons74.fr"
+
+
+volumes:
+    static_data:
+        external:
+            name: static_data
+    media_data:
+        external:
+            name: media_data
+    db_data:
+        external:
+            name: db_data
+
