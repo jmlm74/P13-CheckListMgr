@@ -79,8 +79,8 @@ class MaterialCreateForm(BSModalModelForm):
         self.fields['mat_model'].widget.attrs = {'size': '20', 'max_length': '30'}
         self.fields['mat_material'].required = False
         self.fields['mat_material'].initial = '-------'
-        self.fields['mat_manager'].widget.attrs = {'style': 'width: 75px;'}
-        self.fields['mat_material'].widget.attrs = {'style': 'width: 75px;'}
+        self.fields['mat_manager'].widget.attrs = {'style': 'width: 150px;'}
+        self.fields['mat_material'].widget.attrs = {'style': 'width: 150px;'}
         self.fields['mat_manager'].required = False
         self.fields['mat_company'].required = False
 
