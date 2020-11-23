@@ -25,9 +25,9 @@ def dis_play(context, value):
     try:
         language = context.request.session['language']
     except KeyError as e:
-        language = "UK"
+        language = "FR"
     except AttributeError as e:
-        language = "UK"
+        language = "FR"
     text_to_display = Translation.get_translation(value, language=language)
     return text_to_display
 
