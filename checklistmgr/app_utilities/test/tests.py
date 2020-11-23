@@ -39,7 +39,7 @@ class TestUtilities(TransactionTestCase):
     def test_VIEW_get_message_ok(self):
         print(inspect.currentframe().f_code.co_name)
         response = dis_play(None, "Test")
-        assert response == 'TestUK'
+        assert response == 'TestFR'
 
     def test_VIEW_dis_play_result_ok(self):
         print(inspect.currentframe().f_code.co_name)
