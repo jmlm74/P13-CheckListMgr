@@ -109,8 +109,10 @@ def before_preview(request):
     newchecklist.cld_checklist = checklist
     if request.session['mat']['id'] != '0':
         newchecklist.cld_material = Material.objects.get(pk=request.session['mat']['id'])
+        newchecklist.cld_mat = newchecklist.cld_material.mat_designation
     if request.session['mgr']['id'] != '0':
         newchecklist.cld_manager = Manager.objects.get(pk=request.session['mgr']['id'])
+        newchecklist.cld_man = newchecklist.cld_manager.mgr_name
     newchecklist.save()
     if is_ajax:
         data = {'data': 'OK'}
