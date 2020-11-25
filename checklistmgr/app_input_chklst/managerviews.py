@@ -20,9 +20,9 @@ class MgrMgmtView(SortableListView):
     allowed_sort_fields = {"mgr_name": {'default_direction': '', 'verbose_name': 'Manager'},
                            "mgr_contact": {'default_direction': '', 'verbose_name': 'Contactname'},
                            "mgr_phone": {'default_direction': '', 'verbose_name': 'Phone'},
-                           "line_email1": {'default_direction': '', 'verbose_name': 'Email1'},
-                           "line_email2": {'default_direction': '', 'verbose_name': 'Email2'},
-                           "line_Enable": {'default_direction': '', 'verbose_name': 'Enable'}, }
+                           "mgr_email1": {'default_direction': '', 'verbose_name': 'Email1'},
+                           "mgr_email2": {'default_direction': '', 'verbose_name': 'Email2'},
+                           "mgr_enable": {'default_direction': '', 'verbose_name': 'Enable'}, }
     default_sort_field = 'mgr_name'  # mandatory
     paginate_by = 5
 
