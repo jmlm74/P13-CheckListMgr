@@ -19,8 +19,7 @@ services:
 
    gunicorn:
       image: jmlm74/checklistmgr:latest
-      command: bash -c "/home/jmlm/env/bin/python manage.py makemigrations &&
-                        /home/jmlm/env/bin/python manage.py migrate &&
+      command: bash -c "/home/jmlm/env/bin/python manage.py migrate &&
                         /home/jmlm/env/bin/python manage.py collectstatic --no-input &&
                         /home/jmlm/env/bin/gunicorn --workers 3 --access-logfile /var/log/django/gunicorn.log --bind 0.0.0.0:8000 checklistmgr.wsgi:application"
       depends_on:
